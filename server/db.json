@@ -55,13 +55,35 @@
     {
       "id": 1,
       "companyId": 1,
-      "name": "Callao Deposit",
-      "street": "asd",
+      "name": "Callao Distribution Center",
+      "street": "Av. Néstor Gambetta 2450",
       "district": "Callao",
       "city": "Lima",
       "country": "PE",
       "status": "ACTIVE",
-      "zoneCount": 0
+      "zoneCount": 2
+    },
+    {
+      "id": 2,
+      "companyId": 1,
+      "name": "Ate Logistics Warehouse",
+      "street": "Av. Separadora Industrial 1850",
+      "district": "Ate",
+      "city": "Lima",
+      "country": "PE",
+      "status": "ACTIVE",
+      "zoneCount": 2
+    },
+    {
+      "id": 3,
+      "companyId": 1,
+      "name": "Villa El Salvador Storage",
+      "street": "Av. El Sol 1420",
+      "district": "Villa El Salvador",
+      "city": "Lima",
+      "country": "PE",
+      "status": "SUSPENDED",
+      "zoneCount": 1
     }
   ],
   "warehouse-zones": [],
@@ -129,7 +151,44 @@
       "reconciled": false
     }
   ],
-  "security-alerts": [],
+  "security-alerts": [
+    {
+      "id": 1,
+      "warehouseId": 1,
+      "zoneId": 3,
+      "physicalEventId": 2,
+      "alertType": "UNAUTHORIZED_ACCESS",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "message": "Unauthorized access detected outside scheduled operating hours.",
+      "raisedAt": "2026-10-04T02:47:31Z",
+      "justification": null
+    },
+    {
+      "id": 2,
+      "warehouseId": 1,
+      "zoneId": 3,
+      "physicalEventId": 3,
+      "alertType": "NODE_DISCONNECTION",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "message": "IoT sensor node disconnected unexpectedly.",
+      "raisedAt": "2026-10-04T11:06:10Z",
+      "justification": null
+    },
+    {
+      "id": 3,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "physicalEventId": 1,
+      "alertType": "DISCREPANCY",
+      "severity": "MINOR",
+      "status": "RECONCILED",
+      "message": "Door opening event was detected and successfully reconciled.",
+      "raisedAt": "2026-10-04T18:12:04Z",
+      "justification": "Authorized warehouse activity confirmed by the supervisor."
+    }
+  ],
   "subscription-plans": [
     {
       "id": 1,
@@ -182,5 +241,60 @@
       "issuedAt": "2026-10-01T00:00:00Z"
     }
   ],
-  "traceability-records": []
+  "traceability-records": [
+    {
+      "id": 1,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "PHYSICAL_ACCESS",
+      "actor": "SYSTEM",
+      "description": "Warehouse door opened. Physical access event detected by magnetic contact sensor.",
+      "occurredAt": "2026-10-04T18:12:04Z"
+    },
+    {
+      "id": 2,
+      "warehouseId": 1,
+      "zoneId": 3,
+      "recordType": "PHYSICAL_ACCESS",
+      "actor": "SYSTEM",
+      "description": "Door opened outside scheduled operating hours. Security review required.",
+      "occurredAt": "2026-10-04T02:47:31Z"
+    },
+    {
+      "id": 3,
+      "warehouseId": 1,
+      "zoneId": 3,
+      "recordType": "NODE_DISCONNECTION",
+      "actor": "SYSTEM",
+      "description": "IoT sensor node stopped communicating with the monitoring platform.",
+      "occurredAt": "2026-10-04T11:06:10Z"
+    },
+    {
+      "id": 4,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "WAREHOUSE_KEEPER",
+      "description": "Inventory movement registered and associated with warehouse monitoring activity.",
+      "occurredAt": "2026-10-04T17:55:20Z"
+    },
+    {
+      "id": 5,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "DISCREPANCY",
+      "actor": "SYSTEM",
+      "description": "Inventory and physical event data were cross-checked for consistency.",
+      "occurredAt": "2026-10-04T18:13:22Z"
+    },
+    {
+      "id": 6,
+      "warehouseId": 1,
+      "zoneId": 3,
+      "recordType": "PHYSICAL_ACCESS",
+      "actor": "SECURITY_MANAGER",
+      "description": "Security manager reviewed the unauthorized access event.",
+      "occurredAt": "2026-10-04T18:30:45Z"
+    }
+  ]
 }
