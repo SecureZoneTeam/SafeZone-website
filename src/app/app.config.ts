@@ -4,7 +4,7 @@ import {
   provideZoneChangeDetection
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withInterceptors([authenticationInterceptor])),
+    provideHttpClient(withXhr(), withInterceptors([authenticationInterceptor])),
     provideAnimationsAsync(),
     provideTranslateService({
       loader: provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),

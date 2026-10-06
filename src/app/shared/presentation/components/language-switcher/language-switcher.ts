@@ -14,7 +14,7 @@ import {
   ],
   templateUrl: './language-switcher.html',
   styleUrl: './language-switcher.css',
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LanguageSwitcher {
 

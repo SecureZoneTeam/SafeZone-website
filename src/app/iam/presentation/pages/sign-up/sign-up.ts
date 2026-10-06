@@ -7,11 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 import { IamStore } from '../../../application/iam.store';
 
-/**
- * Sign-Up form used by visitors coming from the Landing Page call-to-action.
- * The `plan` query parameter carries the subscription plan chosen on the Landing Page,
- * so the visitor is not asked to pick it twice (user stories US15 and US16).
- */
+
 @Component({
   selector: 'app-sign-up',
   imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe],
@@ -29,7 +25,7 @@ export class SignUp implements OnInit {
     fullName: ['', [Validators.required]],
     username: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]]
+    password: ['', [Validators.required, Validators.minLength(1)]]
   });
 
   ngOnInit(): void {

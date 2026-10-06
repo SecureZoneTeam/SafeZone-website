@@ -9,7 +9,7 @@ import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse } from '../../../domain/model/warehouse.entity';
 import { StreetAddress } from '../../../domain/model/street-address';
 
-/** Warehouse registration form (user story US04). */
+
 @Component({
   selector: 'app-warehouse-form',
   imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe],
