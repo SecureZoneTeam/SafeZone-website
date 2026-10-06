@@ -1,0 +1,30 @@
+.auth {
+  display: flex;
+  justify-content: center;
+}
+
+.auth__panel {
+  width: min(460px, 100%);
+  padding: 36px;
+}
+
+.auth__field {
+  width: 100%;
+}
+
+.auth__submit {
+  width: 100%;
+  margin-top: var(--ns-space-sm);
+}
+
+.auth__hint {
+  margin: var(--ns-space-lg) 0 0;
+  color: var(--ns-slate-500);
+  font-size: 14px;
+  text-align: center;
+}
+
+.auth__hint a {
+  font-weight: 600;
+  text-decoration: none;
+}

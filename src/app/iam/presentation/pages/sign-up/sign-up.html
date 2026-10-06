@@ -1,0 +1,48 @@
+<section class="ns-page auth">
+  <div class="ns-panel auth__panel">
+    <span class="ns-page__badge">{{ 'nav.signUp' | translate }}</span>
+    <h1 class="ns-page__title">{{ 'iam.signUp.title' | translate }}</h1>
+
+    @if (selectedPlanCode(); as planCode) {
+      <p class="auth__plan">
+        {{ 'iam.signUp.planNotice' | translate }} <strong>{{ planCode }}</strong>
+      </p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="auth__field">
+        <mat-label>{{ 'iam.signUp.fullName' | translate }}</mat-label>
+        <input matInput formControlName="fullName" autocomplete="name" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth__field">
+        <mat-label>{{ 'iam.signUp.username' | translate }}</mat-label>
+        <input matInput formControlName="username" autocomplete="username" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth__field">
+        <mat-label>{{ 'iam.signUp.email' | translate }}</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth__field">
+        <mat-label>{{ 'iam.signUp.password' | translate }}</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="new-password" required />
+      </mat-form-field>
+
+      @if (iamStore.error(); as errorKey) {
+        <p class="ns-error" role="alert">{{ errorKey | translate }}</p>
+      }
+
+      <button class="ns-button ns-button--primary auth__submit" type="submit" [disabled]="iamStore.loading()">
+        {{ 'iam.signUp.submit' | translate }}
+        <span aria-hidden="true">&rarr;</span>
+      </button>
+    </form>
+
+    <p class="auth__hint">
+      {{ 'iam.signUp.haveAccount' | translate }}
+      <a routerLink="/sign-in">{{ 'nav.signIn' | translate }}</a>
+    </p>
+  </div>
+</section>

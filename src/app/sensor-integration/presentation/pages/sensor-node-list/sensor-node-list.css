@@ -1,0 +1,43 @@
+.device-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--ns-space-md);
+  max-width: 480px;
+  margin-bottom: var(--ns-space-lg);
+}
+
+.device-summary__card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+}
+
+.device-summary__value {
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+.device-summary__value--online { color: var(--ns-success-dark); }
+.device-summary__value--offline { color: var(--ns-danger); }
+
+.device-summary__label {
+  color: var(--ns-slate-500);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+code {
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: var(--ns-slate-100);
+  font-size: 12px;
+}
+
+mat-progress-bar {
+  margin-bottom: var(--ns-space-md);
+  border-radius: var(--ns-radius-pill);
+}

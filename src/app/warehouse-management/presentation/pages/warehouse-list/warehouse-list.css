@@ -1,0 +1,4 @@
+mat-progress-bar {
+  margin-bottom: var(--ns-space-md);
+  border-radius: var(--ns-radius-pill);
+}

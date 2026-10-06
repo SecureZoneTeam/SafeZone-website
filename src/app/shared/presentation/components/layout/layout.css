@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout__content {
+  flex: 1 1 auto;
+  /* Leaves room for the floating pill header. */
+  padding-top: 110px;
+}
+
+@media (max-width: 768px) {
+  .layout__content {
+    padding-top: 96px;
+    padding-bottom: 76px;
+  }
+}

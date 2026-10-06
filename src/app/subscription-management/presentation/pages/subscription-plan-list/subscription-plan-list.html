@@ -1,0 +1,58 @@
+<section class="ns-page">
+  <span class="ns-page__badge">{{ 'subscriptions.plans.badge' | translate }}</span>
+  <h1 class="ns-page__title">{{ 'subscriptions.plans.title' | translate }}</h1>
+  <p class="ns-page__subtitle">{{ 'subscriptions.plans.subtitle' | translate }}</p>
+
+  @if (selectedPlanCode()) {
+    <p class="plan-list__notice">
+      {{ 'subscriptions.plans.selected' | translate }}: <strong>{{ selectedPlanCode() }}</strong>
+    </p>
+  }
+
+  @if (subscriptionStore.loading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading subscription plans" />
+  }
+
+  <div class="plan-list">
+    @for (plan of subscriptionStore.plans(); track plan.id) {
+      <article
+        class="ns-card ns-card--hoverable plan-card"
+        [class.plan-card--featured]="plan.code === 'PREMIUM'">
+        @if (plan.code === 'PREMIUM') {
+          <span class="plan-card__badge">{{ 'subscriptions.plans.popular' | translate }}</span>
+        }
+
+        <h2 class="plan-card__name">{{ plan.name }}</h2>
+
+        <p class="plan-card__price">
+          <span class="plan-card__amount">{{ plan.monthlyPrice.toString() }}</span>
+          <span class="plan-card__period">/ {{ 'subscriptions.plans.perMonth' | translate }}</span>
+        </p>
+
+        <ul class="plan-card__features">
+          <li>
+            <span aria-hidden="true">&check;</span>
+            {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}
+          </li>
+          <li>
+            <span aria-hidden="true">&check;</span>
+            {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}
+          </li>
+          <li>
+            <span aria-hidden="true">&check;</span>
+            {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}
+          </li>
+        </ul>
+
+        <button
+          class="ns-button"
+          [class.ns-button--primary]="plan.code === 'PREMIUM'"
+          [class.ns-button--secondary]="plan.code !== 'PREMIUM'"
+          type="button">
+          {{ 'subscriptions.plans.subscribe' | translate }}
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </article>
+    }
+  </div>
+</section>

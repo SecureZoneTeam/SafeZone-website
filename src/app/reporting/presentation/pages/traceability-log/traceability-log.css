@@ -1,0 +1,12 @@
+code {
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: var(--ns-slate-100);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+mat-progress-bar {
+  margin-bottom: var(--ns-space-md);
+  border-radius: var(--ns-radius-pill);
+}

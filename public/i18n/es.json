@@ -1,0 +1,161 @@
+{
+  "app": {
+    "title": "NodeSecure",
+    "startup": "SafeZone",
+    "tagline": "Control inteligente de inventario con trazabilidad IoT"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "warehouses": "Mis Almacenes",
+    "devices": "Dispositivos IoT",
+    "traceability": "Trazabilidad",
+    "alerts": "Alertas",
+    "team": "Equipo y Accesos",
+    "subscription": "Suscripción",
+    "settings": "Configuración",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar sesión",
+    "language": "Idioma"
+  },
+  "shared": {
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "create": "Crear",
+      "search": "Buscar",
+      "export": "Exportar reporte",
+      "back": "Volver"
+    },
+    "states": {
+      "loading": "Cargando...",
+      "empty": "Aún no hay registros",
+      "error": "Ocurrió un error"
+    },
+    "footer": {
+      "terms": "Términos y Condiciones",
+      "privacy": "Política de Privacidad",
+      "rights": "Todos los derechos reservados",
+      "contact": "Contacto",
+      "schedule": "Lunes a viernes - 9:00 a 18:00",
+      "platform": "Plataforma",
+      "company": "Empresa",
+      "legal": "Legal",
+      "landing": "Landing Page",
+      "team": "Nuestro Equipo"
+    }
+  },
+  "iam": {
+    "signIn": {
+      "title": "Inicia sesión en NodeSecure",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "submit": "Iniciar sesión",
+      "invalidCredentials": "Credenciales inválidas",
+      "noAccount": "¿Aún no tienes una cuenta?"
+    },
+    "signUp": {
+      "title": "Crea tu cuenta de NodeSecure",
+      "username": "Usuario",
+      "email": "Correo",
+      "password": "Contraseña",
+      "submit": "Registrarse",
+      "haveAccount": "¿Ya estás registrado?",
+      "planNotice": "Te estás registrando en el plan",
+      "fullName": "Nombres y apellidos"
+    }
+  },
+  "warehouses": {
+    "list": {
+      "title": "Mis Almacenes",
+      "empty": "Registra tu primer almacén para comenzar a monitorearlo",
+      "name": "Nombre",
+      "district": "Distrito",
+      "zones": "Zonas",
+      "status": "Estado",
+      "badge": "Infraestructura logística",
+      "subtitle": "Supervisa cada sede, zona y nodo IoT desde un único panel de control."
+    },
+    "form": {
+      "createTitle": "Registrar almacén",
+      "editTitle": "Editar almacén",
+      "name": "Nombre del almacén",
+      "street": "Dirección",
+      "district": "Distrito",
+      "city": "Ciudad",
+      "country": "País"
+    }
+  },
+  "devices": {
+    "list": {
+      "title": "Dispositivos IoT",
+      "macAddress": "Dirección MAC",
+      "model": "Modelo",
+      "zone": "Zona",
+      "connection": "Conexión",
+      "lastPing": "Último ping",
+      "online": "En línea",
+      "offline": "Desconectado",
+      "badge": "Red IoT",
+      "subtitle": "Consulta el estado de conexión de cada nodo ESP32 para evitar puntos ciegos."
+    },
+    "form": {
+      "title": "Vincular nodo sensor IoT",
+      "macAddress": "Dirección MAC (ESP32)",
+      "zone": "Zona del almacén",
+      "sensorType": "Tipo de sensor"
+    }
+  },
+  "alerts": {
+    "list": {
+      "title": "Alertas de Seguridad",
+      "severity": "Severidad",
+      "type": "Tipo",
+      "status": "Estado",
+      "raisedAt": "Generada el",
+      "message": "Mensaje",
+      "badge": "Motor de discrepancias",
+      "subtitle": "Las aperturas físicas sin movimiento de inventario asociado se reportan aquí."
+    },
+    "actions": {
+      "reconcile": "Marcar como Falsa Alarma",
+      "justification": "Justificación"
+    }
+  },
+  "traceability": {
+    "list": {
+      "title": "Bitácora de Trazabilidad",
+      "occurredAt": "Marca de tiempo",
+      "recordType": "Tipo de evento",
+      "actor": "Responsable",
+      "description": "Descripción",
+      "filterType": "Filtrar por tipo",
+      "filterDiscrepancies": "Solo discrepancias",
+      "badge": "Auditoría",
+      "subtitle": "Registro cronológico de eventos físicos y lógicos con marcas de tiempo exactas."
+    }
+  },
+  "subscriptions": {
+    "plans": {
+      "title": "Planes de Suscripción",
+      "monthlyPrice": "Precio mensual",
+      "warehouseLimit": "Almacenes",
+      "sensorNodeLimit": "Sensores IoT",
+      "userLimit": "Usuarios",
+      "subscribe": "Contratar",
+      "badge": "Planes y precios",
+      "subtitle": "Suscripciones escalables que crecen con tu operación.",
+      "selected": "Plan seleccionado desde la Landing Page",
+      "popular": "Más popular",
+      "perMonth": "mes"
+    },
+    "current": {
+      "title": "Mi Suscripción",
+      "plan": "Plan actual",
+      "status": "Estado",
+      "renewsAt": "Se renueva el"
+    }
+  }
+}

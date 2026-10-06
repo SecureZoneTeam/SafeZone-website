@@ -1,0 +1,12 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+/** Fallback view rendered for unknown routes. */
+@Component({
+  selector: 'app-page-not-found',
+  imports: [RouterLink],
+  templateUrl: './page-not-found.html',
+  styleUrl: './page-not-found.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class PageNotFound {}

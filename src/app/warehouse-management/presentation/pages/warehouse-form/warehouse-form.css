@@ -1,0 +1,32 @@
+.warehouse-form {
+  display: flex;
+  justify-content: center;
+}
+
+.warehouse-form__panel {
+  width: min(680px, 100%);
+  padding: 36px;
+}
+
+.warehouse-form__field {
+  width: 100%;
+}
+
+.warehouse-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  gap: var(--ns-space-md);
+}
+
+.warehouse-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ns-space-sm);
+  margin-top: var(--ns-space-sm);
+}
+
+@media (max-width: 640px) {
+  .warehouse-form__row {
+    grid-template-columns: 1fr;
+  }
+}

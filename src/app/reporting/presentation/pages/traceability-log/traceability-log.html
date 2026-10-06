@@ -1,0 +1,50 @@
+<section class="ns-page">
+  <div class="ns-page__header">
+    <div>
+      <span class="ns-page__badge">{{ 'traceability.list.badge' | translate }}</span>
+      <h1 class="ns-page__title">{{ 'traceability.list.title' | translate }}</h1>
+      <p class="ns-page__subtitle">{{ 'traceability.list.subtitle' | translate }}</p>
+    </div>
+
+    <mat-slide-toggle
+      [checked]="reportingStore.discrepanciesOnly()"
+      (change)="reportingStore.toggleDiscrepanciesOnly($event.checked)">
+      {{ 'traceability.list.filterDiscrepancies' | translate }}
+    </mat-slide-toggle>
+  </div>
+
+  @if (reportingStore.loading()) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading traceability log" />
+  }
+
+  <div class="ns-panel">
+    <table mat-table [dataSource]="reportingStore.records()" class="ns-table">
+      <ng-container matColumnDef="occurredAt">
+        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.occurredAt' | translate }}</th>
+        <td mat-cell *matCellDef="let record">
+          <code>{{ record.occurredAt | date: 'medium' }}</code>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="recordType">
+        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.recordType' | translate }}</th>
+        <td mat-cell *matCellDef="let record">
+          <span class="ns-chip ns-chip--neutral">{{ record.recordType }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actor">
+        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.actor' | translate }}</th>
+        <td mat-cell *matCellDef="let record">{{ record.actor }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.description' | translate }}</th>
+        <td mat-cell *matCellDef="let record">{{ record.description }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</section>

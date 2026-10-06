@@ -1,0 +1,45 @@
+<section class="ns-page warehouse-form">
+  <div class="ns-panel warehouse-form__panel">
+    <span class="ns-page__badge">{{ 'warehouses.list.badge' | translate }}</span>
+    <h1 class="ns-page__title">{{ 'warehouses.form.createTitle' | translate }}</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="warehouse-form__field">
+        <mat-label>{{ 'warehouses.form.name' | translate }}</mat-label>
+        <input matInput formControlName="name" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="warehouse-form__field">
+        <mat-label>{{ 'warehouses.form.street' | translate }}</mat-label>
+        <input matInput formControlName="street" required />
+      </mat-form-field>
+
+      <div class="warehouse-form__row">
+        <mat-form-field appearance="outline" class="warehouse-form__field">
+          <mat-label>{{ 'warehouses.form.district' | translate }}</mat-label>
+          <input matInput formControlName="district" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="warehouse-form__field">
+          <mat-label>{{ 'warehouses.form.city' | translate }}</mat-label>
+          <input matInput formControlName="city" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="warehouse-form__field">
+          <mat-label>{{ 'warehouses.form.country' | translate }}</mat-label>
+          <input matInput formControlName="country" maxlength="2" required />
+        </mat-form-field>
+      </div>
+
+      <div class="warehouse-form__actions">
+        <a class="ns-button ns-button--secondary" routerLink="/warehouses">
+          {{ 'shared.actions.cancel' | translate }}
+        </a>
+        <button class="ns-button ns-button--primary" type="submit">
+          {{ 'shared.actions.save' | translate }}
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

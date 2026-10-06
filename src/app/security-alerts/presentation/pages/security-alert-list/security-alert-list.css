@@ -1,0 +1,23 @@
+.alert-action {
+  padding: 8px 14px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--ns-radius-pill);
+  background: var(--ns-blue-50);
+  color: var(--ns-blue-600);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.alert-action:hover {
+  background: var(--ns-blue-100);
+  transform: translateY(-2px);
+}
+
+mat-progress-bar {
+  margin-bottom: var(--ns-space-md);
+  border-radius: var(--ns-radius-pill);
+}

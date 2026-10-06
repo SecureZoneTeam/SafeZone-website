@@ -1,0 +1,227 @@
+@startuml NodeSecure-Domain-Model
+' Class diagram of the NodeSecure Frontend Web Application domain model.
+' Startup: SafeZone - Product: NodeSecure
+' Tool: PlantUML (Diagram-as-Code, allowed by the Final Project Statement)
+
+skinparam classAttributeIconSize 0
+hide empty members
+
+package "shared" {
+  interface BaseEntity {
+    + id : number | string
+  }
+}
+
+package "iam" {
+  enum UserRole {
+    ROLE_ADMINISTRATOR
+    ROLE_SECURITY_MANAGER
+    ROLE_WAREHOUSE_KEEPER
+    ROLE_AUDITOR
+  }
+
+  class User {
+    + id : number | string
+    + username : string
+    + email : string
+    + fullName : string
+    + companyId : number | string
+    + hasRole(role : UserRole) : boolean
+  }
+  User "1" o-- "1..*" UserRole : granted >
+  BaseEntity <|.. User
+}
+
+package "company-registration" {
+  class Company {
+    + id : number | string
+    + legalName : string
+    + taxId : string
+    + contactEmail : string
+    + country : string
+  }
+  BaseEntity <|.. Company
+}
+
+package "warehouse-management" {
+  class StreetAddress <<value object>> {
+    + street : string
+    + district : string
+    + city : string
+    + country : string
+  }
+
+  enum WarehouseStatus {
+    ACTIVE
+    SUSPENDED
+  }
+
+  enum ZoneRiskLevel {
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+  }
+
+  class Warehouse {
+    + id : number | string
+    + name : string
+    + zoneCount : number
+  }
+
+  class WarehouseZone {
+    + id : number | string
+    + name : string
+    + code : string
+    + openingShiftStart : string
+    + openingShiftEnd : string
+  }
+
+  BaseEntity <|.. Warehouse
+  BaseEntity <|.. WarehouseZone
+  Warehouse "1" *-- "0..*" WarehouseZone : contains >
+  Warehouse "1" o-- "1" StreetAddress : located at >
+  Warehouse "1" o-- "1" WarehouseStatus
+  WarehouseZone "1" o-- "1" ZoneRiskLevel
+}
+
+package "sensor-integration" {
+  class MacAddress <<value object>> {
+    + value : string
+    + isValid : boolean
+  }
+
+  enum ConnectionStatus {
+    ONLINE
+    OFFLINE
+  }
+
+  enum SensorType {
+    MAGNETIC_CONTACT
+    MOTION
+    VIBRATION
+  }
+
+  enum PhysicalEventType {
+    DOOR_OPENED
+    DOOR_CLOSED
+    NODE_DISCONNECTED
+  }
+
+  class SensorNode {
+    + id : number | string
+    + model : string
+    + lastPingAt : Date
+    + isOnline : boolean
+  }
+
+  class PhysicalEvent {
+    + id : number | string
+    + occurredAt : Date
+    + reconciled : boolean
+  }
+
+  BaseEntity <|.. SensorNode
+  BaseEntity <|.. PhysicalEvent
+  SensorNode "1" o-- "1" MacAddress
+  SensorNode "1" o-- "1" ConnectionStatus
+  SensorNode "1" o-- "1" SensorType
+  SensorNode "1" --> "0..*" PhysicalEvent : reports >
+  PhysicalEvent "1" o-- "1" PhysicalEventType
+}
+
+package "security-alerts" {
+  enum AlertType {
+    DISCREPANCY
+    UNAUTHORIZED_ACCESS
+    NODE_DISCONNECTION
+  }
+
+  enum AlertSeverity {
+    MINOR
+    MAJOR
+    CRITICAL
+  }
+
+  enum AlertStatus {
+    OPEN
+    RECONCILED
+    FALSE_ALARM
+  }
+
+  class SecurityAlert {
+    + id : number | string
+    + message : string
+    + raisedAt : Date
+    + justification : string
+    + isOpen : boolean
+  }
+
+  BaseEntity <|.. SecurityAlert
+  SecurityAlert "1" o-- "1" AlertType
+  SecurityAlert "1" o-- "1" AlertSeverity
+  SecurityAlert "1" o-- "1" AlertStatus
+}
+
+package "subscription-management" {
+  class Money <<value object>> {
+    + amount : number
+    + currency : string
+  }
+
+  enum SubscriptionStatus {
+    ACTIVE
+    PAST_DUE
+    CANCELLED
+  }
+
+  class SubscriptionPlan {
+    + id : number | string
+    + name : string
+    + code : string
+    + warehouseLimit : number
+    + sensorNodeLimit : number
+    + userLimit : number
+  }
+
+  class Subscription {
+    + id : number | string
+    + startedAt : Date
+    + renewsAt : Date
+  }
+
+  BaseEntity <|.. SubscriptionPlan
+  BaseEntity <|.. Subscription
+  SubscriptionPlan "1" o-- "1" Money
+  Subscription "0..*" --> "1" SubscriptionPlan : subscribed to >
+  Subscription "1" o-- "1" SubscriptionStatus
+}
+
+package "reporting" {
+  enum TraceabilityRecordType {
+    PHYSICAL_ACCESS
+    INVENTORY_MOVEMENT
+    DISCREPANCY
+    NODE_DISCONNECTION
+  }
+
+  class TraceabilityRecord {
+    + id : number | string
+    + actor : string
+    + description : string
+    + occurredAt : Date
+  }
+
+  BaseEntity <|.. TraceabilityRecord
+  TraceabilityRecord "1" o-- "1" TraceabilityRecordType
+}
+
+' Relationships across bounded contexts (anti-corruption layer in the API)
+Company "1" --> "0..*" Warehouse : owns >
+Company "1" --> "0..*" User : employs >
+Company "1" --> "0..1" Subscription : holds >
+WarehouseZone "1" --> "0..*" SensorNode : monitored by >
+PhysicalEvent "1" --> "0..1" SecurityAlert : raises >
+SecurityAlert "1" --> "1" TraceabilityRecord : logged as >
+
+@enduml

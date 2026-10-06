@@ -1,0 +1,161 @@
+{
+  "app": {
+    "title": "NodeSecure",
+    "startup": "SafeZone",
+    "tagline": "Smart inventory control powered by IoT traceability"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "warehouses": "My Warehouses",
+    "devices": "IoT Devices",
+    "traceability": "Traceability",
+    "alerts": "Alerts",
+    "team": "Team and Access",
+    "subscription": "Subscription",
+    "settings": "Settings",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "language": "Language"
+  },
+  "shared": {
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "create": "Create",
+      "search": "Search",
+      "export": "Export report",
+      "back": "Back"
+    },
+    "states": {
+      "loading": "Loading...",
+      "empty": "No records yet",
+      "error": "Something went wrong"
+    },
+    "footer": {
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy",
+      "rights": "All rights reserved",
+      "contact": "Contact",
+      "schedule": "Monday to Friday - 9:00 to 18:00",
+      "platform": "Platform",
+      "company": "Company",
+      "legal": "Legal",
+      "landing": "Landing Page",
+      "team": "Our Team"
+    }
+  },
+  "iam": {
+    "signIn": {
+      "title": "Sign in to NodeSecure",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign In",
+      "invalidCredentials": "Invalid credentials",
+      "noAccount": "Do not have an account yet?"
+    },
+    "signUp": {
+      "title": "Create your NodeSecure account",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign Up",
+      "haveAccount": "Already registered?",
+      "planNotice": "You are signing up for the plan",
+      "fullName": "Full name"
+    }
+  },
+  "warehouses": {
+    "list": {
+      "title": "My Warehouses",
+      "empty": "Register your first warehouse to start monitoring it",
+      "name": "Name",
+      "district": "District",
+      "zones": "Zones",
+      "status": "Status",
+      "badge": "Logistics infrastructure",
+      "subtitle": "Monitor every site, zone and IoT node from a single control panel."
+    },
+    "form": {
+      "createTitle": "Register warehouse",
+      "editTitle": "Edit warehouse",
+      "name": "Warehouse name",
+      "street": "Street address",
+      "district": "District",
+      "city": "City",
+      "country": "Country"
+    }
+  },
+  "devices": {
+    "list": {
+      "title": "IoT Devices",
+      "macAddress": "MAC Address",
+      "model": "Model",
+      "zone": "Zone",
+      "connection": "Connection",
+      "lastPing": "Last ping",
+      "online": "Online",
+      "offline": "Offline",
+      "badge": "IoT network",
+      "subtitle": "Check the connection status of every ESP32 node to avoid blind spots."
+    },
+    "form": {
+      "title": "Link IoT sensor node",
+      "macAddress": "MAC Address (ESP32)",
+      "zone": "Warehouse zone",
+      "sensorType": "Sensor type"
+    }
+  },
+  "alerts": {
+    "list": {
+      "title": "Security Alerts",
+      "severity": "Severity",
+      "type": "Type",
+      "status": "Status",
+      "raisedAt": "Raised at",
+      "message": "Message",
+      "badge": "Discrepancy engine",
+      "subtitle": "Physical openings without an associated inventory movement are raised here."
+    },
+    "actions": {
+      "reconcile": "Mark as False Alarm",
+      "justification": "Justification"
+    }
+  },
+  "traceability": {
+    "list": {
+      "title": "Traceability Log",
+      "occurredAt": "Timestamp",
+      "recordType": "Event type",
+      "actor": "Actor",
+      "description": "Description",
+      "filterType": "Filter by type",
+      "filterDiscrepancies": "Discrepancies only",
+      "badge": "Audit",
+      "subtitle": "Chronological record of physical and logical events with exact timestamps."
+    }
+  },
+  "subscriptions": {
+    "plans": {
+      "title": "Subscription Plans",
+      "monthlyPrice": "Monthly price",
+      "warehouseLimit": "Warehouses",
+      "sensorNodeLimit": "IoT sensors",
+      "userLimit": "Users",
+      "subscribe": "Subscribe",
+      "badge": "Plans and pricing",
+      "subtitle": "Scalable subscriptions that grow with your operation.",
+      "selected": "Plan selected from the Landing Page",
+      "popular": "Most popular",
+      "perMonth": "month"
+    },
+    "current": {
+      "title": "My Subscription",
+      "plan": "Current plan",
+      "status": "Status",
+      "renewsAt": "Renews at"
+    }
+  }
+}

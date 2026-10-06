@@ -1,0 +1,40 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-container">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a class="footer-logo" [href]="landingPageUrl" aria-label="NodeSecure Landing Page">
+          <img src="assets/logos/logo-principal.png" alt="NodeSecure" />
+        </a>
+        <p>{{ 'app.tagline' | translate }}</p>
+      </div>
+
+      <div class="footer-column">
+        <h3>{{ 'shared.footer.platform' | translate }}</h3>
+        <a routerLink="/warehouses">{{ 'nav.warehouses' | translate }}</a>
+        <a routerLink="/devices">{{ 'nav.devices' | translate }}</a>
+        <a routerLink="/alerts">{{ 'nav.alerts' | translate }}</a>
+        <a routerLink="/traceability">{{ 'nav.traceability' | translate }}</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>{{ 'shared.footer.company' | translate }}</h3>
+        <a [href]="landingPageUrl">{{ 'shared.footer.landing' | translate }}</a>
+        <a [href]="landingPageUrl + '#planes'">{{ 'nav.subscription' | translate }}</a>
+        <a [href]="landingPageUrl + '#our-team'">{{ 'shared.footer.team' | translate }}</a>
+        <a [href]="landingPageUrl + '#contact'">{{ 'shared.footer.contact' | translate }}</a>
+      </div>
+
+      <div class="footer-column footer-contact">
+        <h3>{{ 'shared.footer.legal' | translate }}</h3>
+        <a href="terms-and-conditions.html">{{ 'shared.footer.terms' | translate }}</a>
+        <a href="privacy-policy.html">{{ 'shared.footer.privacy' | translate }}</a>
+        <span>contacto&#64;nodesecure.com</span>
+        <span>Lima, Per&uacute;</span>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} SafeZone &middot; NodeSecure. {{ 'shared.footer.rights' | translate }}</p>
+    </div>
+  </div>
+</footer>
