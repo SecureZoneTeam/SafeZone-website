@@ -1,50 +1,214 @@
-<section class="ns-page">
-  <div class="ns-page__header">
-    <div>
-      <span class="ns-page__badge">{{ 'traceability.list.badge' | translate }}</span>
-      <h1 class="ns-page__title">{{ 'traceability.list.title' | translate }}</h1>
-      <p class="ns-page__subtitle">{{ 'traceability.list.subtitle' | translate }}</p>
+<section class="traceability-page">
+
+  <!-- HEADER -->
+  <header class="traceability-header">
+
+    <div class="traceability-header__title">
+      <span class="traceability-badge">
+        AUDIT & TRACEABILITY
+      </span>
+
+      <h1>Event History</h1>
+
+      <p>
+        Review every physical and system event recorded across your operation.
+      </p>
     </div>
 
-    <mat-slide-toggle
-      [checked]="reportingStore.discrepanciesOnly()"
-      (change)="reportingStore.toggleDiscrepanciesOnly($event.checked)">
-      {{ 'traceability.list.filterDiscrepancies' | translate }}
-    </mat-slide-toggle>
+  </header>
+
+
+  <!-- CONTENT -->
+  <div class="traceability-layout">
+
+    <!-- EVENT HISTORY -->
+    <section class="events-panel">
+
+      <div class="events-panel__header">
+
+        <div>
+          <h2>Event History</h2>
+          <p>Immutable traceability records</p>
+        </div>
+
+        <div class="event-controls">
+
+          <button class="filter-button">
+            <span>Type of event</span>
+            <span class="arrow">⌄</span>
+          </button>
+
+          <button class="filter-button">
+            <span>Últimos 7 días</span>
+            <span class="arrow">⌄</span>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      @if (reportingStore.loading()) {
+        <mat-progress-bar
+          mode="indeterminate"
+          aria-label="Loading traceability log">
+        </mat-progress-bar>
+      }
+
+
+      <div class="events-list">
+
+        @for (record of reportingStore.records(); track record.occurredAt) {
+
+          <article
+            class="event-item"
+            [class.event-item--alert]="
+              record.recordType.toLowerCase().includes('alert') ||
+              record.recordType.toLowerCase().includes('discrep')
+            "
+          >
+
+            <div class="event-item__indicator"></div>
+
+            <div class="event-item__content">
+
+              <div class="event-item__top">
+
+                <div class="event-item__title">
+
+                  <span class="event-type">
+                    {{ record.recordType }}
+                  </span>
+
+                  <h3>
+                    {{ record.description }}
+                  </h3>
+
+                  <p>
+                    {{ record.actor }}
+                  </p>
+
+                </div>
+
+                <div class="event-item__time">
+                  <strong>
+                    {{ record.occurredAt | date: 'HH:mm' }}
+                  </strong>
+
+                  <span>
+                    {{ record.occurredAt | date: 'MMM d' }}
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        }
+
+        @if (!reportingStore.loading() && reportingStore.records().length === 0) {
+
+          <div class="empty-state">
+
+            <div class="empty-state__icon">
+              ↺
+            </div>
+
+            <h3>No traceability records</h3>
+
+            <p>
+              There are no events available for the selected filters.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+    <aside class="filters-panel">
+
+      <div class="filters-panel__header">
+
+        <h2>Active Filters</h2>
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="reportingStore.toggleDiscrepanciesOnly(false)"
+        >
+          Clear all
+        </button>
+
+      </div>
+
+
+      <div class="filter-section">
+
+        <span class="filter-section__title">
+          TYPE OF EVENT
+        </span>
+
+
+        <label class="checkbox-row">
+
+          <input
+            type="checkbox"
+            [checked]="reportingStore.discrepanciesOnly()"
+            (change)="reportingStore.toggleDiscrepanciesOnly($any($event.target).checked)"
+          >
+
+          <span class="checkbox-custom"></span>
+
+          <span>Physical discrepancies</span>
+
+        </label>
+
+
+        <label class="checkbox-row">
+
+          <input
+            type="checkbox"
+          >
+
+          <span class="checkbox-custom"></span>
+
+          <span>System events</span>
+
+        </label>
+
+      </div>
+
+
+      <div class="filter-section">
+
+        <span class="filter-section__title">
+          DATE RANGE
+        </span>
+
+        <button class="date-select">
+          <span>Últimos 7 días</span>
+          <span>⌄</span>
+        </button>
+
+      </div>
+
+
+      <button
+        class="apply-button"
+        type="button"
+      >
+        Apply Filters
+      </button>
+
+    </aside>
+
   </div>
 
-  @if (reportingStore.loading()) {
-    <mat-progress-bar mode="indeterminate" aria-label="Loading traceability log" />
-  }
-
-  <div class="ns-panel">
-    <table mat-table [dataSource]="reportingStore.records()" class="ns-table">
-      <ng-container matColumnDef="occurredAt">
-        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.occurredAt' | translate }}</th>
-        <td mat-cell *matCellDef="let record">
-          <code>{{ record.occurredAt | date: 'medium' }}</code>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="recordType">
-        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.recordType' | translate }}</th>
-        <td mat-cell *matCellDef="let record">
-          <span class="ns-chip ns-chip--neutral">{{ record.recordType }}</span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actor">
-        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.actor' | translate }}</th>
-        <td mat-cell *matCellDef="let record">{{ record.actor }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>{{ 'traceability.list.description' | translate }}</th>
-        <td mat-cell *matCellDef="let record">{{ record.description }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
 </section>

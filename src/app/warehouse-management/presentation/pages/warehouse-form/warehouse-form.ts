@@ -8,11 +8,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse } from '../../../domain/model/warehouse.entity';
 import { StreetAddress } from '../../../domain/model/street-address';
+import {LanguageSwitcher} from "../../../../shared/presentation/components/language-switcher/language-switcher";
 
 
 @Component({
   selector: 'app-warehouse-form',
-  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe],
+  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe, LanguageSwitcher],
   templateUrl: './warehouse-form.html',
   styleUrl: './warehouse-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush

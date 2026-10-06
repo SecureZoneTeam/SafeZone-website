@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject
+} from '@angular/core';
+
 import { TranslateService } from '@ngx-translate/core';
+
 import {
   MatButtonToggle,
   MatButtonToggleGroup
@@ -18,14 +24,23 @@ import {
 })
 export class LanguageSwitcher {
 
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
 
-  currentLanguage = this.translate.currentLang || 'en';
+  protected currentLanguage = 'en';
 
-  languages = ['en', 'es'];
+  protected readonly languages = ['en', 'es'];
 
-  useLanguage(language: string) {
+  constructor() {
+    this.currentLanguage =
+      this.translate.currentLang || 'en';
+  }
+
+  protected useLanguage(language: string): void {
+
     this.translate.use(language);
+
     this.currentLanguage = language;
+
+    console.log('Idioma cambiado a:', language);
   }
 }

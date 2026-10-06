@@ -5,11 +5,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SensorIntegrationStore } from '../../../application/sensor-integration.store';
+import {RouterLink} from "@angular/router";
 
 /** IoT device list with connection status (user story US02). */
 @Component({
   selector: 'app-sensor-node-list',
-  imports: [DatePipe, MatTableModule, MatProgressBarModule, TranslatePipe],
+  imports: [DatePipe, MatTableModule, MatProgressBarModule, TranslatePipe, RouterLink],
   templateUrl: './sensor-node-list.html',
   styleUrl: './sensor-node-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush

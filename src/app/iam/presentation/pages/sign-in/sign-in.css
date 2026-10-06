@@ -1,30 +1,387 @@
-.auth {
+:host {
   display: flex;
+
+  width: 100%;
+  min-height: 100vh;
+
+  align-items: center;
   justify-content: center;
+
+  background: #0b1426;
+
+  box-sizing: border-box;
 }
 
-.auth__panel {
-  width: min(460px, 100%);
-  padding: 36px;
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.auth-page {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  width: min(1100px, 88vw);
+  min-height: 620px;
+
+  overflow: hidden;
+
+  background: #101a2e;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.35);
 }
 
-.auth__field {
-  width: 100%;
+
+/* =========================================================
+   PANEL IZQUIERDO
+   ========================================================= */
+
+.auth-page__brand {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 70px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #101a2e 0%,
+      #0d1729 100%
+    );
 }
 
-.auth__submit {
-  width: 100%;
-  margin-top: var(--ns-space-sm);
-}
 
-.auth__hint {
-  margin: var(--ns-space-lg) 0 0;
-  color: var(--ns-slate-500);
-  font-size: 14px;
+.auth-page__brand-content {
+  width: min(420px, 100%);
+
   text-align: center;
 }
 
-.auth__hint a {
+
+.auth-page__brand h1 {
+  margin: 0 0 14px;
+
+  color: #3b82f6;
+
+  font-size: clamp(32px, 3vw, 48px);
+
+  font-weight: 750;
+
+  letter-spacing: -1px;
+}
+
+
+.auth-page__brand p {
+  margin: 0 0 10px;
+
+  color: #f8fafc;
+
+  font-size: 17px;
+
   font-weight: 600;
+}
+
+
+.auth-page__brand span {
+  display: block;
+
+  max-width: 390px;
+
+  margin: 0 auto;
+
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   PANEL DERECHO
+   ========================================================= */
+
+.auth-page__form {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 70px;
+
+  background: #202d43;
+}
+
+
+.auth-page__form-content {
+  width: min(390px, 100%);
+}
+
+
+/* =========================================================
+   TITULOS
+   ========================================================= */
+
+.auth-page__eyebrow {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #3b82f6;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+
+.auth-page__form h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(27px, 2.2vw, 36px);
+
+  font-weight: 700;
+
+  line-height: 1.15;
+}
+
+
+.auth-page__subtitle {
+  margin: 12px 0 32px;
+
+  color: rgba(255, 255, 255, 0.48);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.auth-page__field {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.auth-page__error {
+  margin: 8px 0;
+
+  color: #f87171;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.auth-page__submit {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 16px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #3b82f6;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.auth-page__submit:hover:not(:disabled) {
+  background: #2563eb;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.25);
+}
+
+
+.auth-page__submit:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+.auth-page__submit span {
+  margin-left: 8px;
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   LINK INFERIOR
+   ========================================================= */
+
+.auth-page__hint {
+  margin: 24px 0 0;
+
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+
+.auth-page__hint a {
+  color: #3b82f6;
+
+  font-weight: 600;
+
   text-decoration: none;
 }
+
+
+.auth-page__hint a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   MATERIAL
+   ========================================================= */
+
+.auth-page__field .mat-mdc-text-field-wrapper {
+  background: #17243a !important;
+}
+
+
+.auth-page__field input {
+  color: #ffffff !important;
+
+  font-size: 14px !important;
+}
+
+
+.auth-page__field mat-label {
+  color: rgba(255, 255, 255, 0.5) !important;
+
+  font-size: 14px !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .auth-page {
+    width: 92vw;
+
+    min-height: 580px;
+  }
+
+  .auth-page__brand {
+    padding: 45px;
+  }
+
+  .auth-page__form {
+    padding: 45px;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  :host {
+    padding: 25px 0;
+  }
+
+  .auth-page {
+    grid-template-columns: 1fr;
+
+    width: 92vw;
+
+    min-height: auto;
+  }
+
+  .auth-page__brand {
+    min-height: 280px;
+  }
+
+  .auth-page__form {
+    min-height: 480px;
+  }
+}
+.auth-language {
+  position: fixed;
+
+  top: 20px;
+  right: 32px;
+
+  z-index: 1000;
+}
+
+.auth-language ::ng-deep .mat-button-toggle-group {
+  height: 42px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(12px);
+}
+
+.auth-language ::ng-deep .mat-button-toggle {
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 12px;
+}
+
+.auth-language ::ng-deep .mat-button-toggle-checked {
+  color: #ffffff;
+
+  background: #3b82f6;
+}
+

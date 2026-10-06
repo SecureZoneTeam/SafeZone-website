@@ -1,12 +1,729 @@
-code {
-  padding: 3px 8px;
-  border-radius: 7px;
-  background: var(--ns-slate-100);
-  font-size: 12px;
-  white-space: nowrap;
+/* =========================================================
+   TRACEABILITY PAGE
+   ========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
 }
 
+.traceability-page {
+  width: 100%;
+  min-height: calc(100vh - 40px);
+
+  box-sizing: border-box;
+
+  padding: 48px 55px 70px;
+
+  background: #0b1528;
+
+  color: #f8fafc;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.traceability-header {
+  width: min(1250px, 100%);
+
+  margin: 0 auto 38px;
+}
+
+.traceability-header__title {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.traceability-badge {
+  width: fit-content;
+
+  padding: 8px 15px;
+
+  border: 1px solid #2563eb;
+
+  border-radius: 999px;
+
+  color: #3b82f6;
+
+  background: rgba(37, 99, 235, 0.08);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.traceability-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(38px, 4vw, 52px);
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+}
+
+.traceability-header p {
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.58);
+
+  font-size: 16px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.traceability-layout {
+  width: min(1250px, 100%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: minmax(0, 1fr) 330px;
+
+  gap: 28px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   EVENTS PANEL
+   ========================================================= */
+
+.events-panel {
+  min-width: 0;
+
+  padding: 28px;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+
+  border-radius: 12px;
+
+  background: #101d32;
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.20);
+}
+
+.events-panel__header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-bottom: 24px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.events-panel__header h2 {
+  margin: 0 0 7px;
+
+  color: #f8fafc;
+
+  font-size: 21px;
+
+  font-weight: 750;
+}
+
+.events-panel__header p {
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.48);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FILTER CONTROLS
+   ========================================================= */
+
+.event-controls {
+  display: flex;
+
+  gap: 10px;
+}
+
+.filter-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 18px;
+
+  min-width: 135px;
+
+  padding: 10px 13px;
+
+  border: 1px solid rgba(148, 163, 184, 0.20);
+
+  border-radius: 6px;
+
+  background: #1b2a40;
+
+  color: rgba(226, 232, 240, 0.70);
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  border-color: rgba(59, 130, 246, 0.55);
+
+  color: #ffffff;
+}
+
+.filter-button .arrow {
+  color: rgba(226, 232, 240, 0.55);
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
 mat-progress-bar {
-  margin-bottom: var(--ns-space-md);
-  border-radius: var(--ns-radius-pill);
+  display: block;
+
+  margin: 20px 0;
+
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   EVENTS LIST
+   ========================================================= */
+
+.events-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   EVENT ITEM
+   ========================================================= */
+
+.event-item {
+  position: relative;
+
+  display: flex;
+
+  min-height: 95px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(148, 163, 184, 0.12);
+
+  border-radius: 7px;
+
+  background: #1a293e;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.event-item:hover {
+  transform: translateX(3px);
+
+  border-color: rgba(59, 130, 246, 0.35);
+
+  background: #1d2d44;
+}
+
+
+/* =========================================================
+   EVENT INDICATOR
+   ========================================================= */
+
+.event-item__indicator {
+  width: 4px;
+
+  flex-shrink: 0;
+
+  background: #3b82f6;
+}
+
+.event-item--alert .event-item__indicator {
+  background: #ef4444;
+}
+
+
+/* =========================================================
+   EVENT CONTENT
+   ========================================================= */
+
+.event-item__content {
+  width: 100%;
+
+  padding: 18px 20px;
+}
+
+.event-item__top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+.event-item__title {
+  min-width: 0;
+}
+
+.event-type {
+  display: inline-flex;
+
+  margin-bottom: 7px;
+
+  padding: 4px 9px;
+
+  border-radius: 5px;
+
+  background: rgba(59, 130, 246, 0.14);
+
+  color: #60a5fa;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+.event-item--alert .event-type {
+  background: rgba(239, 68, 68, 0.14);
+
+  color: #f87171;
+}
+
+.event-item h3 {
+  margin: 0 0 6px;
+
+  color: #f8fafc;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.event-item p {
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.45);
+
+  font-size: 12px;
+}
+
+.event-item__time {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  flex-shrink: 0;
+}
+
+.event-item__time strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+.event-item__time span {
+  margin-top: 5px;
+
+  color: rgba(226, 232, 240, 0.42);
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   FILTER PANEL
+   ========================================================= */
+
+.filters-panel {
+  padding: 25px;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+
+  border-radius: 10px;
+
+  background: #18263b;
+
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.18);
+}
+
+.filters-panel__header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+}
+
+.filters-panel__header h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 17px;
+
+  font-weight: 750;
+}
+
+.clear-button {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #3b82f6;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.clear-button:hover {
+  color: #60a5fa;
+}
+
+
+/* =========================================================
+   FILTER SECTION
+   ========================================================= */
+
+.filter-section {
+  padding: 22px 0;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.11);
+}
+
+.filter-section__title {
+  display: block;
+
+  margin-bottom: 17px;
+
+  color: rgba(226, 232, 240, 0.43);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.checkbox-row {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+
+  color: rgba(226, 232, 240, 0.65);
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.checkbox-row:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-row input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  width: 15px;
+
+  height: 15px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+
+  border-radius: 3px;
+
+  background: #101b2e;
+}
+
+.checkbox-row input:checked + .checkbox-custom {
+  border-color: #3b82f6;
+
+  background: #3b82f6;
+
+  box-shadow:
+    inset 0 0 0 3px #101b2e;
+}
+
+
+/* =========================================================
+   DATE SELECT
+   ========================================================= */
+
+.date-select {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 12px 13px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  border-radius: 5px;
+
+  background: #101b2e;
+
+  color: rgba(226, 232, 240, 0.65);
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.date-select:hover {
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+
+/* =========================================================
+   APPLY BUTTON
+   ========================================================= */
+
+.apply-button {
+  width: 100%;
+
+  min-height: 46px;
+
+  margin-top: 22px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background: #3b82f6;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.apply-button:hover {
+  background: #2563eb;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 300px;
+
+  padding: 40px;
+
+  text-align: center;
+}
+
+.empty-state__icon {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 52px;
+
+  height: 52px;
+
+  margin-bottom: 18px;
+
+  border: 1px solid rgba(59, 130, 246, 0.25);
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.08);
+
+  color: #3b82f6;
+
+  font-size: 25px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+
+  color: #f8fafc;
+
+  font-size: 17px;
+}
+
+.empty-state p {
+  max-width: 360px;
+
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.45);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .traceability-page {
+    padding: 40px 35px 60px;
+  }
+
+  .traceability-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-panel {
+    width: 100%;
+
+    box-sizing: border-box;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .traceability-page {
+    padding: 30px 20px 50px;
+  }
+
+  .traceability-header h1 {
+    font-size: 36px;
+  }
+
+  .events-panel {
+    padding: 20px;
+  }
+
+  .events-panel__header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .event-controls {
+    width: 100%;
+  }
+
+  .filter-button {
+    flex: 1;
+  }
+
+  .event-item__top {
+    flex-direction: column;
+  }
+
+  .event-item__time {
+    align-items: flex-start;
+  }
+
 }

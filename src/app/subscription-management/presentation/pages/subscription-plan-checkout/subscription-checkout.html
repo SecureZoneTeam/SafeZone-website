@@ -1,0 +1,239 @@
+<section class="checkout-page">
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <div class="checkout-header">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span aria-hidden="true">←</span>
+      <span>Seleccionar Plan</span>
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       CONTENT
+       ===================================================== -->
+
+  <main class="checkout-content">
+
+    <div class="checkout-title">
+
+      <span class="checkout-badge">
+        SUBSCRIPTION & BILLING
+      </span>
+
+      <h1>
+        Resumen de Pago
+      </h1>
+
+      <p>
+        Revisa los detalles de tu nuevo plan antes de confirmar.
+      </p>
+
+    </div>
+
+
+    <!-- ===================================================
+         PAYMENT GRID
+         =================================================== -->
+
+    @if (selectedPlan; as plan) {
+
+      <div class="checkout-grid">
+
+
+        <!-- ===============================================
+             PLAN DETAILS
+             =============================================== -->
+
+        <section class="checkout-card">
+
+          <div class="checkout-card__header">
+
+            <h2>
+              Detalles de tu nuevo plan
+            </h2>
+
+          </div>
+
+
+          <div class="plan-summary">
+
+            <div class="plan-summary__top">
+
+              <div>
+
+                <span class="plan-summary__label">
+                  Plan
+                </span>
+
+                <h3>
+                  {{ plan.name }}
+                </h3>
+
+              </div>
+
+              <div class="plan-summary__price">
+
+                <span class="plan-summary__currency">
+                  USD
+                </span>
+
+                <strong>
+                  {{ plan.monthlyPrice }}
+                </strong>
+
+                <span>
+                  /mes
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="plan-summary__divider"></div>
+
+
+            <ul class="plan-summary__features">
+
+              <li>
+                <span>✓</span>
+                Warehouses: {{ plan.warehouseLimit }}
+              </li>
+
+              <li>
+                <span>✓</span>
+                IoT sensors: {{ plan.sensorNodeLimit }}
+              </li>
+
+              <li>
+                <span>✓</span>
+                Users: {{ plan.userLimit }}
+              </li>
+
+            </ul>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             PAYMENT METHOD
+             =============================================== -->
+
+        <section class="checkout-card">
+
+          <div class="checkout-card__header">
+
+            <h2>
+              Método de pago
+            </h2>
+
+          </div>
+
+
+          <div class="payment-method">
+
+            <div class="payment-method__icon">
+              VISA
+            </div>
+
+            <div class="payment-method__details">
+
+              <strong>
+                Visa
+              </strong>
+
+              <span>
+                •••• •••• •••• 1111
+              </span>
+
+            </div>
+
+            <span class="payment-method__radio">
+              ●
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="change-payment"
+          >
+            Cambiar método de pago
+          </button>
+
+        </section>
+
+
+      </div>
+
+
+      <!-- =================================================
+           TOTAL
+           ================================================= -->
+
+      <section class="checkout-total">
+
+        <div>
+
+          <span>
+            Total a pagar hoy
+          </span>
+
+          <strong>
+            USD {{ plan.monthlyPrice }}
+          </strong>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="confirm-button"
+          (click)="confirmPayment()"
+        >
+          Confirmar y Pagar
+          <span aria-hidden="true">→</span>
+        </button>
+
+      </section>
+
+    } @else {
+
+      <div class="checkout-empty">
+
+        <h2>
+          No plan selected
+        </h2>
+
+        <p>
+          Selecciona un plan para continuar.
+        </p>
+
+        <button
+          type="button"
+          class="confirm-button"
+          (click)="goBack()"
+        >
+          Volver a planes
+        </button>
+
+      </div>
+
+    }
+
+  </main>
+
+</section>

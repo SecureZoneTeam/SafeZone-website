@@ -1,48 +1,181 @@
-<section class="ns-page auth">
-  <div class="ns-panel auth__panel">
-    <span class="ns-page__badge">{{ 'nav.signUp' | translate }}</span>
-    <h1 class="ns-page__title">{{ 'iam.signUp.title' | translate }}</h1>
+<div class="auth-language">
+  <app-language-switcher></app-language-switcher>
+</div>
+<section class="auth-page">
 
-    @if (selectedPlanCode(); as planCode) {
-      <p class="auth__plan">
-        {{ 'iam.signUp.planNotice' | translate }} <strong>{{ planCode }}</strong>
+  <!-- PANEL IZQUIERDO -->
+  <div class="auth-page__brand">
+
+    <div class="auth-page__brand-content">
+
+      <h1>NODESECURE</h1>
+
+      <p>Auditoría logística inteligente</p>
+
+      <span>
+        Controla tu inventario, detecta eventos
+        y asegura la trazabilidad en tiempo real.
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- PANEL DERECHO -->
+  <div class="auth-page__form">
+
+    <div class="auth-page__form-content">
+
+      <span class="auth-page__eyebrow">
+        {{ 'nav.signUp' | translate }}
+      </span>
+
+      <h2>
+        {{ 'iam.signUp.title' | translate }}
+      </h2>
+
+      <p class="auth-page__subtitle">
+        Protege tus almacenes y comienza a utilizar NodeSecure.
       </p>
-    }
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signUp.fullName' | translate }}</mat-label>
-        <input matInput formControlName="fullName" autocomplete="name" required />
-      </mat-form-field>
 
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signUp.username' | translate }}</mat-label>
-        <input matInput formControlName="username" autocomplete="username" required />
-      </mat-form-field>
+      @if (selectedPlanCode(); as planCode) {
 
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signUp.email' | translate }}</mat-label>
-        <input matInput type="email" formControlName="email" autocomplete="email" required />
-      </mat-form-field>
+        <div class="auth-page__plan">
 
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signUp.password' | translate }}</mat-label>
-        <input matInput type="password" formControlName="password" autocomplete="new-password" required />
-      </mat-form-field>
+          {{ 'iam.signUp.planNotice' | translate }}
 
-      @if (iamStore.error(); as errorKey) {
-        <p class="ns-error" role="alert">{{ errorKey | translate }}</p>
+          <strong>
+            {{ planCode }}
+          </strong>
+
+        </div>
+
       }
 
-      <button class="ns-button ns-button--primary auth__submit" type="submit" [disabled]="iamStore.loading()">
-        {{ 'iam.signUp.submit' | translate }}
-        <span aria-hidden="true">&rarr;</span>
-      </button>
-    </form>
 
-    <p class="auth__hint">
-      {{ 'iam.signUp.haveAccount' | translate }}
-      <a routerLink="/sign-in">{{ 'nav.signIn' | translate }}</a>
-    </p>
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+      >
+
+        <!-- NOMBRE COMPLETO -->
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signUp.fullName' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            formControlName="fullName"
+            autocomplete="name"
+            required
+          />
+        </mat-form-field>
+
+
+        <!-- USUARIO -->
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signUp.username' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            formControlName="username"
+            autocomplete="username"
+            required
+          />
+        </mat-form-field>
+
+
+        <!-- CORREO -->
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signUp.email' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            required
+          />
+        </mat-form-field>
+
+
+        <!-- CONTRASEÑA -->
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signUp.password' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+            required
+          />
+        </mat-form-field>
+
+
+        @if (iamStore.error(); as errorKey) {
+
+          <p
+            class="auth-page__error"
+            role="alert"
+          >
+            {{ errorKey | translate }}
+          </p>
+
+        }
+
+
+        <!-- BOTÓN -->
+        <button
+          class="auth-page__submit"
+          type="submit"
+          [disabled]="iamStore.loading()"
+        >
+
+          {{ 'iam.signUp.submit' | translate }}
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <p class="auth-page__hint">
+
+        {{ 'iam.signUp.haveAccount' | translate }}
+
+        <a routerLink="/sign-in">
+          {{ 'nav.signIn' | translate }}
+        </a>
+
+      </p>
+
+    </div>
+
   </div>
+
 </section>

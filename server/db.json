@@ -159,10 +159,10 @@
       "physicalEventId": 2,
       "alertType": "UNAUTHORIZED_ACCESS",
       "severity": "CRITICAL",
-      "status": "OPEN",
+      "status": "FALSE_ALARM",
       "message": "Unauthorized access detected outside scheduled operating hours.",
-      "raisedAt": "2026-10-04T02:47:31Z",
-      "justification": null
+      "raisedAt": "2026-10-04T02:47:31.000Z",
+      "justification": "Movimiento de stock autorizado verbalmente por el supervisor."
     },
     {
       "id": 2,
@@ -171,10 +171,10 @@
       "physicalEventId": 3,
       "alertType": "NODE_DISCONNECTION",
       "severity": "MAJOR",
-      "status": "OPEN",
+      "status": "FALSE_ALARM",
       "message": "IoT sensor node disconnected unexpectedly.",
-      "raisedAt": "2026-10-04T11:06:10Z",
-      "justification": null
+      "raisedAt": "2026-10-04T11:06:10.000Z",
+      "justification": "Movimiento de stock autorizado verbalmente por el supervisor."
     },
     {
       "id": 3,

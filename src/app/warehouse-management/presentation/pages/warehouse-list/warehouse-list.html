@@ -1,76 +1,289 @@
-<section class="ns-page">
-  <div class="ns-page__header">
-    <div>
-      <span class="ns-page__badge">{{ 'warehouses.list.badge' | translate }}</span>
-      <h1 class="ns-page__title">{{ 'warehouses.list.title' | translate }}</h1>
-      <p class="ns-page__subtitle">{{ 'warehouses.list.subtitle' | translate }}</p>
+<section class="warehouse-page">
+
+  <!-- HEADER -->
+  <header class="warehouse-header">
+
+    <div class="warehouse-header__content">
+
+      <span class="warehouse-badge">
+        {{ 'warehouses.list.badge' | translate }}
+      </span>
+
+      <h1>
+        {{ 'warehouses.list.title' | translate }}
+      </h1>
+
+      <p>
+        {{ 'warehouses.list.subtitle' | translate }}
+      </p>
+
     </div>
-    <a class="ns-button ns-button--primary" routerLink="/warehouses/new">
+
+
+    <a
+      class="warehouse-create-button"
+      routerLink="/warehouses/new"
+    >
+
+      <span>
+        +
+      </span>
+
       {{ 'warehouses.form.createTitle' | translate }}
-      <span aria-hidden="true">&rarr;</span>
+
+      <strong>
+        →
+      </strong>
+
     </a>
-  </div>
 
+  </header>
+
+
+  <!-- LOADING -->
   @if (warehouseStore.loading()) {
-    <mat-progress-bar mode="indeterminate" aria-label="Loading warehouses" />
+
+    <mat-progress-bar
+      mode="indeterminate"
+      class="warehouse-loading"
+    />
+
   }
 
+
+  <!-- ERROR -->
   @if (warehouseStore.error(); as errorMessage) {
-    <p class="ns-error" role="alert">{{ errorMessage }}</p>
-  }
 
-  @if (warehouseStore.isEmpty()) {
-    <p class="ns-empty">{{ 'warehouses.list.empty' | translate }}</p>
-  } @else {
-    <div class="ns-panel">
-      <table mat-table [dataSource]="warehouseStore.warehouses()" class="ns-table">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>{{ 'warehouses.list.name' | translate }}</th>
-          <td mat-cell *matCellDef="let warehouse">
-            <strong>{{ warehouse.name }}</strong>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="district">
-          <th mat-header-cell *matHeaderCellDef>{{ 'warehouses.list.district' | translate }}</th>
-          <td mat-cell *matCellDef="let warehouse">{{ warehouse.address.district }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="zones">
-          <th mat-header-cell *matHeaderCellDef>{{ 'warehouses.list.zones' | translate }}</th>
-          <td mat-cell *matCellDef="let warehouse">
-            <span class="ns-chip ns-chip--info">{{ warehouse.zoneCount }}</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>{{ 'warehouses.list.status' | translate }}</th>
-          <td mat-cell *matCellDef="let warehouse">
-            <span class="ns-chip ns-chip--online">
-              <span class="ns-chip__dot" aria-hidden="true"></span>
-              {{ warehouse.status }}
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>
-            <span class="ns-visually-hidden">Actions</span>
-          </th>
-          <td mat-cell *matCellDef="let warehouse">
-            <button
-              mat-icon-button
-              type="button"
-              [attr.aria-label]="'shared.actions.delete' | translate"
-              (click)="warehouseStore.deleteWarehouse(warehouse.id)">
-              <mat-icon aria-hidden="true">delete_outline</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+    <div class="warehouse-error">
+      {{ errorMessage }}
     </div>
+
   }
+
+
+  <!-- EMPTY -->
+  @if (warehouseStore.isEmpty()) {
+
+    <div class="warehouse-empty">
+
+      <div class="warehouse-empty__icon">
+        🏭
+      </div>
+
+      <h2>
+        {{ 'warehouses.list.empty' | translate }}
+      </h2>
+
+      <a
+        class="warehouse-create-button"
+        routerLink="/warehouses/new"
+      >
+        Register warehouse →
+      </a>
+
+    </div>
+
+  } @else {
+
+
+    <!-- TABLE -->
+    <div class="warehouse-table-wrapper">
+
+      <table
+        mat-table
+        [dataSource]="warehouseStore.warehouses()"
+        class="warehouse-table"
+      >
+
+
+        <!-- NAME -->
+        <ng-container matColumnDef="name">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            {{ 'warehouses.list.name' | translate }}
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let warehouse"
+          >
+
+            <div class="warehouse-name">
+
+              <div class="warehouse-icon">
+                <mat-icon>
+                  warehouse
+                </mat-icon>
+              </div>
+
+              <div>
+
+                <strong>
+                  {{ warehouse.name }}
+                </strong>
+
+                <span>
+                  {{ warehouse.address.street }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- DISTRICT -->
+        <ng-container matColumnDef="district">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            {{ 'warehouses.list.district' | translate }}
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let warehouse"
+          >
+
+            {{ warehouse.address.district }}
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- ZONES -->
+        <ng-container matColumnDef="zones">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            {{ 'warehouses.list.zones' | translate }}
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let warehouse"
+          >
+
+            <span class="zones-chip">
+
+              {{ warehouse.zoneCount }}
+
+            </span>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- STATUS -->
+        <ng-container matColumnDef="status">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            {{ 'warehouses.list.status' | translate }}
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let warehouse"
+          >
+
+            <span
+              class="status-chip"
+              [class.status-chip--active]="warehouse.status === 'ACTIVE'"
+            >
+
+              <span class="status-dot"></span>
+
+              {{ warehouse.status }}
+
+            </span>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- ACTIONS -->
+        <ng-container matColumnDef="actions">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            Actions
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let warehouse"
+          >
+
+            <div class="warehouse-actions">
+
+              <button
+                type="button"
+                class="action-button"
+                title="View warehouse"
+              >
+
+                <mat-icon>
+                  visibility
+                </mat-icon>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="action-button action-button--danger"
+                title="Delete warehouse"
+                (click)="warehouseStore.deleteWarehouse(warehouse.id)"
+              >
+
+                <mat-icon>
+                  delete_outline
+                </mat-icon>
+
+              </button>
+
+            </div>
+
+          </td>
+
+        </ng-container>
+
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+        ></tr>
+
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: displayedColumns
+          "
+        ></tr>
+
+      </table>
+
+    </div>
+
+  }
+
 </section>

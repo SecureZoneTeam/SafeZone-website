@@ -1,0 +1,868 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+.team-page {
+  min-height: calc(100vh - 40px);
+  padding: 55px 70px 80px;
+  box-sizing: border-box;
+
+  background: #0b1528;
+  color: #f8fafc;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.team-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  margin-bottom: 55px;
+}
+
+
+.team-eyebrow {
+  display: inline-block;
+
+  padding: 8px 16px;
+
+  border: 1px solid #2563eb;
+  border-radius: 999px;
+
+  color: #3b82f6;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.team-header h1 {
+  margin: 18px 0 10px;
+
+  font-size: 46px;
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+}
+
+
+.team-header p {
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.55);
+
+  font-size: 16px;
+}
+
+
+.invite-button {
+  height: 52px;
+
+  padding: 0 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: #3b82f6;
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.invite-button:hover {
+  background: #2563eb;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(59, 130, 246, 0.25);
+}
+
+
+.invite-button .material-symbols-outlined {
+  font-size: 21px;
+}
+
+
+/* =====================================================
+   USER SECTIONS
+===================================================== */
+
+.user-section {
+  margin-bottom: 42px;
+}
+
+
+.section-title {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+
+.section-title h2 {
+  margin: 0;
+
+  color: #dbe5f2;
+
+  font-size: 16px;
+  font-weight: 750;
+}
+
+
+.section-title span {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 25px;
+  height: 25px;
+
+  padding: 0 7px;
+
+  box-sizing: border-box;
+
+  border-radius: 50%;
+
+  background: #172941;
+
+  color: #3b82f6;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   USER GRID
+===================================================== */
+
+.user-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(360px, 1fr));
+
+  gap: 18px;
+}
+
+
+.user-card {
+  position: relative;
+
+  min-height: 100px;
+
+  padding: 20px 22px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  border: 1px solid rgba(148, 163, 184, 0.13);
+
+  border-radius: 8px;
+
+  background: #1a293e;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.user-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+.avatar {
+  flex: 0 0 auto;
+
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+.avatar--blue {
+  background: #0d2b55;
+
+  color: #3b82f6;
+
+  border: 1px solid #2563eb;
+}
+
+
+.avatar--orange {
+  background: #38290d;
+
+  color: #f59e0b;
+
+  border: 1px solid rgba(245, 158, 11, 0.5);
+}
+
+
+/* =====================================================
+   USER INFORMATION
+===================================================== */
+
+.user-information {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.user-information h3 {
+  margin: 0 0 8px;
+
+  color: #e7edf5;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+
+.user-meta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: rgba(226, 232, 240, 0.4);
+
+  font-size: 11px;
+}
+
+
+.role-badge {
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.3px;
+}
+
+
+.role-badge--blue {
+  background: rgba(37, 99, 235, 0.18);
+
+  color: #3b82f6;
+}
+
+
+.role-badge--orange {
+  background: rgba(245, 158, 11, 0.15);
+
+  color: #f59e0b;
+}
+
+
+/* =====================================================
+   MORE BUTTON
+===================================================== */
+
+.more-button {
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: rgba(226, 232, 240, 0.45);
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.more-button:hover {
+  background: rgba(148, 163, 184, 0.1);
+
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   MODAL OVERLAY
+===================================================== */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background: rgba(0, 0, 0, 0.70);
+
+  backdrop-filter: blur(5px);
+}
+
+
+/* =====================================================
+   INVITE MODAL
+===================================================== */
+
+.modal-card {
+  position: relative;
+
+  width: min(470px, 100%);
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+
+  border-radius: 9px;
+
+  background: #1a293e;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+
+.modal-card h2,
+.delete-modal h2,
+.permissions-modal h2 {
+  margin: 0 0 25px;
+
+  color: #f8fafc;
+
+  font-size: 20px;
+  font-weight: 750;
+}
+
+
+.modal-close {
+  position: absolute;
+
+  top: 15px;
+  right: 17px;
+
+  width: 30px;
+  height: 30px;
+
+  border: none;
+
+  background: transparent;
+
+  color: rgba(226, 232, 240, 0.4);
+
+  font-size: 21px;
+
+  cursor: pointer;
+}
+
+
+.modal-close:hover {
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   MODAL FIELDS
+===================================================== */
+
+.modal-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-bottom: 20px;
+}
+
+
+.modal-field label,
+.modal-label {
+  color: rgba(226, 232, 240, 0.65);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+.modal-field input,
+.modal-field select {
+  width: 100%;
+
+  height: 46px;
+
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #0d192d;
+
+  color: #f8fafc;
+
+  font-family: inherit;
+
+  font-size: 12px;
+}
+
+
+.modal-field input:focus,
+.modal-field select:focus {
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.10);
+}
+
+
+.modal-section {
+  margin: 25px 0;
+}
+
+
+.modal-section p {
+  margin: 6px 0 0;
+
+  color: rgba(226, 232, 240, 0.4);
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   PRIMARY MODAL BUTTON
+===================================================== */
+
+.modal-primary-button {
+  width: 100%;
+
+  height: 46px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background: #3b82f6;
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+
+.modal-primary-button:hover {
+  background: #2563eb;
+}
+
+
+/* =====================================================
+   DELETE MODAL
+===================================================== */
+
+.delete-modal {
+  width: min(430px, 100%);
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(239, 68, 68, 0.55);
+
+  border-radius: 9px;
+
+  background: #1a293e;
+
+  text-align: center;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+
+.delete-icon {
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #7f1d1d;
+
+  color: #f87171;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+
+.delete-modal p {
+  margin: 0 0 28px;
+
+  color: rgba(226, 232, 240, 0.5);
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+.delete-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+}
+
+
+.cancel-button,
+.delete-button {
+  height: 42px;
+
+  padding: 0 20px;
+
+  border-radius: 5px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.cancel-button {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+
+  background: transparent;
+
+  color: rgba(226, 232, 240, 0.7);
+}
+
+
+.delete-button {
+  border: none;
+
+  background: #ef4444;
+
+  color: white;
+}
+
+
+.delete-button:hover {
+  background: #dc2626;
+}
+
+
+/* =====================================================
+   PERMISSIONS
+===================================================== */
+
+.permissions-modal {
+  position: relative;
+
+  width: min(700px, 100%);
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+
+  border-radius: 9px;
+
+  background: #1a293e;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+
+.permissions-header {
+  position: relative;
+
+  padding-bottom: 25px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.permissions-header h2 {
+  margin-bottom: 0;
+}
+
+
+.modal-eyebrow {
+  color: #3b82f6;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.permission-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin: 25px 0;
+
+  padding: 18px;
+
+  border-radius: 7px;
+
+  background: #0d192d;
+}
+
+
+.permission-user div:last-child {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.permission-user strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+
+.permission-user span {
+  color: rgba(226, 232, 240, 0.4);
+
+  font-size: 10px;
+}
+
+
+.permissions-content h3 {
+  margin: 0 0 5px;
+
+  color: #e7edf5;
+
+  font-size: 14px;
+}
+
+
+.permissions-content p {
+  margin: 0 0 18px;
+
+  color: rgba(226, 232, 240, 0.4);
+
+  font-size: 11px;
+}
+
+
+.permission-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-bottom: 25px;
+}
+
+
+.permission-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 48px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 6px;
+
+  background: #0d192d;
+
+  color: rgba(226, 232, 240, 0.7);
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+
+.permission-item input {
+  position: absolute;
+
+  opacity: 0;
+}
+
+
+.custom-checkbox {
+  width: 17px;
+  height: 17px;
+
+  flex: 0 0 auto;
+
+  border: 1px solid rgba(148, 163, 184, 0.45);
+
+  border-radius: 3px;
+}
+
+
+.permission-item:has(input:checked) .custom-checkbox {
+  background: #3b82f6;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    inset 0 0 0 3px #0d192d;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .team-page {
+    padding: 40px 35px 60px;
+  }
+
+  .team-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .invite-button {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .team-page {
+    padding: 30px 20px 50px;
+  }
+
+  .team-header h1 {
+    font-size: 36px;
+  }
+
+  .user-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-card,
+  .delete-modal,
+  .permissions-modal {
+    padding: 25px;
+  }
+
+}

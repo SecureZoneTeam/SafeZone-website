@@ -1,15 +1,38 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { Header } from '../header/header';
-import { Footer } from '../footer/footer';
+import { LanguageSwitcher } from '../language-switcher/language-switcher';
 
-/** Application shell: persistent header, routed content and footer. */
+import {
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet
+} from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { IamStore } from '../../../../iam/application/iam.store';
+
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer],
+
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    LanguageSwitcher,
+    TranslatePipe
+  ],
+
   templateUrl: './layout.html',
   styleUrl: './layout.css',
+
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Layout {}
+export class Layout {
+
+  private readonly iamStore = inject(IamStore);
+
+  signOut(): void {
+    this.iamStore.signOut();
+  }
+}
