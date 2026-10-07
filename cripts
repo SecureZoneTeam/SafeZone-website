@@ -1,0 +1,20 @@
+[1mdiff --git a/package.json b/package.json[m
+[1mindex e1a6e0a..2866319 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -10,7 +10,7 @@[m
+     "test": "ng test",[m
+     "lint": "ng lint",[m
+     "server": "json-server --watch server/db.json --routes server/routes.json --port 3000",[m
+[31m-    "build:gh-pages": "ng build --base-href /SafeZone-website/ && node -e \"const f=require('fs');f.copyFileSync('dist/node-secure/browser/index.html','dist/node-secure/browser/404.html');f.writeFileSync('dist/node-secure/browser/.nojekyll','')\""[m
+[32m+[m[32m    "build:gh-pages": "ng build --base-href /NodeSecure-Frontend/ && node -e \"const f=require('fs');f.copyFileSync('dist/node-secure/browser/index.html','dist/node-secure/browser/404.html');f.writeFileSync('dist/node-secure/browser/.nojekyll','')\""[m
+   },[m
+   "private": true,[m
+   "dependencies": {[m
+[36m@@ -47,4 +47,4 @@[m
+     "typescript": "~6.0.3",[m
+     "typescript-eslint": "^8.45.0"[m
+   }[m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
