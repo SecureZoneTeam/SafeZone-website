@@ -1,4 +1,522 @@
-mat-progress-bar {
-  margin-bottom: var(--ns-space-md);
-  border-radius: var(--ns-radius-pill);
+/* =========================================================
+   WAREHOUSE PAGE
+   ========================================================= */
+
+.warehouse-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 48px 64px 72px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.warehouse-header {
+  width: min(1400px, 100%);
+  margin: 0 auto 42px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+
+.warehouse-header__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+.warehouse-badge {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 10px 20px;
+
+  border: 1px solid rgba(59, 130, 246, 0.65);
+  border-radius: 999px;
+
+  color: #3b82f6;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  background: rgba(59, 130, 246, 0.06);
+}
+
+
+.warehouse-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 1.05;
+
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+
+
+.warehouse-header p {
+  margin: 0;
+
+  color: #7183a0;
+
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CREATE BUTTON
+   ========================================================= */
+
+.warehouse-create-button {
+  min-width: 230px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 17px 25px;
+
+  border-radius: 12px;
+
+  background: #3b82f6;
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  box-shadow:
+    0 12px 30px rgba(59, 130, 246, 0.22);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+
+.warehouse-create-button span {
+  font-size: 25px;
+  line-height: 1;
+}
+
+
+.warehouse-create-button strong {
+  font-size: 20px;
+}
+
+
+.warehouse-create-button:hover {
+  background: #4b8df8;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 18px 38px rgba(59, 130, 246, 0.30);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.warehouse-loading {
+  width: min(1400px, 100%);
+  margin: 0 auto 28px;
+
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   TABLE CONTAINER
+   ========================================================= */
+
+.warehouse-table-wrapper {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 45, 67, 0.98),
+      rgba(23, 37, 58, 0.98)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.24);
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.warehouse-table {
+  width: 100%;
+
+  background: transparent;
+}
+
+
+.warehouse-table th {
+  height: 70px;
+
+  padding: 0 26px;
+
+  color: #7183a0 !important;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+
+.warehouse-table td {
+  height: 92px;
+
+  padding: 0 26px;
+
+  color: #cbd5e1 !important;
+
+  font-size: 16px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.warehouse-table tr:last-child td {
+  border-bottom: none;
+}
+
+
+.warehouse-table tbody tr {
+  transition:
+    background 160ms ease;
+}
+
+
+.warehouse-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.055);
+}
+
+
+/* =========================================================
+   WAREHOUSE NAME
+   ========================================================= */
+
+.warehouse-name {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+
+.warehouse-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  background: rgba(59, 130, 246, 0.12);
+
+  color: #3b82f6;
+}
+
+
+.warehouse-icon mat-icon {
+  font-size: 24px;
+}
+
+
+.warehouse-name div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.warehouse-name strong {
+  color: #f1f5f9;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.warehouse-name span {
+  color: #7183a0;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ZONES
+   ========================================================= */
+
+.zones-chip {
+  min-width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px;
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.10);
+
+  color: #60a5fa;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 9px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(100, 116, 139, 0.12);
+
+  color: #94a3b8;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.status-chip--active {
+  background: rgba(34, 197, 94, 0.12);
+
+  color: #4ade80;
+}
+
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.warehouse-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.action-button {
+  width: 42px;
+  height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 10px;
+
+  background: rgba(15, 23, 42, 0.4);
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+
+.action-button:hover {
+  color: #60a5fa;
+
+  background: rgba(59, 130, 246, 0.10);
+
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+
+.action-button--danger:hover {
+  color: #f87171;
+
+  background: rgba(239, 68, 68, 0.10);
+
+  border-color: rgba(239, 68, 68, 0.30);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.warehouse-error {
+  width: min(1400px, 100%);
+
+  margin: 0 auto 24px;
+
+  padding: 18px 22px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(239, 68, 68, 0.30);
+  border-radius: 12px;
+
+  background: rgba(239, 68, 68, 0.08);
+
+  color: #fca5a5;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.warehouse-empty {
+  width: min(1400px, 100%);
+
+  min-height: 380px;
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 24px;
+
+  background: rgba(30, 45, 67, 0.65);
+
+  text-align: center;
+}
+
+
+.warehouse-empty__icon {
+  font-size: 54px;
+}
+
+
+.warehouse-empty h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .warehouse-page {
+    padding: 36px 30px 60px;
+  }
+
+
+  .warehouse-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+
+  .warehouse-create-button {
+    width: 100%;
+  }
+
+
+  .warehouse-table-wrapper {
+    overflow-x: auto;
+  }
+
+
+  .warehouse-table {
+    min-width: 850px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .warehouse-page {
+    padding: 28px 18px 50px;
+  }
+
+
+  .warehouse-header h1 {
+    font-size: 36px;
+  }
+
+
+  .warehouse-header p {
+    font-size: 15px;
+  }
+
 }

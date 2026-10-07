@@ -6,12 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../../../environments/environment';
 
+
 import { IamStore } from '../../../application/iam.store';
+import {LanguageSwitcher} from "../../../../shared/presentation/components/language-switcher/language-switcher";
 
 /** Sign-In form (user story US13). */
 @Component({
   selector: 'app-sign-in',
-  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe],
+  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, TranslatePipe, LanguageSwitcher],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
   changeDetection: ChangeDetectionStrategy.OnPush

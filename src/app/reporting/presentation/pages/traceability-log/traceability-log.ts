@@ -6,6 +6,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ReportingStore } from '../../../application/reporting.store';
+import {LanguageSwitcher} from "../../../../shared/presentation/components/language-switcher/language-switcher";
 
 /** Immutable traceability log with filters (user stories US08 and US10). */
 @Component({
@@ -15,7 +16,8 @@ import { ReportingStore } from '../../../application/reporting.store';
     MatTableModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    TranslatePipe
+    TranslatePipe,
+    LanguageSwitcher
   ],
   templateUrl: './traceability-log.html',
   styleUrl: './traceability-log.css',

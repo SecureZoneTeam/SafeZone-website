@@ -1,0 +1,499 @@
+/* =========================================================
+   SENSOR NODE FORM
+   ========================================================= */
+
+:host {
+  display: block;
+
+  width: 100%;
+
+  min-height: 100%;
+}
+
+
+.sensor-form-page {
+  width: 100%;
+
+  min-height: calc(100vh - 40px);
+
+  box-sizing: border-box;
+
+  background: #0b1528;
+
+  color: #f8fafc;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.form-topbar {
+  width: 100%;
+
+  min-height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  box-sizing: border-box;
+
+  padding: 0 55px;
+
+  background: #1a293e;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.back-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: rgba(226, 232, 240, 0.70);
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 650;
+
+  transition: color 0.2s ease;
+}
+
+
+.back-button span:first-child {
+  font-size: 21px;
+
+  color: rgba(226, 232, 240, 0.55);
+}
+
+
+.back-button:hover {
+  color: #3b82f6;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.sensor-form-content {
+  width: min(1050px, calc(100% - 100px));
+
+  margin: 0 auto;
+
+  padding: 55px 0 80px;
+}
+
+
+/* =========================================================
+   INTRODUCTION
+   ========================================================= */
+
+.form-introduction {
+  margin-bottom: 35px;
+}
+
+
+.form-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 8px 15px;
+
+  border: 1px solid #2563eb;
+
+  border-radius: 999px;
+
+  background: rgba(37, 99, 235, 0.08);
+
+  color: #3b82f6;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.form-introduction h1 {
+  margin: 17px 0 9px;
+
+  color: #f8fafc;
+
+  font-size: clamp(38px, 4vw, 52px);
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -1.5px;
+}
+
+
+.form-introduction p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.55);
+
+  font-size: 16px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.sensor-form-card {
+  width: min(650px, 100%);
+
+  margin: 0 auto;
+
+  padding: 38px 42px 42px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+
+  border-radius: 10px;
+
+  background: #1a293e;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.card-header {
+  margin-bottom: 30px;
+
+  padding-bottom: 24px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.card-eyebrow {
+  color: #3b82f6;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.card-header h2 {
+  margin: 9px 0 7px;
+
+  color: #f8fafc;
+
+  font-size: 25px;
+
+  font-weight: 750;
+}
+
+
+.card-header p {
+  margin: 0;
+
+  color: rgba(226, 232, 240, 0.48);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.sensor-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+
+  text-decoration: none;
+}
+
+
+.form-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.form-field label {
+  color: rgba(226, 232, 240, 0.75);
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.form-field label span {
+  color: #3b82f6;
+
+  margin-left: 3px;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.form-field input,
+.form-field select {
+  width: 100%;
+
+  height: 54px;
+
+  box-sizing: border-box;
+
+  padding: 0 17px;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #1a293e;
+
+  color: #f8fafc;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.form-field input::placeholder {
+  color: rgba(226, 232, 240, 0.32);
+}
+
+
+.form-field input:hover,
+.form-field select:hover {
+  border-color: rgba(148, 163, 184, 0.55);
+}
+
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #3b82f6;
+
+  background: #1c2d44;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.10);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.select-wrapper {
+  position: relative;
+}
+
+
+.select-wrapper select {
+  appearance: none;
+
+  cursor: pointer;
+
+  padding-right: 45px;
+}
+
+
+.select-icon {
+  position: absolute;
+
+  right: 17px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  color: rgba(226, 232, 240, 0.45);
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.form-field small {
+  color: #f87171;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+
+.submit-button {
+  width: 100%;
+
+  height: 55px;
+
+  margin-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #3b82f6;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(59, 130, 246, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.submit-button:hover {
+  background: #2563eb;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(59, 130, 246, 0.25);
+}
+
+
+.button-arrow {
+  font-size: 18px;
+
+  transition: transform 0.2s ease;
+}
+
+
+.submit-button:hover .button-arrow {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   CANCEL
+   ========================================================= */
+
+.cancel-button {
+  display: block;
+
+  margin-top: -5px;
+
+  color: rgba(226, 232, 240, 0.45);
+
+  text-align: center;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  transition: color 0.2s ease;
+}
+
+
+.cancel-button:hover {
+  color: #3b82f6;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .form-topbar {
+    padding: 0 30px;
+  }
+
+  .sensor-form-content {
+    width: calc(100% - 60px);
+
+    padding-top: 40px;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .form-topbar {
+    padding: 0 20px;
+  }
+
+  .sensor-form-content {
+    width: calc(100% - 40px);
+
+    padding-top: 30px;
+  }
+
+  .form-introduction h1 {
+    font-size: 36px;
+  }
+
+  .sensor-form-card {
+    padding: 28px 22px 30px;
+  }
+
+}

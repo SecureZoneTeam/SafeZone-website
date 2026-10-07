@@ -1,63 +1,206 @@
-<section class="ns-page">
-  <span class="ns-page__badge">{{ 'devices.list.badge' | translate }}</span>
-  <h1 class="ns-page__title">{{ 'devices.list.title' | translate }}</h1>
-  <p class="ns-page__subtitle">{{ 'devices.list.subtitle' | translate }}</p>
+<section class="devices-page">
 
-  <div class="device-summary">
-    <div class="ns-card ns-card--hoverable device-summary__card">
-      <span class="device-summary__value device-summary__value--online">
-        {{ sensorIntegrationStore.onlineCount() }}
+  <!-- HEADER -->
+  <header class="devices-header">
+
+    <div class="devices-title">
+
+      <span class="devices-badge">
+        IOT INFRASTRUCTURE
       </span>
-      <span class="device-summary__label">{{ 'devices.list.online' | translate }}</span>
+
+      <h1>Dispositivos IoT</h1>
+
+      <p>
+        Supervisa el estado y conexión de todos los dispositivos instalados.
+      </p>
+
     </div>
-    <div class="ns-card ns-card--hoverable device-summary__card">
-      <span class="device-summary__value device-summary__value--offline">
-        {{ sensorIntegrationStore.offlineCount() }}
-      </span>
-      <span class="device-summary__label">{{ 'devices.list.offline' | translate }}</span>
-    </div>
+
+
+    <a
+      routerLink="/devices/new"
+      class="link-device-button"
+    >
+      <span>＋</span>
+      Vincular nuevo dispositivo
+    </a>
+
+  </header>
+
+
+  <!-- CONTROL BAR -->
+  <div class="devices-toolbar">
+
+    <button
+      type="button"
+      class="warehouse-select"
+    >
+      <span>Almacén Central</span>
+      <span class="select-arrow">⌄</span>
+    </button>
+
+    <span class="device-total">
+      <strong>{{ sensorIntegrationStore.sensorNodes().length }}</strong>
+      dispositivos
+    </span>
+
   </div>
+
 
   @if (sensorIntegrationStore.loading()) {
-    <mat-progress-bar mode="indeterminate" aria-label="Loading IoT devices" />
+
+    <mat-progress-bar
+      mode="indeterminate"
+      aria-label="Loading IoT devices">
+    </mat-progress-bar>
+
   }
 
-  <div class="ns-panel">
-    <table mat-table [dataSource]="sensorIntegrationStore.sensorNodes()" class="ns-table">
-      <ng-container matColumnDef="macAddress">
-        <th mat-header-cell *matHeaderCellDef>{{ 'devices.list.macAddress' | translate }}</th>
-        <td mat-cell *matCellDef="let node">
-          <code>{{ node.macAddress.value }}</code>
-        </td>
-      </ng-container>
 
-      <ng-container matColumnDef="model">
-        <th mat-header-cell *matHeaderCellDef>{{ 'devices.list.model' | translate }}</th>
-        <td mat-cell *matCellDef="let node">{{ node.model }}</td>
-      </ng-container>
+  <!-- =====================================================
+       MAGNETIC SENSORS
+       ===================================================== -->
 
-      <ng-container matColumnDef="zone">
-        <th mat-header-cell *matHeaderCellDef>{{ 'devices.list.zone' | translate }}</th>
-        <td mat-cell *matCellDef="let node">{{ node.zoneId }}</td>
-      </ng-container>
+  <section class="device-section">
 
-      <ng-container matColumnDef="connection">
-        <th mat-header-cell *matHeaderCellDef>{{ 'devices.list.connection' | translate }}</th>
-        <td mat-cell *matCellDef="let node">
-          <span class="ns-chip" [class.ns-chip--online]="node.isOnline" [class.ns-chip--offline]="!node.isOnline">
-            <span class="ns-chip__dot" aria-hidden="true"></span>
-            {{ (node.isOnline ? 'devices.list.online' : 'devices.list.offline') | translate }}
-          </span>
-        </td>
-      </ng-container>
+    <div class="section-heading">
 
-      <ng-container matColumnDef="lastPing">
-        <th mat-header-cell *matHeaderCellDef>{{ 'devices.list.lastPing' | translate }}</th>
-        <td mat-cell *matCellDef="let node">{{ node.lastPingAt | date: 'short' }}</td>
-      </ng-container>
+      <h2>Sensores Magnéticos</h2>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
+      <span class="section-count">
+        {{ sensorIntegrationStore.sensorNodes().length }}
+      </span>
+
+    </div>
+
+
+    <div class="device-grid">
+
+      @for (
+        node of sensorIntegrationStore.sensorNodes();
+        track node.macAddress.value
+        ) {
+
+        <article
+          class="device-card"
+          [class.device-card--offline]="!node.isOnline"
+        >
+
+          <div
+            class="device-status-bar"
+            [class.device-status-bar--offline]="!node.isOnline"
+          ></div>
+
+
+          <div class="device-card__icon">
+
+            <span
+              [class.icon-offline]="!node.isOnline"
+            >
+              ◉
+            </span>
+
+          </div>
+
+
+          <div class="device-card__content">
+
+            <div class="device-card__top">
+
+              <div>
+
+                <h3>
+                  {{ node.model }}
+                </h3>
+
+                <span class="device-type">
+                  Sensor magnético
+                </span>
+
+              </div>
+
+
+              <span
+                class="status"
+                [class.status--offline]="!node.isOnline"
+              >
+
+                <span class="status__dot"></span>
+
+                {{ node.isOnline ? 'Online' : 'Offline' }}
+
+              </span>
+
+            </div>
+
+
+            <div class="device-card__info">
+
+              <div>
+                <span class="info-label">MAC Address</span>
+
+                <code>
+                  {{ node.macAddress.value }}
+                </code>
+              </div>
+
+
+              <div>
+                <span class="info-label">Zona</span>
+
+                <span class="info-value">
+                  Zona {{ node.zoneId }}
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       RFID
+       ===================================================== -->
+
+  <section class="device-section">
+
+    <div class="section-heading">
+
+      <h2>Lectores RFID</h2>
+
+      <span class="section-count">
+        0
+      </span>
+
+    </div>
+
+
+    <div class="empty-device-card">
+
+      <div class="empty-device-icon">
+        RFID
+      </div>
+
+      <div>
+        <h3>No hay lectores RFID registrados</h3>
+
+        <p>
+          Vincula un nuevo dispositivo para comenzar a monitorear
+          movimientos mediante RFID.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
 </section>

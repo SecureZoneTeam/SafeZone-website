@@ -1,0 +1,464 @@
+<section class="team-page">
+
+  <!-- HEADER -->
+
+  <header class="team-header">
+
+    <div>
+
+      <span class="team-eyebrow">
+        TEAM MANAGEMENT
+      </span>
+
+      <h1>
+        Equipo y Accesos
+      </h1>
+
+      <p>
+        Administra los usuarios, roles y permisos de acceso
+        a tu infraestructura.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="invite-button"
+      (click)="openInvite()"
+    >
+      <span class="material-symbols-outlined">
+        person_add
+      </span>
+
+      Invitar nuevo usuario
+    </button>
+
+  </header>
+
+
+  <!-- ADMINISTRATORS -->
+
+  <section class="user-section">
+
+    <div class="section-title">
+
+      <h2>
+        Administradores
+      </h2>
+
+      <span>
+        1
+      </span>
+
+    </div>
+
+
+    <div class="user-grid">
+
+      @for (user of users(); track user.id) {
+
+        @if (user.status === 'ADMINISTRADOR') {
+
+          <article class="user-card">
+
+            <div class="avatar avatar--blue">
+              AU
+            </div>
+
+
+            <div class="user-information">
+
+              <h3>
+                {{ user.fullName }}
+              </h3>
+
+              <div class="user-meta">
+
+                <span class="role-badge role-badge--blue">
+                  {{ user.role }}
+                </span>
+
+                <span>
+                  Admin access
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="more-button"
+              (click)="openPermissions(user)"
+            >
+              ⋮
+            </button>
+
+          </article>
+
+        }
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- LOGISTICS -->
+
+  <section class="user-section">
+
+    <div class="section-title">
+
+      <h2>
+        Personal Logístico
+      </h2>
+
+      <span>
+        {{ users().length - 1 }}
+      </span>
+
+    </div>
+
+
+    <div class="user-grid">
+
+      @for (user of users(); track user.id) {
+
+        @if (user.status !== 'ADMINISTRADOR') {
+
+          <article class="user-card">
+
+            <div class="avatar avatar--orange">
+              {{ user.fullName.substring(0, 2).toUpperCase() }}
+            </div>
+
+
+            <div class="user-information">
+
+              <h3>
+                {{ user.fullName }}
+              </h3>
+
+              <div class="user-meta">
+
+                <span class="role-badge role-badge--orange">
+                  {{ user.role }}
+                </span>
+
+                <span>
+                  Zones & Access
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="user-actions">
+
+              <button
+                type="button"
+                class="more-button"
+                (click)="openPermissions(user)"
+              >
+                ⋮
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      }
+
+    </div>
+
+  </section>
+
+</section>
+
+
+<!-- =====================================================
+     INVITE MODAL
+===================================================== -->
+
+@if (showInviteModal()) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeInvite()"
+  >
+
+    <section
+      class="modal-card"
+      (click)="$event.stopPropagation()"
+    >
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeInvite()"
+      >
+        ×
+      </button>
+
+
+      <h2>
+        Invitar Nuevo Usuario
+      </h2>
+
+
+      <div class="modal-field">
+
+        <label>
+          Correo Electrónico
+        </label>
+
+        <input
+          type="email"
+          [(ngModel)]="email"
+          placeholder="usuario@empresa.com"
+        >
+
+      </div>
+
+
+      <div class="modal-field">
+
+        <label>
+          Rol en el sistema
+        </label>
+
+        <select [(ngModel)]="selectedRole">
+
+          <option value="Administrador">
+            Administrador
+          </option>
+
+          <option value="Almacenero">
+            Almacenero
+          </option>
+
+          <option value="Personal Logístico">
+            Personal Logístico
+          </option>
+
+          <option value="Auditor">
+            Auditor
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="modal-section">
+
+        <span class="modal-label">
+          Zonas de Acceso
+        </span>
+
+        <p>
+          Selecciona las zonas que podrá administrar.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-primary-button"
+        (click)="inviteUser()"
+      >
+        Enviar Invitación
+      </button>
+
+    </section>
+
+  </div>
+
+}
+
+
+<!-- =====================================================
+     DELETE MODAL
+===================================================== -->
+
+@if (showDeleteModal()) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeDelete()"
+  >
+
+    <section
+      class="delete-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="delete-icon">
+        !
+      </div>
+
+
+      <h2>
+        ¿Eliminar a {{ selectedUser()?.fullName }}?
+      </h2>
+
+
+      <p>
+        Perderá acceso al sistema y dejará de recibir
+        notificaciones.
+      </p>
+
+
+      <div class="delete-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeDelete()"
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="button"
+          class="delete-button"
+          (click)="deleteUser()"
+        >
+          Sí, eliminar
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+}
+
+
+<!-- =====================================================
+     PERMISSIONS MODAL
+===================================================== -->
+
+@if (showPermissionsModal()) {
+
+  <div
+    class="modal-overlay"
+    (click)="closePermissions()"
+  >
+
+    <section
+      class="permissions-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="permissions-header">
+
+        <div>
+
+          <span class="modal-eyebrow">
+            ACCESS CONTROL
+          </span>
+
+          <h2>
+            Editar Permisos
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closePermissions()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="permission-user">
+
+        <div class="avatar avatar--orange">
+          {{ selectedUser()?.fullName?.substring(0, 2)?.toUpperCase() }}
+        </div>
+
+        <div>
+
+          <strong>
+            {{ selectedUser()?.fullName }}
+          </strong>
+
+          <span>
+            {{ selectedUser()?.role }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="permissions-content">
+
+        <h3>
+          Zonas Asignadas
+        </h3>
+
+        <p>
+          Selecciona las zonas a las que este usuario tendrá acceso.
+        </p>
+
+
+        <div class="permission-list">
+
+          @for (
+            permission of permissions();
+            track permission.id;
+            let i = $index
+            ) {
+
+            <label class="permission-item">
+
+              <input
+                type="checkbox"
+                [checked]="permission.selected"
+                (change)="togglePermission(i)"
+              >
+
+              <span class="custom-checkbox"></span>
+
+              <span>
+                {{ permission.name }}
+              </span>
+
+            </label>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-primary-button"
+        (click)="savePermissions()"
+      >
+        Guardar Cambios
+      </button>
+
+    </section>
+
+  </div>
+
+}

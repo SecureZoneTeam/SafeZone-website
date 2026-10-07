@@ -1,32 +1,127 @@
-<section class="ns-page auth">
-  <div class="ns-panel auth__panel">
-    <span class="ns-page__badge">{{ 'nav.signIn' | translate }}</span>
-    <h1 class="ns-page__title">{{ 'iam.signIn.title' | translate }}</h1>
+<div class="auth-language">
+  <app-language-switcher></app-language-switcher>
+</div>
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signIn.username' | translate }}</mat-label>
-        <input matInput formControlName="username" autocomplete="username" />
-      </mat-form-field>
+<section class="auth-page">
 
-      <mat-form-field appearance="outline" class="auth__field">
-        <mat-label>{{ 'iam.signIn.password' | translate }}</mat-label>
-        <input matInput type="password" formControlName="password" autocomplete="current-password" />
-      </mat-form-field>
+  <!-- PANEL IZQUIERDO -->
+  <div class="auth-page__brand">
 
-      @if (iamStore.error(); as errorKey) {
-        <p class="ns-error" role="alert">{{ errorKey | translate }}</p>
-      }
+    <div class="auth-page__brand-content">
 
-      <button class="ns-button ns-button--primary auth__submit" type="submit" [disabled]="iamStore.loading()">
-        {{ 'iam.signIn.submit' | translate }}
-        <span aria-hidden="true">&rarr;</span>
-      </button>
-    </form>
+      <h1>NODESECURE</h1>
 
-    <p class="auth__hint">
-      {{ 'iam.signIn.noAccount' | translate }}
-      <a routerLink="/sign-up">{{ 'nav.signUp' | translate }}</a>
-    </p>
+      <p>
+        Auditoría logística inteligente
+      </p>
+
+      <span>
+        Controla tu inventario, detecta eventos
+        y asegura la trazabilidad en tiempo real.
+      </span>
+
+    </div>
+
   </div>
+
+
+  <!-- PANEL DERECHO -->
+  <div class="auth-page__form">
+
+    <div class="auth-page__form-content">
+
+      <span class="auth-page__eyebrow">
+        {{ 'nav.signIn' | translate }}
+      </span>
+
+      <h2>
+        {{ 'iam.signIn.title' | translate }}
+      </h2>
+
+      <p class="auth-page__subtitle">
+        Accede a tu cuenta para continuar.
+      </p>
+
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+      >
+
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signIn.username' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            formControlName="username"
+            autocomplete="username"
+          />
+        </mat-form-field>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signIn.password' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+        </mat-form-field>
+
+
+        @if (iamStore.error(); as errorKey) {
+
+          <p
+            class="auth-page__error"
+            role="alert"
+          >
+            {{ errorKey | translate }}
+          </p>
+
+        }
+
+
+        <button
+          class="auth-page__submit"
+          type="submit"
+          [disabled]="iamStore.loading()"
+        >
+
+          {{ 'iam.signIn.submit' | translate }}
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <p class="auth-page__hint">
+
+        {{ 'iam.signIn.noAccount' | translate }}
+
+        <a routerLink="/sign-up">
+          {{ 'nav.signUp' | translate }}
+        </a>
+
+      </p>
+
+    </div>
+
+  </div>
+
 </section>
