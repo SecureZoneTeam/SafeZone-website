@@ -2,6 +2,7 @@
 
   <aside class="app-sidebar">
 
+    <!-- LOGO -->
     <div class="app-sidebar__logo">
       <img
         src="assets/logos/logo-principal.png"
@@ -9,6 +10,7 @@
       />
     </div>
 
+    <!-- USER -->
     <div class="app-sidebar__user">
       <div class="app-sidebar__avatar">
         AU
@@ -17,26 +19,40 @@
       <span>A. Usuario</span>
     </div>
 
+    <!-- MENU -->
     <nav class="app-sidebar__menu">
 
-      <a routerLink="/warehouses"
-         routerLinkActive="app-sidebar__item--active"
-         class="app-sidebar__item">
+      <!-- WAREHOUSES -->
+      <a
+        routerLink="/warehouses"
+        routerLinkActive="app-sidebar__item--active"
+        class="app-sidebar__item"
+      >
         <span class="material-symbols-outlined">
           warehouse
         </span>
-        <span>{{ 'nav.warehouses' | translate }}</span>
+
+        <span>
+          {{ 'warehouses.list.title' | translate }}
+        </span>
       </a>
 
-      <a routerLink="/devices"
-         routerLinkActive="app-sidebar__item--active"
-         class="app-sidebar__item">
+      <!-- DEVICES -->
+      <a
+        routerLink="/devices"
+        routerLinkActive="app-sidebar__item--active"
+        class="app-sidebar__item"
+      >
         <span class="material-symbols-outlined">
           sensors
         </span>
-        <span>{{ 'nav.devices' | translate }}</span>
+
+        <span>
+          {{ 'nav.devices' | translate }}
+        </span>
       </a>
 
+      <!-- TEAM -->
       <a
         routerLink="/team"
         routerLinkActive="app-sidebar__item--active"
@@ -46,39 +62,64 @@
           group
         </span>
 
-        <span>{{ 'nav.team' | translate }}</span>
+        <span>
+          {{ 'nav.team' | translate }}
+        </span>
       </a>
 
-      <a routerLink="/traceability"
-         routerLinkActive="app-sidebar__item--active"
-         class="app-sidebar__item">
+      <!-- TRACEABILITY -->
+      <a
+        routerLink="/traceability"
+        routerLinkActive="app-sidebar__item--active"
+        class="app-sidebar__item"
+      >
         <span class="material-symbols-outlined">
           history
         </span>
-        <span>{{ 'nav.traceability' | translate }}</span>
+
+        <span>
+          {{ 'nav.traceability' | translate }}
+        </span>
       </a>
 
-      <a routerLink="/subscription"
-         routerLinkActive="app-sidebar__item--active"
-         class="app-sidebar__item">
+      <!-- SUBSCRIPTION -->
+      <a
+        routerLink="/subscription"
+        routerLinkActive="app-sidebar__item--active"
+        class="app-sidebar__item"
+      >
         <span class="material-symbols-outlined">
           credit_card
         </span>
-        <span>{{ 'nav.subscription' | translate }}</span>
+
+        <span>
+          {{ 'nav.subscription' | translate }}
+        </span>
       </a>
 
     </nav>
 
+    <!-- BOTTOM -->
     <div class="app-sidebar__bottom">
+
+      <!-- LANGUAGE -->
       <app-language-switcher></app-language-switcher>
 
-      <button class="app-sidebar__item">
+      <!-- SETTINGS -->
+      <button
+        type="button"
+        class="app-sidebar__item"
+      >
         <span class="material-symbols-outlined">
           settings
         </span>
-        <span>{{ 'nav.settings' | translate }}</span>
+
+        <span>
+          {{ 'nav.settings' | translate }}
+        </span>
       </button>
 
+      <!-- SIGN OUT -->
       <button
         type="button"
         class="app-sidebar__logout"
@@ -88,15 +129,14 @@
           logout
         </span>
 
-              <span>
-           {{ 'nav.signOut' | translate }}
+        <span>
+          {{ 'nav.signOut' | translate }}
         </span>
       </button>
 
     </div>
 
   </aside>
-
 
   <main class="app-layout__content">
     <router-outlet></router-outlet>

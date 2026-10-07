@@ -36,11 +36,21 @@ export class LanguageSwitcher {
   }
 
   protected useLanguage(language: string): void {
+    console.log('Idioma seleccionado:', language);
 
-    this.translate.use(language);
+    this.translate.use(language).subscribe({
+      next: () => {
+        this.currentLanguage = language;
 
-    this.currentLanguage = language;
-
-    console.log('Idioma cambiado a:', language);
+        console.log('Idioma actual:', this.translate.currentLang);
+        console.log(
+          'Traducción:',
+          this.translate.instant('warehouses.list.title')
+        );
+      },
+      error: (error) => {
+        console.error('Error loading language:', error);
+      }
+    });
   }
 }

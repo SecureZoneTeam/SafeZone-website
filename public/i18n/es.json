@@ -9,7 +9,6 @@
     "warehouses": "Mis Almacenes",
     "devices": "Dispositivos IoT",
     "traceability": "Trazabilidad",
-    "alerts": "Alertas",
     "team": "Equipo y Accesos",
     "subscription": "Suscripción",
     "settings": "Configuración",
@@ -27,7 +26,15 @@
       "create": "Crear",
       "search": "Buscar",
       "export": "Exportar reporte",
-      "back": "Volver"
+      "back": "Volver",
+      "apply": "Aplicar",
+      "clear": "Limpiar",
+      "invite": "Invitar",
+      "link": "Vincular",
+      "view": "Ver",
+      "update": "Actualizar",
+      "close": "Cerrar",
+      "confirm": "Confirmar"
     },
     "states": {
       "loading": "Cargando...",
@@ -76,7 +83,13 @@
       "zones": "Zonas",
       "status": "Estado",
       "badge": "Infraestructura logística",
-      "subtitle": "Supervisa cada sede, zona y nodo IoT desde un único panel de control."
+      "subtitle": "Supervisa cada sede, zona y nodo IoT desde un único panel de control.",
+      "actions": "Acciones",
+      "visit": "Visitar",
+      "delete": "Eliminar",
+      "active": "Activo",
+      "suspended": "Suspendido",
+      "warehouseCount": "almacenes"
     },
     "form": {
       "createTitle": "Registrar almacén",
@@ -99,29 +112,27 @@
       "online": "En línea",
       "offline": "Desconectado",
       "badge": "Red IoT",
-      "subtitle": "Consulta el estado de conexión de cada nodo ESP32 para evitar puntos ciegos."
+      "subtitle": "Consulta el estado de conexión de cada nodo ESP32 para evitar puntos ciegos.",
+      "link": "Vincular nuevo dispositivo",
+      "deviceCount": "dispositivos",
+      "magneticSensors": "Sensores Magnéticos",
+      "rfidReaders": "Lectores RFID",
+      "noRfid": "No hay lectores RFID registrados",
+      "noRfidSubtitle": "Vincula un nuevo dispositivo para comenzar a monitorear movimientos mediante RFID.",
+      "sensor": "Sensor magnético",
+      "zoneLabel": "ZONA"
     },
     "form": {
       "title": "Vincular nodo sensor IoT",
       "macAddress": "Dirección MAC (ESP32)",
       "zone": "Zona del almacén",
-      "sensorType": "Tipo de sensor"
-    }
-  },
-  "alerts": {
-    "list": {
-      "title": "Alertas de Seguridad",
-      "severity": "Severidad",
-      "type": "Tipo",
-      "status": "Estado",
-      "raisedAt": "Generada el",
-      "message": "Mensaje",
-      "badge": "Motor de discrepancias",
-      "subtitle": "Las aperturas físicas sin movimiento de inventario asociado se reportan aquí."
-    },
-    "actions": {
-      "reconcile": "Marcar como Falsa Alarma",
-      "justification": "Justificación"
+      "sensorType": "Tipo de sensor",
+      "deviceInfo": "Información del dispositivo",
+      "serialNumber": "Número de serie",
+      "deviceName": "Nombre del dispositivo",
+      "assignZone": "Asignar a zona",
+      "link": "Vincular dispositivo",
+      "cancel": "Cancelar"
     }
   },
   "traceability": {
@@ -134,7 +145,18 @@
       "filterType": "Filtrar por tipo",
       "filterDiscrepancies": "Solo discrepancias",
       "badge": "Auditoría",
-      "subtitle": "Registro cronológico de eventos físicos y lógicos con marcas de tiempo exactas."
+      "subtitle": "Registro cronológico de eventos físicos y lógicos con marcas de tiempo exactas.",
+      "eventHistory": "Historial de Eventos",
+      "immutableRecords": "Registros de trazabilidad inmutables",
+      "typeOfEvent": "Tipo de evento",
+      "last7Days": "Últimos 7 días",
+      "activeFilters": "Filtros Activos",
+      "clearAll": "Limpiar todo",
+      "typeOfEventUpper": "TIPO DE EVENTO",
+      "physicalDiscrepancies": "Discrepancias físicas",
+      "systemEvents": "Eventos del sistema",
+      "dateRange": "RANGO DE FECHAS",
+      "applyFilters": "Aplicar Filtros"
     }
   },
   "subscriptions": {
@@ -149,13 +171,62 @@
       "subtitle": "Suscripciones escalables que crecen con tu operación.",
       "selected": "Plan seleccionado desde la Landing Page",
       "popular": "Más popular",
-      "perMonth": "mes"
+      "perMonth": "mes",
+      "basic": "Básico",
+      "premium": "Premium",
+      "corporate": "Corporativo",
+      "enterpriseBadge": "IDEAL PARA GRANDES EMPRESAS",
+      "update": "Actualizar a"
     },
     "current": {
       "title": "Mi Suscripción",
       "plan": "Plan actual",
       "status": "Estado",
       "renewsAt": "Se renueva el"
+    }
+  },
+  "team": {
+    "list": {
+      "badge": "GESTIÓN DE EQUIPO",
+      "title": "Equipo y Accesos",
+      "subtitle": "Administra los usuarios, roles y permisos de acceso a tu infraestructura.",
+      "invite": "Invitar nuevo usuario",
+      "administrators": "Administradores",
+      "logistics": "Personal Logístico",
+      "adminAccess": "Acceso de administrador",
+      "zonesAccess": "Zonas y Accesos",
+      "warehouseKeeper": "Almacenero",
+      "logisticsStaff": "Personal Logístico",
+      "count": "usuarios"
+    },
+    "invite": {
+      "title": "Invitar Nuevo Usuario",
+      "email": "Correo Electrónico",
+      "role": "Rol del Usuario",
+      "administrator": "Administrador",
+      "administratorDescription": "Acceso completo a configuración y usuarios.",
+      "warehouseKeeper": "Almacenero",
+      "warehouseKeeperDescription": "Gestiona el inventario y las zonas asignadas.",
+      "security": "Responsable de Seguridad",
+      "securityDescription": "Supervisa alertas y eventos de seguridad.",
+      "zones": "Zonas de Acceso",
+      "send": "Enviar Invitación",
+      "cancel": "Cancelar"
+    },
+    "permissions": {
+      "title": "Editar Permisos",
+      "assignedZones": "Zonas Asignadas",
+      "selectZones": "Selecciona las zonas a las que este usuario puede acceder.",
+      "save": "Guardar Cambios",
+      "zone1": "Zona A (Almacén Principal)",
+      "zone2": "Zona B (Cuarentena / Restricciones)",
+      "zone3": "Zona C (Carga y Descarga)"
+    },
+    "delete": {
+      "title": "¿Eliminar usuario?",
+      "message": "Esta acción eliminará permanentemente al usuario y sus permisos de acceso.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
     }
   }
 }

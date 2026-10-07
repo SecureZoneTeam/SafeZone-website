@@ -9,7 +9,6 @@
     "warehouses": "My Warehouses",
     "devices": "IoT Devices",
     "traceability": "Traceability",
-    "alerts": "Alerts",
     "team": "Team and Access",
     "subscription": "Subscription",
     "settings": "Settings",
@@ -27,7 +26,15 @@
       "create": "Create",
       "search": "Search",
       "export": "Export report",
-      "back": "Back"
+      "back": "Back",
+      "apply": "Apply",
+      "clear": "Clear",
+      "invite": "Invite",
+      "link": "Link",
+      "view": "View",
+      "update": "Update",
+      "close": "Close",
+      "confirm": "Confirm"
     },
     "states": {
       "loading": "Loading...",
@@ -76,7 +83,13 @@
       "zones": "Zones",
       "status": "Status",
       "badge": "Logistics infrastructure",
-      "subtitle": "Monitor every site, zone and IoT node from a single control panel."
+      "subtitle": "Monitor every site, zone and IoT node from a single control panel.",
+      "actions": "Actions",
+      "visit": "Visit",
+      "delete": "Delete",
+      "active": "Active",
+      "suspended": "Suspended",
+      "warehouseCount": "warehouses"
     },
     "form": {
       "createTitle": "Register warehouse",
@@ -99,29 +112,27 @@
       "online": "Online",
       "offline": "Offline",
       "badge": "IoT network",
-      "subtitle": "Check the connection status of every ESP32 node to avoid blind spots."
+      "subtitle": "Check the connection status of every ESP32 node to avoid blind spots.",
+      "link": "Link new device",
+      "deviceCount": "devices",
+      "magneticSensors": "Magnetic Sensors",
+      "rfidReaders": "RFID Readers",
+      "noRfid": "No RFID readers registered",
+      "noRfidSubtitle": "Link a new device to start monitoring movements using RFID.",
+      "sensor": "Magnetic sensor",
+      "zoneLabel": "ZONE"
     },
     "form": {
       "title": "Link IoT sensor node",
       "macAddress": "MAC Address (ESP32)",
       "zone": "Warehouse zone",
-      "sensorType": "Sensor type"
-    }
-  },
-  "alerts": {
-    "list": {
-      "title": "Security Alerts",
-      "severity": "Severity",
-      "type": "Type",
-      "status": "Status",
-      "raisedAt": "Raised at",
-      "message": "Message",
-      "badge": "Discrepancy engine",
-      "subtitle": "Physical openings without an associated inventory movement are raised here."
-    },
-    "actions": {
-      "reconcile": "Mark as False Alarm",
-      "justification": "Justification"
+      "sensorType": "Sensor type",
+      "deviceInfo": "Device Information",
+      "serialNumber": "Serial Number",
+      "deviceName": "Device Name",
+      "assignZone": "Assign to Zone",
+      "link": "Link Device",
+      "cancel": "Cancel"
     }
   },
   "traceability": {
@@ -134,7 +145,18 @@
       "filterType": "Filter by type",
       "filterDiscrepancies": "Discrepancies only",
       "badge": "Audit",
-      "subtitle": "Chronological record of physical and logical events with exact timestamps."
+      "subtitle": "Chronological record of physical and logical events with exact timestamps.",
+      "eventHistory": "Event History",
+      "immutableRecords": "Immutable traceability records",
+      "typeOfEvent": "Type of event",
+      "last7Days": "Last 7 days",
+      "activeFilters": "Active Filters",
+      "clearAll": "Clear all",
+      "typeOfEventUpper": "TYPE OF EVENT",
+      "physicalDiscrepancies": "Physical discrepancies",
+      "systemEvents": "System events",
+      "dateRange": "DATE RANGE",
+      "applyFilters": "Apply Filters"
     }
   },
   "subscriptions": {
@@ -149,13 +171,62 @@
       "subtitle": "Scalable subscriptions that grow with your operation.",
       "selected": "Plan selected from the Landing Page",
       "popular": "Most popular",
-      "perMonth": "month"
+      "perMonth": "month",
+      "basic": "Basic",
+      "premium": "Premium",
+      "corporate": "Corporate",
+      "enterpriseBadge": "IDEAL FOR LARGE COMPANIES",
+      "update": "Update to"
     },
     "current": {
       "title": "My Subscription",
       "plan": "Current plan",
       "status": "Status",
       "renewsAt": "Renews at"
+    }
+  },
+  "team": {
+    "list": {
+      "badge": "TEAM MANAGEMENT",
+      "title": "Team & Access",
+      "subtitle": "Manage users, roles and access permissions to your infrastructure.",
+      "invite": "Invite new user",
+      "administrators": "Administrators",
+      "logistics": "Logistics Personnel",
+      "adminAccess": "Admin access",
+      "zonesAccess": "Zones & Access",
+      "warehouseKeeper": "Warehouse Keeper",
+      "logisticsStaff": "Logistics Staff",
+      "count": "users"
+    },
+    "invite": {
+      "title": "Invite New User",
+      "email": "Email Address",
+      "role": "User Role",
+      "administrator": "Administrator",
+      "administratorDescription": "Full access to configuration and users.",
+      "warehouseKeeper": "Warehouse Keeper",
+      "warehouseKeeperDescription": "Manage inventory and assigned zones.",
+      "security": "Security Manager",
+      "securityDescription": "Monitor alerts and security events.",
+      "zones": "Access Zones",
+      "send": "Send Invitation",
+      "cancel": "Cancel"
+    },
+    "permissions": {
+      "title": "Edit Permissions",
+      "assignedZones": "Assigned Zones",
+      "selectZones": "Select the zones this user can access.",
+      "save": "Save Changes",
+      "zone1": "Zone A (Main Warehouse)",
+      "zone2": "Zone B (Quarantine / Restrictions)",
+      "zone3": "Zone C (Loading & Unloading)"
+    },
+    "delete": {
+      "title": "Delete user?",
+      "message": "This action will permanently remove the user and their access permissions.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
     }
   }
 }
