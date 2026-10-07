@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "server": "json-server --watch server/db.json --routes server/routes.json --port 3000",
-    "build:gh-pages": "ng build --base-href /SafeZone-website/ && node -e \"const f=require('fs');f.copyFileSync('dist/node-secure/browser/index.html','dist/node-secure/browser/404.html');f.writeFileSync('dist/node-secure/browser/.nojekyll','')\""  },
+    "build:gh-pages": "ng build --base-href /SafeZone-website/ && node -e \"const f=require('fs');f.copyFileSync('dist/node-secure/browser/index.html','dist/node-secure/browser/404.html');f.writeFileSync('dist/node-secure/browser/.nojekyll','')\""
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^22.2.1",
@@ -24,6 +25,8 @@
     "@angular/router": "^22.2.1",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -43,6 +46,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "nodemon": "^3.1.14",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.45.0"
   }

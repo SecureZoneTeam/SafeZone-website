@@ -5,10 +5,6 @@ import { BaseEntity } from '../domain/model/base-entity';
 import { BaseResponse } from './base-response';
 import { BaseAssembler } from './base-assembler';
 
-/**
- * Base API endpoint providing the CRUD operations every bounded context reuses.
- * Concrete endpoints only declare their resource path and their assembler.
- */
 export abstract class BaseApiEndpoint<
   TEntity extends BaseEntity,
   TResource extends BaseResponse,
