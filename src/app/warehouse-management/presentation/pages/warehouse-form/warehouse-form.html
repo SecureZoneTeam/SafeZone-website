@@ -4,30 +4,68 @@
     <h1 class="ns-page__title">{{ 'warehouses.form.createTitle' | translate }}</h1>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
+      @if (submitError) {
+        <div class="warehouse-form__error" role="alert">
+          {{submitError}}
+        </div>
+      }
       <mat-form-field appearance="outline" class="warehouse-form__field">
         <mat-label>{{ 'warehouses.form.name' | translate }}</mat-label>
         <input matInput formControlName="name" required />
+
+        @if (form.controls.name.hasError('required') &&
+          form.controls.name.touched){
+          <mat-error>El nombre es obligatorio.</mat-error>
+        }
+
+        @if (form.controls.name.hasError('maxlenght')){
+          <mat-error>El nombre no puede superar los 80 caracteres.</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="warehouse-form__field">
         <mat-label>{{ 'warehouses.form.street' | translate }}</mat-label>
         <input matInput formControlName="street" required />
+
+        @if (form.controls.street.hasError('required') &&
+        form.controls.street.touched) {
+          <mat-error>La dirección es obligatoria.</mat-error>
+        }
       </mat-form-field>
 
       <div class="warehouse-form__row">
         <mat-form-field appearance="outline" class="warehouse-form__field">
           <mat-label>{{ 'warehouses.form.district' | translate }}</mat-label>
           <input matInput formControlName="district" required />
+
+          @if (form.controls.district.hasError('required') &&
+          form.controls.district.touched) {
+            <mat-error>El distrito es obligatorio.</mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="warehouse-form__field">
           <mat-label>{{ 'warehouses.form.city' | translate }}</mat-label>
           <input matInput formControlName="city" required />
+
+          @if (form.controls.city.hasError('required') &&
+          form.controls.city.touched) {
+            <mat-error>La ciudad es obligatoria.</mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="warehouse-form__field">
           <mat-label>{{ 'warehouses.form.country' | translate }}</mat-label>
           <input matInput formControlName="country" maxlength="2" required />
+
+          @if (form.controls.country.hasError('required') &&
+          form.controls.country.touched) {
+            <mat-error>El país es obligatorio.</mat-error>
+          }
+
+          @if (form.controls.country.hasError('maxlength')) {
+            <mat-error>Usa un código de máximo 2 caracteres.</mat-error>
+          }
         </mat-form-field>
       </div>
 
@@ -35,8 +73,8 @@
         <a class="ns-button ns-button--secondary" routerLink="/warehouses">
           {{ 'shared.actions.cancel' | translate }}
         </a>
-        <button class="ns-button ns-button--primary" type="submit">
-          {{ 'shared.actions.save' | translate }}
+        <button class="ns-button ns-button--primary" type="submit" [disabled]="submitting || form.invalid">
+          {{ submitting ? 'Guardando...' : ('shared.actions.save' | translate)}}
           <span aria-hidden="true">&rarr;</span>
         </button>
       </div>

@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslatePipe } from '@ngx-translate/core';
 
 import { SubscriptionStore } from '../../../application/subscription.store';
 
 @Component({
   selector: 'app-subscription-plan-list',
-  imports: [MatProgressBarModule, TranslatePipe],
+  imports: [MatProgressBarModule],
   templateUrl: './subscription-plan-list.html',
   styleUrl: './subscription-plan-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush

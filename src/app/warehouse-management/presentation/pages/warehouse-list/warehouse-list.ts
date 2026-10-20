@@ -7,7 +7,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { WarehouseStore } from '../../../application/warehouse.store';
-import {LanguageSwitcher} from "../../../../shared/presentation/components/language-switcher/language-switcher";
 
 /** Warehouse list view (user story US01). */
 @Component({
@@ -18,8 +17,7 @@ import {LanguageSwitcher} from "../../../../shared/presentation/components/langu
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
-    TranslatePipe,
-    LanguageSwitcher
+    TranslatePipe
   ],
   templateUrl: './warehouse-list.html',
   styleUrl: './warehouse-list.css',

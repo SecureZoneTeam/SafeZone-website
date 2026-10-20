@@ -1,12 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ReportingStore } from '../../../application/reporting.store';
-import {LanguageSwitcher} from "../../../../shared/presentation/components/language-switcher/language-switcher";
 
 /** Immutable traceability log with filters (user stories US08 and US10). */
 @Component({
@@ -14,10 +12,7 @@ import {LanguageSwitcher} from "../../../../shared/presentation/components/langu
   imports: [
     DatePipe,
     MatTableModule,
-    MatSlideToggleModule,
-    MatProgressBarModule,
-    TranslatePipe,
-    LanguageSwitcher
+    MatProgressBarModule
   ],
   templateUrl: './traceability-log.html',
   styleUrl: './traceability-log.css',

@@ -11,6 +11,7 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { IamStore } from '../../../../iam/application/iam.store';
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-layout',
@@ -20,7 +21,8 @@ import { IamStore } from '../../../../iam/application/iam.store';
     RouterLink,
     RouterLinkActive,
     LanguageSwitcher,
-    TranslatePipe
+    TranslatePipe,
+    NgOptimizedImage
   ],
 
   templateUrl: './layout.html',

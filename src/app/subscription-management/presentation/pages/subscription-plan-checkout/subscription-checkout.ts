@@ -8,16 +8,11 @@ import {
 
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { TranslatePipe } from '@ngx-translate/core';
-
 import { SubscriptionStore } from '../../../application/subscription.store';
 
 @Component({
   selector: 'app-subscription-checkout',
   standalone: true,
-  imports: [
-    TranslatePipe
-  ],
   templateUrl: './subscription-checkout.html',
   styleUrl: './subscription-checkout.css',
   changeDetection: ChangeDetectionStrategy.OnPush
