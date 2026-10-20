@@ -1,0 +1,120 @@
+
+<section class="warehouse-detail">
+  @if (loading()) {
+    <p class="warehouse-detail__message">
+      Cargando información del almacén...
+    </p>
+  } @else if (error()) {
+    <div class="warehouse-detail__error" role="alert">
+      {{ error() }}
+    </div>
+    <a class="warehouse-detail__secondary" routerLink="/warehouses">
+      ← Volver a mis almacenes
+    </a>
+  } @else if (warehouse(); as item) {
+    <a class="warehouse-detail__back" routerLink="/warehouses">
+      ← Volver a mis almacenes
+    </a>
+
+    <header class="warehouse-detail__header">
+      <div>
+        <h1>{{ item.name }}</h1>
+        <span
+          class="warehouse-detail__status"
+          [class.warehouse-detail__status--inactive]="item.status !== 'ACTIVE'"
+        >
+          <span class="warehouse-detail__status-dot"></span>
+          {{ item.status === 'ACTIVE' ? 'Activo' : 'Suspendido' }}
+        </span>
+      </div>
+
+      <a
+        class="warehouse-detail__edit"
+        [routerLink]="['/warehouses', item.id, 'edit']"
+      >
+        Editar almacén
+      </a>
+    </header>
+
+    <section class="warehouse-detail__summary">
+      <article class="warehouse-detail__card">
+        <header class="warehouse-detail__card-header">
+          <h2>Información del almacén</h2>
+        </header>
+
+        <div class="warehouse-detail__card-body">
+          <div class="warehouse-detail__row">
+            <span>Dirección</span>
+            <strong>{{ item.address.street }}</strong>
+          </div>
+          <div class="warehouse-detail__row">
+            <span>Distrito</span>
+            <strong>{{ item.address.district }}</strong>
+          </div>
+          <div class="warehouse-detail__row">
+            <span>Ciudad</span>
+            <strong>{{ item.address.city }}</strong>
+          </div>
+          <div class="warehouse-detail__row">
+            <span>País</span>
+            <strong>{{ item.address.country }}</strong>
+          </div>
+          <div class="warehouse-detail__row">
+            <span>Zonas registradas</span>
+            <strong>{{ item.zoneCount }}</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="warehouse-detail__card">
+        <header class="warehouse-detail__card-header">
+          <h2>Nodos IoT</h2>
+        </header>
+
+        <div class="warehouse-detail__card-body">
+          <p class="warehouse-detail__description">
+            Los sensores vinculados a las zonas de este almacén se consultarán
+            desde el módulo de dispositivos IoT.
+          </p>
+
+          <a class="warehouse-detail__secondary" routerLink="/devices">
+            Ver dispositivos IoT →
+          </a>
+        </div>
+      </article>
+
+      <article class="warehouse-detail__card warehouse-detail__card--wide">
+        <header class="warehouse-detail__card-header">
+          <h2>Últimos movimientos físicos</h2>
+        </header>
+
+        <div class="warehouse-detail__card-body">
+          <p class="warehouse-detail__description">
+            Los movimientos y alertas asociados a este almacén se mostrarán
+            aquí cuando conectemos la consulta de trazabilidad.
+          </p>
+
+          <a class="warehouse-detail__secondary" routerLink="/traceability">
+            Ver trazabilidad →
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <footer class="warehouse-detail__actions">
+      <a
+        class="warehouse-detail__primary"
+        routerLink="/traceability"
+      >
+        Ver trazabilidad
+      </a>
+
+      <a
+        class="warehouse-detail__secondary"
+        routerLink="/warehouses"
+      >
+        Volver a mis almacenes
+      </a>
+    </footer>
+  }
+</section>

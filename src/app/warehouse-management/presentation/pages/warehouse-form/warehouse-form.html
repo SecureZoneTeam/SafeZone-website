@@ -1,7 +1,13 @@
 <section class="ns-page warehouse-form">
   <div class="ns-panel warehouse-form__panel">
     <span class="ns-page__badge">{{ 'warehouses.list.badge' | translate }}</span>
-    <h1 class="ns-page__title">{{ 'warehouses.form.createTitle' | translate }}</h1>
+    <h1 class="ns-page__title">
+      {{
+        (isEditMode
+          ? 'warehouses.form.editTitle'
+          : 'warehouses.form.createTitle') | translate
+      }}
+    </h1>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       @if (submitError) {
@@ -73,8 +79,16 @@
         <a class="ns-button ns-button--secondary" routerLink="/warehouses">
           {{ 'shared.actions.cancel' | translate }}
         </a>
-        <button class="ns-button ns-button--primary" type="submit" [disabled]="submitting || form.invalid">
-          {{ submitting ? 'Guardando...' : ('shared.actions.save' | translate)}}
+        <button
+          class="ns-button ns-button--primary"
+          type="submit"
+          [disabled]="submitting || form.invalid"
+        >
+          {{
+            (submitting
+              ? 'shared.actions.saving'
+              : 'shared.actions.save') | translate
+          }}
           <span aria-hidden="true">&rarr;</span>
         </button>
       </div>

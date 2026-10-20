@@ -84,6 +84,17 @@
       "country": "PE",
       "status": "SUSPENDED",
       "zoneCount": 1
+    },
+    {
+      "id": 4,
+      "companyId": 1,
+      "name": "CodeVibe",
+      "street": "Primavera",
+      "district": "San borja",
+      "city": "Lima",
+      "country": "PE",
+      "status": "ACTIVE",
+      "zoneCount": 0
     }
   ],
   "warehouse-zones": [],

@@ -49,6 +49,22 @@ export const routes: Routes = [
       },
 
       {
+        path: 'warehouses/:id',
+        title: 'View Warehouse | NodeSecure',
+        loadComponent: () =>
+          import('./warehouse-management/presentation/pages/warehouse-detail/warehouse-detail')
+            .then((m) => m.WarehouseDetail)
+      },
+
+      {
+        path: 'warehouses/:id/edit',
+        title: 'Edit Warehuose | NodeSecure',
+        loadComponent: () =>
+          import ('./warehouse-management/presentation/pages/warehouse-form/warehouse-form')
+            .then((m) => m.WarehouseForm)
+      },
+
+      {
         path: 'devices',
         title: 'IoT Devices | NodeSecure',
         loadComponent: () =>

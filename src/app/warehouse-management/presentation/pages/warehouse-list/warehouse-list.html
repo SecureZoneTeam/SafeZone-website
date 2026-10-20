@@ -60,8 +60,6 @@
 
   }
 
-
-  <!-- EMPTY -->
   @if (warehouseStore.isEmpty()) {
 
     <div class="warehouse-empty">
@@ -86,7 +84,6 @@
   } @else {
 
 
-    <!-- TABLE -->
     <div class="warehouse-table-wrapper">
 
       <table
@@ -96,7 +93,6 @@
       >
 
 
-        <!-- NAME -->
         <ng-container matColumnDef="name">
 
           <th
@@ -138,7 +134,6 @@
         </ng-container>
 
 
-        <!-- DISTRICT -->
         <ng-container matColumnDef="district">
 
           <th
@@ -160,7 +155,6 @@
         </ng-container>
 
 
-        <!-- ZONES -->
         <ng-container matColumnDef="zones">
 
           <th
@@ -238,14 +232,19 @@
                 type="button"
                 class="action-button"
                 title="View warehouse"
+                [routerLink]="['/warehouses', warehouse.id]"
               >
-
-                <mat-icon>
-                  visibility
-                </mat-icon>
-
+                <mat-icon>visibility</mat-icon>
               </button>
 
+              <button
+                type="button"
+                class="action-button"
+                title="Edit warehouse"
+                [routerLink]="['/warehouses', warehouse.id, 'edit']"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
               <button
                 type="button"
