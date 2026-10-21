@@ -93,5 +93,121 @@
         </button>
       </div>
     </form>
+    @if (isEditMode) {
+      <section class="warehouse-zones">
+        <div class="warehouse-zones__header">
+          <div>
+            <span class="warehouse-zones__badge">WAREHOUSE MANAGEMENT</span>
+            <h2>Zonas del almacén</h2>
+            <p>Administra las áreas donde instalarás tus dispositivos IoT.</p>
+          </div>
+          <span class="warehouse-zones__count">{{ zones().length }} zonas</span>
+        </div>
+
+        <form
+          class="zone-form"
+          [formGroup]="zoneForm"
+          (ngSubmit)="createZone()"
+        >
+          <div class="zone-form__grid">
+            <div class="zone-field zone-field--wide">
+              <label for="zoneName">Nombre de la zona</label>
+              <input
+                id="zoneName"
+                type="text"
+                formControlName="name"
+                placeholder="Ej. Almacén principal"
+              />
+            </div>
+
+            <div class="zone-field">
+              <label for="zoneCode">Código</label>
+              <input
+                id="zoneCode"
+                type="text"
+                formControlName="code"
+                placeholder="Ej. ZONA-01"
+              />
+            </div>
+
+            <div class="zone-field">
+              <label for="zoneRisk">Nivel de riesgo</label>
+              <select id="zoneRisk" formControlName="riskLevel">
+                @for (risk of riskLevels; track risk.value) {
+                  <option [ngValue]="risk.value">{{ risk.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="zone-field">
+              <label for="zoneStart">Inicio del turno</label>
+              <input
+                id="zoneStart"
+                type="time"
+                formControlName="openingShiftStart"
+              />
+            </div>
+
+            <div class="zone-field">
+              <label for="zoneEnd">Fin del turno</label>
+              <input
+                id="zoneEnd"
+                type="time"
+                formControlName="openingShiftEnd"
+              />
+            </div>
+          </div>
+
+          @if (zoneError) {
+            <p class="zone-message zone-message--error" role="alert">
+              {{ zoneError }}
+            </p>
+          }
+
+          @if (zoneSuccess) {
+            <p class="zone-message zone-message--success" role="status">
+              {{ zoneSuccess }}
+            </p>
+          }
+
+          <div class="zone-form__actions">
+            <button
+              type="submit"
+              class="ns-button ns-button--primary"
+              [disabled]="savingZone || zoneForm.invalid"
+            >
+              <span>{{ savingZone ? 'Guardando...' : '＋ Agregar zona' }}</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="warehouse-zones__list">
+          <div class="warehouse-zones__list-header">
+            <h3>Zonas registradas</h3>
+            <span>{{ zones().length }}</span>
+          </div>
+
+          @for (zone of zones(); track zone.id) {
+            <article class="zone-item">
+              <div class="zone-item__icon">⌖</div>
+              <div class="zone-item__content">
+                <strong>{{ zone.name }}</strong>
+                <span>{{ zone.code }}</span>
+              </div>
+              <span
+                class="zone-risk"
+                [class.zone-risk--high]="zone.riskLevel === 'HIGH' || zone.riskLevel === 'CRITICAL'"
+              >
+          {{ zone.riskLevel }}
+        </span>
+            </article>
+          } @empty {
+            <div class="zone-empty">
+              Todavía no hay zonas registradas en este almacén.
+            </div>
+          }
+        </div>
+      </section>
+    }
   </div>
 </section>

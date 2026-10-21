@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,6 +24,7 @@ export class WarehouseDetail implements OnInit {
   protected readonly warehouse = signal<Warehouse | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal('');
+
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

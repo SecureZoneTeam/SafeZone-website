@@ -1,9 +1,9 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 
 import {
@@ -26,7 +26,11 @@ import { finalize } from 'rxjs';
 import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse } from '../../../domain/model/warehouse.entity';
 import { StreetAddress } from '../../../domain/model/street-address';
-
+import { WarehouseZonesApiEndpoint } from '../../../infrastructure/warehouse-zones-api.endpoint';
+import {
+  WarehouseZone,
+  ZoneRiskLevel
+} from '../../../domain/model/warehouse-zone.entity';
 @Component({
   selector: 'app-warehouse-form',
   imports: [
@@ -52,6 +56,27 @@ export class WarehouseForm implements OnInit {
   protected submitting = false;
 
   private currentWarehouse: Warehouse | null = null;
+  private readonly zonesApi = inject(WarehouseZonesApiEndpoint);
+
+  protected readonly zones = signal<WarehouseZone[]>([]);
+  protected savingZone = false;
+  protected zoneError = '';
+  protected zoneSuccess = '';
+
+  protected readonly riskLevels = [
+    { value: ZoneRiskLevel.Low, label: 'Bajo' },
+    { value: ZoneRiskLevel.Medium, label: 'Medio' },
+    { value: ZoneRiskLevel.High, label: 'Alto' },
+    { value: ZoneRiskLevel.Critical, label: 'Crítico' }
+  ];
+
+  protected readonly zoneForm = this.formBuilder.nonNullable.group({
+    name: ['', [Validators.required, Validators.maxLength(80)]],
+    code: ['', [Validators.required, Validators.maxLength(30)]],
+    riskLevel: [ZoneRiskLevel.Low, Validators.required],
+    openingShiftStart: ['08:00', Validators.required],
+    openingShiftEnd: ['18:00', Validators.required]
+  });
 
   protected readonly form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(80)]],
@@ -60,6 +85,64 @@ export class WarehouseForm implements OnInit {
     city: ['Lima', [Validators.required]],
     country: ['PE', [Validators.required, Validators.maxLength(2)]]
   });
+
+  private loadZones(warehouseId: number | string): void {
+    this.zonesApi.getAll().subscribe({
+      next: (allZones) => {
+        this.zones.set(
+          allZones.filter(
+            zone => String(zone.warehouseId) === String(warehouseId)
+          )
+        );
+      },
+      error: () => {
+        this.zoneError = 'No se pudieron cargar las zonas.';
+      }
+    });
+  }
+
+  protected createZone(): void {
+    this.zoneError = '';
+    this.zoneSuccess = '';
+
+    if (!this.currentWarehouse || this.zoneForm.invalid || this.savingZone) {
+      this.zoneForm.markAllAsTouched();
+      return;
+    }
+
+    const value = this.zoneForm.getRawValue();
+
+    const zone = new WarehouseZone({
+      warehouseId: this.currentWarehouse.id,
+      name: value.name.trim(),
+      code: value.code.trim(),
+      riskLevel: value.riskLevel,
+      openingShiftStart: value.openingShiftStart,
+      openingShiftEnd: value.openingShiftEnd
+    });
+
+    this.savingZone = true;
+
+    this.zonesApi.create(zone).subscribe({
+      next: () => {
+        this.zoneForm.reset({
+          name: '',
+          code: '',
+          riskLevel: ZoneRiskLevel.Low,
+          openingShiftStart: '08:00',
+          openingShiftEnd: '18:00'
+        });
+
+        this.zoneSuccess = 'Zona creada correctamente.';
+        this.loadZones(this.currentWarehouse!.id);
+        this.savingZone = false;
+      },
+      error: (error: Error) => {
+        this.zoneError = error.message || 'No se pudo crear la zona.';
+        this.savingZone = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -80,7 +163,7 @@ export class WarehouseForm implements OnInit {
       .subscribe({
         next: (warehouse) => {
           this.currentWarehouse = warehouse;
-
+          this.loadZones(warehouse.id);
           this.form.patchValue({
             name: warehouse.name,
             street: warehouse.address.street,

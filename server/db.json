@@ -90,14 +90,60 @@
       "companyId": 1,
       "name": "CodeVibe",
       "street": "Primavera",
-      "district": "San borja",
+      "district": "Surco",
       "city": "Lima",
       "country": "PE",
       "status": "ACTIVE",
       "zoneCount": 0
     }
   ],
-  "warehouse-zones": [],
+  "warehouse-zones": [
+    {
+      "id": 1,
+      "warehouseId": 1,
+      "name": "Zona de recepción",
+      "code": "CALLAO-REC-01",
+      "riskLevel": "MEDIUM",
+      "openingShiftStart": "08:00",
+      "openingShiftEnd": "18:00"
+    },
+    {
+      "id": 2,
+      "warehouseId": 2,
+      "name": "Zona de almacenamiento",
+      "code": "ATE-ALM-01",
+      "riskLevel": "MEDIUM",
+      "openingShiftStart": "08:00",
+      "openingShiftEnd": "18:00"
+    },
+    {
+      "id": 3,
+      "warehouseId": 3,
+      "name": "Zona de carga",
+      "code": "VES-CAR-01",
+      "riskLevel": "HIGH",
+      "openingShiftStart": "07:00",
+      "openingShiftEnd": "19:00"
+    },
+    {
+      "id": 4,
+      "warehouseId": 4,
+      "name": "Zona principal",
+      "code": "CODEVIBE-PRI-01",
+      "riskLevel": "LOW",
+      "openingShiftStart": "08:00",
+      "openingShiftEnd": "18:00"
+    },
+    {
+      "id": 5,
+      "warehouseId": 4,
+      "name": "Almacen Principal",
+      "code": "Zona 01",
+      "riskLevel": "LOW",
+      "openingShiftStart": "08:00",
+      "openingShiftEnd": "18:00"
+    }
+  ],
   "sensor-nodes": [
     {
       "id": 1,
@@ -105,8 +151,8 @@
       "macAddress": "A4:CF:12:9B:1E:44",
       "model": "ESP32-WROOM-32",
       "sensorType": "MAGNETIC_CONTACT",
-      "connectionStatus": "ONLINE",
-      "lastPingAt": "2026-10-04T18:40:12Z"
+      "connectionStatus": "OFFLINE",
+      "lastPingAt": "2026-10-04T18:40:12.000Z"
     },
     {
       "id": 2,
@@ -114,8 +160,8 @@
       "macAddress": "A4:CF:12:9B:1E:91",
       "model": "ESP32-WROOM-32",
       "sensorType": "MAGNETIC_CONTACT",
-      "connectionStatus": "ONLINE",
-      "lastPingAt": "2026-10-04T18:41:02Z"
+      "connectionStatus": "OFFLINE",
+      "lastPingAt": "2026-10-04T18:41:02.000Z"
     },
     {
       "id": 3,
@@ -128,12 +174,30 @@
     },
     {
       "id": 4,
-      "zoneId": 4,
+      "zoneId": 5,
       "macAddress": "A4:CF:12:9B:2C:A3",
       "model": "ESP32-C3",
+      "sensorType": "MOTION",
+      "connectionStatus": "OFFLINE",
+      "lastPingAt": "2026-10-04T18:39:55.000Z"
+    },
+    {
+      "id": 5,
+      "zoneId": 4,
+      "macAddress": "A4:CF:12:9B:3D:10",
+      "model": "ESP32-WROOM-32p",
       "sensorType": "MAGNETIC_CONTACT",
-      "connectionStatus": "ONLINE",
-      "lastPingAt": "2026-10-04T18:39:55Z"
+      "connectionStatus": "OFFLINE",
+      "lastPingAt": null
+    },
+    {
+      "id": 6,
+      "zoneId": 5,
+      "macAddress": "97:D9:4F:CA:EE:8E",
+      "model": "RFID32-WROOM-24",
+      "sensorType": "RFIDReader",
+      "connectionStatus": "OFFLINE",
+      "lastPingAt": null
     }
   ],
   "physical-events": [

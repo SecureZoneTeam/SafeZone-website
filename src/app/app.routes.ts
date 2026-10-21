@@ -81,6 +81,14 @@ export const routes: Routes = [
       },
 
       {
+        path: 'devices/edit/:id',
+        title: 'Edit IoT Device | NodeScure',
+        loadComponent: () =>
+          import('./sensor-integration/presentation/pages/sensor-node-form/sensor-node-form')
+          .then((m) => m.SensorNodeForm)
+      },
+
+      {
         path: 'team',
         title: 'Team & Access | NodeSecure',
         loadComponent: () =>

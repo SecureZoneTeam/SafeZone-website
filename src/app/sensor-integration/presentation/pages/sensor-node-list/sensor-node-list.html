@@ -31,19 +31,33 @@
 
   <!-- CONTROL BAR -->
   <div class="devices-toolbar">
+    <div class="devices-toolbar">
+      <div class="warehouse-filter">
+        <label for="warehouseFilter">
+          <span>⌕</span>
+          Filtrar por warehouse
+        </label>
 
-    <button
-      type="button"
-      class="warehouse-select"
-    >
-      <span>Almacén Central</span>
-      <span class="select-arrow">⌄</span>
-    </button>
+        <select
+          id="warehouseFilter"
+          [value]="selectedWarehouseId()"
+          (change)="onWarehouseFilterChange($any($event.target).value)"
+        >
+          <option value="all">Todos los almacenes</option>
 
-    <span class="device-total">
-      <strong>{{ sensorIntegrationStore.sensorNodes().length }}</strong>
-      dispositivos
-    </span>
+          @for (warehouse of warehouses(); track warehouse.id) {
+            <option [value]="warehouse.id">
+              {{ warehouse.name }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <span class="device-total">
+        <strong>{{ filteredSensorNodes().length }}</strong>
+        dispositivos
+      </span>
+    </div>
 
   </div>
 
@@ -57,83 +71,58 @@
 
   }
 
-
-  <!-- =====================================================
-       MAGNETIC SENSORS
-       ===================================================== -->
-
+  <!-- MAGNETIC SENSORS -->
   <section class="device-section">
-
     <div class="section-heading">
-
       <h2>Sensores Magnéticos</h2>
-
       <span class="section-count">
-        {{ sensorIntegrationStore.sensorNodes().length }}
+        {{ magneticSensors().length }}
       </span>
-
     </div>
 
 
     <div class="device-grid">
-
       @for (
-        node of sensorIntegrationStore.sensorNodes();
+        node of magneticSensors();
         track node.macAddress.value
         ) {
-
         <article
           class="device-card"
           [class.device-card--offline]="!node.isOnline"
         >
-
           <div
             class="device-status-bar"
             [class.device-status-bar--offline]="!node.isOnline"
           ></div>
 
-
           <div class="device-card__icon">
-
             <span
               [class.icon-offline]="!node.isOnline"
             >
               ◉
             </span>
-
           </div>
 
-
           <div class="device-card__content">
-
             <div class="device-card__top">
-
               <div>
-
                 <h3>
                   {{ node.model }}
                 </h3>
-
                 <span class="device-type">
                   Sensor magnético
                 </span>
-
               </div>
-
 
               <span
                 class="status"
                 [class.status--offline]="!node.isOnline"
               >
-
                 <span class="status__dot"></span>
-
                 {{ node.isOnline ? 'Online' : 'Offline' }}
-
               </span>
 
             </div>
-
 
             <div class="device-card__info">
 
@@ -154,7 +143,33 @@
                 </span>
               </div>
 
+              <div>
+                <span class="info-label">Warehouse</span>
+                <span class="info-value">
+                  {{ getWarehouseName(node.zoneId) }}
+                </span>
+              </div>
+
             </div>
+
+            <div class="device-card__actions">
+              <a
+                [routerLink]="['/devices/edit', node.id]"
+                class="edit-device-button"
+              >
+                Editar datos
+              </a>
+
+              <button
+                type="button"
+                class="toggle-status-button"
+                [class.toggle-status-button--online]="!node.isOnline"
+                (click)="toggleSensorStatus(node)"
+              >
+                {{ node.isOnline ? 'Desconectar' : 'Activar' }}
+              </button>
+            </div>
+
 
           </div>
 
@@ -166,41 +181,194 @@
 
   </section>
 
-
-  <!-- =====================================================
-       RFID
-       ===================================================== -->
-
+  <!--Motion Sensors-->
   <section class="device-section">
-
     <div class="section-heading">
-
-      <h2>Lectores RFID</h2>
-
+      <h2>Sensores de movimiento</h2>
       <span class="section-count">
-        0
-      </span>
-
+      {{ motionSensors().length }}
+    </span>
     </div>
 
-
-    <div class="empty-device-card">
-
-      <div class="empty-device-icon">
-        RFID
+    @if (motionSensors().length === 0) {
+      <div class="empty-device-card">
+        <div class="empty-device-icon">MOV</div>
+        <div>
+          <h3>No hay sensores de movimiento registrados</h3>
+          <p>Vincula un dispositivo para comenzar a monitorear movimiento.</p>
+        </div>
       </div>
+    } @else {
+      <div class="device-grid">
+        @for (node of motionSensors(); track node.macAddress.value) {
+          <article
+            class="device-card"
+            [class.device-card--offline]="!node.isOnline"
+          >
+            <div
+              class="device-status-bar"
+              [class.device-status-bar--offline]="!node.isOnline"
+            ></div>
 
-      <div>
-        <h3>No hay lectores RFID registrados</h3>
+            <div class="device-card__icon">
+              <span [class.icon-offline]="!node.isOnline">◉</span>
+            </div>
 
-        <p>
-          Vincula un nuevo dispositivo para comenzar a monitorear
-          movimientos mediante RFID.
-        </p>
+            <div class="device-card__content">
+              <div class="device-card__top">
+                <div>
+                  <h3>{{ node.model }}</h3>
+                  <span class="device-type">Sensor de movimiento</span>
+                </div>
+
+                <span
+                  class="status"
+                  [class.status--offline]="!node.isOnline"
+                >
+          <span class="status__dot"></span>
+                  {{ node.isOnline ? 'Online' : 'Offline' }}
+        </span>
+              </div>
+
+              <div class="device-card__info">
+                <div>
+                  <span class="info-label">MAC Address</span>
+                  <code>{{ node.macAddress.value }}</code>
+                </div>
+
+                <div>
+                  <span class="info-label">Zona</span>
+                  <span class="info-value">{{ getZoneName(node.zoneId) }}</span>
+                </div>
+
+                <div>
+                  <span class="info-label">Warehouse</span>
+                  <span class="info-value">
+            {{ getWarehouseName(node.zoneId) }}
+          </span>
+                </div>
+              </div>
+
+              <div class="device-card__actions">
+                <a
+                  [routerLink]="['/devices/edit', node.id]"
+                  class="edit-device-button"
+                >
+                  Editar datos
+                </a>
+
+                <button
+                  type="button"
+                  class="toggle-status-button"
+                  [class.toggle-status-button--online]="!node.isOnline"
+                  (click)="toggleSensorStatus(node)"
+                >
+                  {{ node.isOnline ? 'Desconectar' : 'Activar' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
       </div>
+    }
+  </section>
 
+  <!-- RFID -->
+  <section class="device-section">
+    <div class="section-heading">
+      <h2>Lectores RFID</h2>
+      <span class="section-count">
+      {{ rfidReaders().length }}
+    </span>
     </div>
 
+    @if (rfidReaders().length === 0) {
+      <div class="empty-device-card">
+        <div class="empty-device-icon">
+          RFID
+        </div>
+
+        <div>
+          <h3>No hay lectores RFID registrados</h3>
+          <p>
+            Vincula un nuevo dispositivo para comenzar a monitorear
+            movimientos mediante RFID.
+          </p>
+        </div>
+      </div>
+    } @else {
+      <div class="device-grid">
+        @for (node of rfidReaders(); track node.macAddress.value) {
+          <article
+            class="device-card"
+            [class.device-card--offline]="!node.isOnline"
+          >
+            <div
+              class="device-status-bar"
+              [class.device-status-bar--offline]="!node.isOnline"
+            ></div>
+
+            <div class="device-card__icon">
+              <span [class.icon-offline]="!node.isOnline">◉</span>
+            </div>
+
+            <div class="device-card__content">
+              <div class="device-card__top">
+                <div>
+                  <h3>{{ node.model }}</h3>
+                  <span class="device-type">Lector RFID</span>
+                </div>
+
+                <span
+                  class="status"
+                  [class.status--offline]="!node.isOnline"
+                >
+                <span class="status__dot"></span>
+                  {{ node.isOnline ? 'Online' : 'Offline' }}
+              </span>
+              </div>
+
+              <div class="device-card__info">
+                <div>
+                  <span class="info-label">MAC Address</span>
+                  <code>{{ node.macAddress.value }}</code>
+                </div>
+
+                <div>
+                  <span class="info-label">Zona</span>
+                  <span class="info-value">{{getZoneName(node.zoneId)}}</span>
+                </div>
+
+                <div>
+                  <span class="info-label">Warehouse</span>
+                  <span class="info-value">
+                  {{ getWarehouseName(node.zoneId) }}
+                </span>
+                </div>
+              </div>
+
+              <div class="device-card__actions">
+                <a
+                  [routerLink]="['/devices/edit', node.id]"
+                  class="edit-device-button"
+                >
+                  Editar datos
+                </a>
+
+                <button
+                  type="button"
+                  class="toggle-status-button"
+                  [class.toggle-status-button--online]="!node.isOnline"
+                  (click)="toggleSensorStatus(node)"
+                >
+                  {{ node.isOnline ? 'Desconectar' : 'Activar' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
   </section>
 
 </section>

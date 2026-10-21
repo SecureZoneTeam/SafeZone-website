@@ -30,3 +30,242 @@
     grid-template-columns: 1fr;
   }
 }
+/* Zonas del almacén */
+.warehouse-zones {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid #d8dee9;
+  color: #172033;
+}
+
+.warehouse-zones__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.warehouse-zones__badge {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #e8efff;
+  color: #2864df;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+}
+
+.warehouse-zones__header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.45rem;
+  font-weight: 750;
+}
+
+.warehouse-zones__header p {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+.warehouse-zones__count,
+.warehouse-zones__list-header > span {
+  flex-shrink: 0;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background: #e8efff;
+  color: #2864df;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.zone-form {
+  padding: 1.25rem;
+  border: 1px solid #dce3ed;
+  border-radius: 1rem;
+  background: #f8faff;
+}
+
+.zone-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.zone-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.zone-field--wide {
+  grid-column: span 2;
+}
+
+.zone-field label {
+  color: #344054;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.zone-field input,
+.zone-field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.65rem;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.zone-field input:focus,
+.zone-field select:focus {
+  border-color: #3478f6;
+  box-shadow: 0 0 0 3px rgb(52 120 246 / 13%);
+}
+
+.zone-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+.zone-form__actions button {
+  min-height: 44px;
+}
+
+.zone-form__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.warehouse-zones__list {
+  margin-top: 1.75rem;
+}
+
+.warehouse-zones__list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.warehouse-zones__list-header h3 {
+  margin: 0;
+  color: #344054;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.zone-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.65rem;
+  padding: 1rem;
+  border: 1px solid #e0e6ef;
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.zone-item__icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: #eaf0ff;
+  color: #2864df;
+  font-size: 1.5rem;
+}
+
+.zone-item__content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.zone-item__content strong {
+  overflow-wrap: anywhere;
+  color: #172033;
+  font-size: 0.9rem;
+}
+
+.zone-item__content > span {
+  overflow-wrap: anywhere;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.zone-risk {
+  flex-shrink: 0;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: #e8f8ef;
+  color: #15803d;
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.zone-risk--high {
+  background: #fff0f0;
+  color: #c62828;
+}
+
+.zone-message {
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+}
+
+.zone-message--error {
+  color: #c62828;
+}
+
+.zone-message--success {
+  color: #15803d;
+}
+
+.zone-empty {
+  padding: 1.25rem;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.85rem;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .warehouse-zones__header {
+    flex-direction: column;
+  }
+
+  .zone-form__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zone-field--wide {
+    grid-column: auto;
+  }
+
+  .zone-form {
+    padding: 1rem;
+  }
+
+  .zone-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
