@@ -779,3 +779,17 @@ code {
     min-width: 0;
   }
 }
+.toggle-status-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.warehouse-suspended-notice {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #7f1d1d;
+  border-radius: 8px;
+  background: #450a0a;
+  color: #fca5a5;
+  font-size: 13px;
+}

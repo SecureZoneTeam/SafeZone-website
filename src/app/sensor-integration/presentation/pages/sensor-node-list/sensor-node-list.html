@@ -361,7 +361,9 @@
                   [class.toggle-status-button--online]="!node.isOnline"
                   (click)="toggleSensorStatus(node)"
                 >
-                  {{ node.isOnline ? 'Desconectar' : 'Activar' }}
+                  {{ isWarehouseSuspended(node.zoneId)
+                  ? 'Almacén suspendido'
+                  : node.isOnline ? 'Desconectar' : 'Activar' }}
                 </button>
               </div>
             </div>

@@ -8,7 +8,8 @@
       "roles": [
         "ROLE_ADMINISTRATOR"
       ],
-      "companyId": 1
+      "companyId": 1,
+      "warehouseId": 4
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "roles": [
         "ROLE_SECURITY_MANAGER"
       ],
-      "companyId": 1
+      "companyId": 1,
+      "warehouseId": 3
     },
     {
       "id": 3,
@@ -28,7 +30,8 @@
       "roles": [
         "ROLE_WAREHOUSE_KEEPER"
       ],
-      "companyId": 1
+      "companyId": 1,
+      "warehouseId": 2
     },
     {
       "id": 4,
@@ -38,7 +41,8 @@
       "roles": [
         "ROLE_AUDITOR"
       ],
-      "companyId": 1
+      "companyId": 1,
+      "warehouseId": 1
     }
   ],
   "companies": [
@@ -60,7 +64,7 @@
       "district": "Callao",
       "city": "Lima",
       "country": "PE",
-      "status": "ACTIVE",
+      "status": "SUSPENDED",
       "zoneCount": 2
     },
     {

@@ -99,6 +99,23 @@ export class SensorNodeList implements OnInit {
     return warehouse?.name ?? 'Almacén no identificado';
   }
 
+  protected isWarehouseSuspended(zoneId: number | string): boolean {
+    const zone = this.zones().find(
+      item => String(item.id) === String(zoneId)
+    );
+    if (!zone) {
+      return false;
+    }
+    const warehouse = this.warehouses().find(
+      item => String(item.id) === String(zone.warehouseId)
+    );
+    return warehouse?.status === 'SUSPENDED';
+  }
+
+  protected canToggleSensor(node: SensorNode): boolean {
+    return !this.isWarehouseSuspended(node.zoneId);
+  }
+
   protected getZoneName(zoneId: number | string): string{
     const zone = this.zones().find(
       item => String(item.id) === String(zoneId)
@@ -107,6 +124,12 @@ export class SensorNodeList implements OnInit {
   }
 
   protected toggleSensorStatus(node: SensorNode): void {
+    if (this.isWarehouseSuspended(node.zoneId)) {
+      console.warn(
+        'No se puede cambiar el estado del sensor porque su almacén está suspendido.'
+      );
+      return;
+    }
     const updatedNode = new SensorNode({
       id: node.id,
       zoneId: node.zoneId,

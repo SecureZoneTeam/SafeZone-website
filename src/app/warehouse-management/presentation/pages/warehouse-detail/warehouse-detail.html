@@ -28,14 +28,44 @@
         </span>
       </div>
 
-      <a
-        class="warehouse-detail__edit"
-        [routerLink]="['/warehouses', item.id, 'edit']"
-      >
-        Editar almacén
-      </a>
-    </header>
+      <div class="warehouse-detail__header-actions">
+        <button
+          type="button"
+          class="warehouse-detail__status-button"
+          [class.warehouse-detail__status-button--activate]="
+      item.status === WarehouseStatus.Suspended
+    "
+          [disabled]="savingStatus()"
+          (click)="toggleWarehouseStatus()"
+        >
+          @if (savingStatus()) {
+            Actualizando...
+          } @else {
+            {{ item.status === WarehouseStatus.Active
+            ? 'Desactivar almacén'
+            : 'Activar almacén' }}
+          }
+        </button>
 
+        <a
+          class="warehouse-detail__edit"
+          [routerLink]="['/warehouses', item.id, 'edit']"
+        >
+          Editar almacén
+        </a>
+      </div>
+    </header>
+    @if (statusMessage()) {
+      <p class="warehouse-detail__status-message" role="status">
+        {{ statusMessage() }}
+      </p>
+    }
+
+    @if (statusError()) {
+      <p class="warehouse-detail__status-error" role="alert">
+        {{ statusError() }}
+      </p>
+    }
     <section class="warehouse-detail__summary">
       <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
@@ -83,7 +113,58 @@
         </div>
       </article>
 
-      <article class="warehouse-detail__card warehouse-detail__card--wide">
+      <article class="warehouse-detail__card">
+        <header class="warehouse-detail__card-header">
+          <h2>Usuarios asignados</h2>
+          <span>{{ assignedUsers().length }}</span>
+        </header>
+
+        <div class="warehouse-detail__card-body">
+          @if (usersLoading()) {
+            <p class="warehouse-detail__description">
+              Cargando usuarios...
+            </p>
+          } @else if (usersError()) {
+            <p class="warehouse-detail__description">
+              {{ usersError() }}
+            </p>
+          } @else if (assignedUsers().length === 0) {
+            <p class="warehouse-detail__description">
+              No hay usuarios asignados a este almacén.
+            </p>
+          } @else {
+            <div class="warehouse-detail__users">
+              @for (user of assignedUsers(); track user.id) {
+                <div class="warehouse-detail__user">
+                  <div class="warehouse-detail__user-avatar">
+                    {{ user.fullName.charAt(0).toUpperCase() }}
+                  </div>
+
+                  <div class="warehouse-detail__user-info">
+                    <strong>{{ user.fullName }}</strong>
+                    <span>{{ user.email }}</span>
+                    <small>
+                      {{
+                        user.roles[0] === 'ROLE_ADMINISTRATOR'
+                          ? 'Administrador'
+                          : user.roles[0] === 'ROLE_SECURITY_MANAGER'
+                            ? 'Security Manager'
+                            : user.roles[0] === 'ROLE_WAREHOUSE_KEEPER'
+                              ? 'Warehouse Keeper'
+                              : user.roles[0] === 'ROLE_AUDITOR'
+                                ? 'Auditor'
+                                : user.roles[0] || 'Sin rol'
+                      }}
+                    </small>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
           <h2>Últimos movimientos físicos</h2>
         </header>
