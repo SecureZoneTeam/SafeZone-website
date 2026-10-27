@@ -19,6 +19,11 @@ export const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'sign-in',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     canActivate: [authenticationGuard],
     loadComponent: () =>
       import('./shared/presentation/components/layout/layout')
@@ -102,6 +107,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./reporting/presentation/pages/traceability-log/traceability-log')
             .then((m) => m.TraceabilityLog)
+      },
+
+      {
+        path: 'traceability/:id',
+        title: 'Event Detail | NodeSecure',
+        loadComponent: () =>
+          import('./reporting/presentation/pages/traceability-detail/traceability-detail')
+            .then((m) => m.TraceabilityDetail)
       },
 
       {

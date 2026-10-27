@@ -32,17 +32,26 @@
         </div>
 
         <div class="event-controls">
+          <input
+            class="filter-button search-input"
+            type="search"
+            placeholder="Buscar eventos..."
+            aria-label="Buscar eventos"
+            [value]="searchText()"
+            (input)="searchText.set($any($event.target).value)"
+          />
 
-          <button class="filter-button">
-            <span>Type of event</span>
-            <span class="arrow">⌄</span>
-          </button>
-
-          <button class="filter-button">
-            <span>Últimos 7 días</span>
-            <span class="arrow">⌄</span>
-          </button>
-
+          <select
+            class="filter-button"
+            aria-label="Rango de fechas"
+            [value]="dateRange()"
+            (change)="dateRange.set($any($event.target).value)"
+          >
+            <option value="0">Todas las fechas</option>
+            <option value="7">Últimos 7 días</option>
+            <option value="30">Últimos 30 días</option>
+            <option value="90">Últimos 90 días</option>
+          </select>
         </div>
 
       </div>
@@ -58,7 +67,7 @@
 
       <div class="events-list">
 
-        @for (record of reportingStore.records(); track record.occurredAt) {
+        @for (record of filteredRecords(); track record.id) {
 
           <article
             class="event-item"
@@ -69,6 +78,7 @@
           >
 
             <div class="event-item__indicator"></div>
+
 
             <div class="event-item__content">
 
@@ -91,6 +101,7 @@
                 </div>
 
                 <div class="event-item__time">
+
                   <strong>
                     {{ record.occurredAt | date: 'HH:mm' }}
                   </strong>
@@ -98,32 +109,47 @@
                   <span>
                     {{ record.occurredAt | date: 'MMM d' }}
                   </span>
+
+                  <button
+                    type="button"
+                    class="event-menu-button"
+                    aria-label="Ver detalle del evento"
+                    title="Ver detalle"
+                    (click)="toggleEventMenu(record)"
+                  >
+                    ⋮
+                  </button>
+
                 </div>
 
               </div>
 
+              @if (menuRecord()?.id === record.id) {
+                <div class="event-menu">
+
+                  <button
+                    type="button"
+                    (click)="openEvent(record)"
+                  >
+                    Ver detalle del evento
+                  </button>
+
+                </div>
+              }
+
             </div>
+
 
           </article>
 
         }
 
-        @if (!reportingStore.loading() && reportingStore.records().length === 0) {
-
+        @if (!reportingStore.loading() && filteredRecords().length === 0) {
           <div class="empty-state">
-
-            <div class="empty-state__icon">
-              ↺
-            </div>
-
-            <h3>No traceability records</h3>
-
-            <p>
-              There are no events available for the selected filters.
-            </p>
-
+            <div class="empty-state__icon">↺</div>
+            <h3>No se encontraron eventos</h3>
+            <p>Prueba con otros filtros o limpia la búsqueda.</p>
           </div>
-
         }
 
       </div>
@@ -141,7 +167,7 @@
         <button
           type="button"
           class="clear-button"
-          (click)="reportingStore.toggleDiscrepanciesOnly(false)"
+          (click)="clearFilters()"
         >
           Clear all
         </button>
@@ -199,13 +225,6 @@
 
       </div>
 
-
-      <button
-        class="apply-button"
-        type="button"
-      >
-        Apply Filters
-      </button>
 
     </aside>
 

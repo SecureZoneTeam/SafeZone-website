@@ -1,0 +1,177 @@
+
+<section class="detail-page">
+
+  <header class="detail-header">
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span aria-hidden="true">←</span>
+      Volver a trazabilidad
+    </button>
+
+    <h1>Detalle del Evento</h1>
+  </header>
+
+  @if (reportingStore.loading()) {
+    <p class="detail-message">Cargando evento...</p>
+  } @else if (record(); as event) {
+
+    <main class="detail-content">
+
+      <section class="event-heading">
+        <span
+          class="event-badge"
+          [class.event-badge--alert]="
+            isDiscrepancy() ||
+            event.recordType.toLowerCase().includes('alert')
+          "
+        >
+          {{ event.recordType }}
+        </span>
+
+        <h2>{{ event.description }}</h2>
+
+        <p class="event-date">
+          {{ event.occurredAt | date: 'EEE, d MMM y, HH:mm' }}
+        </p>
+      </section>
+
+      <div class="detail-grid">
+
+        <section class="evidence-panel">
+          <div class="evidence-panel__header">
+            <span class="recording-indicator"></span>
+            <span>EVIDENCIA DEL EVENTO</span>
+          </div>
+
+          <div class="evidence-placeholder">
+            <span class="evidence-icon">▣</span>
+            <h3>Evidencia no disponible</h3>
+            <p>
+              Este registro no contiene una imagen ni una grabación
+              asociada.
+            </p>
+          </div>
+
+          <footer class="evidence-panel__footer">
+            Registro #{{ event.id }}
+          </footer>
+        </section>
+
+        <aside class="event-information">
+
+          <section class="information-card">
+            <h3>Datos del evento</h3>
+
+            <div class="information-row">
+              <span>Tipo</span>
+              <strong>{{ event.recordType }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>Actor</span>
+              <strong>{{ event.actor }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>Fecha y hora</span>
+              <strong>
+                {{ event.occurredAt | date: 'dd/MM/yyyy HH:mm:ss' }}
+              </strong>
+            </div>
+          </section>
+
+          <section class="information-card">
+            <h3>Ubicación</h3>
+
+            <div class="information-row">
+              <span>Almacén ID</span>
+              <strong>{{ event.warehouseId }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>Zona ID</span>
+              <strong>{{ event.zoneId }}</strong>
+            </div>
+          </section>
+
+          @if (isDiscrepancy()) {
+            <section class="action-card">
+              <h3>Justificar discrepancia</h3>
+
+              <label for="justification">
+                Motivo de la justificación
+              </label>
+
+              <textarea
+                id="justification"
+                rows="4"
+                [value]="justification()"
+                (input)="onJustificationChange(
+                  $any($event.target).value
+                )"
+                placeholder="Describe el motivo y las observaciones..."
+              ></textarea>
+
+              <button
+                type="button"
+                class="action-button action-button--success"
+                (click)="justifyDiscrepancy()"
+              >
+                Justificar discrepancia
+              </button>
+            </section>
+          }
+
+          @if (isInventoryMovement()) {
+            <section class="action-card">
+              <h3>Incidencia de inventario</h3>
+
+              <p>
+                Registra una merma si se ha detectado una pérdida
+                de inventario.
+              </p>
+
+              <button
+                type="button"
+                class="action-button action-button--danger"
+                (click)="reportShrinkage()"
+              >
+                Reportar merma
+              </button>
+            </section>
+          }
+
+          @if (actionMessage()) {
+            <p class="action-message" role="status">
+              {{ actionMessage() }}
+            </p>
+          }
+
+        </aside>
+
+      </div>
+    </main>
+
+  } @else if (!reportingStore.loading()) {
+
+    <section class="detail-message detail-message--error">
+      <h2>Evento no encontrado</h2>
+      <p>
+        No se encontró un registro con el identificador solicitado.
+      </p>
+
+      <button
+        type="button"
+        class="action-button"
+        (click)="goBack()"
+      >
+        Volver al historial
+      </button>
+    </section>
+
+  }
+
+</section>

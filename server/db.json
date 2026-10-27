@@ -64,7 +64,7 @@
       "district": "Callao",
       "city": "Lima",
       "country": "PE",
-      "status": "SUSPENDED",
+      "status": "ACTIVE",
       "zoneCount": 2
     },
     {
@@ -155,7 +155,7 @@
       "macAddress": "A4:CF:12:9B:1E:44",
       "model": "ESP32-WROOM-32",
       "sensorType": "MAGNETIC_CONTACT",
-      "connectionStatus": "OFFLINE",
+      "connectionStatus": "ONLINE",
       "lastPingAt": "2026-10-04T18:40:12.000Z"
     },
     {

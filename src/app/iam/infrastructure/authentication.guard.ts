@@ -8,6 +8,7 @@ export const authenticationGuard: CanActivateFn = () => {
   const iamStore = inject(IamStore);
   const router = inject(Router);
 
+
   if (iamStore.isSignedIn()) {
     return true;
   }

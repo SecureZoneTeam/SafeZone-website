@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +9,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import {UsersApiEndpoint, TeamUser as ApiTeamUser} from "../../../infrastructure/users-api.endpoint";
 import {WarehousesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouses-api.endpoint";
+import {WarehouseZonesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouse-zones-api.endpoint";
 import {Warehouse} from "../../../../warehouse-management/domain/model/warehouse.entity";
+import {WarehouseZone} from "../../../../warehouse-management/domain/model/warehouse-zone.entity";
 
 interface TeamUser {
   id: number;
@@ -20,6 +21,7 @@ interface TeamUser {
   role: string;
   status: string;
   companyId: number;
+  warehouseId: number;
 }
 
 @Component({
@@ -59,11 +61,11 @@ export class UserAccess implements OnInit {
   protected email = '';
   protected selectedRole = 'ROLE_WAREHOUSE_KEEPER';
 
-  protected readonly permissions = signal([
-    { id: 1, name: 'Zona A (Almacén Principal)', selected: true },
-    { id: 2, name: 'Zona B (Recepción / Devoluciones)', selected: false },
-    { id: 3, name: 'Zona C (Carga y Descarga)', selected: true }
-  ]);
+  private readonly zonesApi = inject(WarehouseZonesApiEndpoint);
+  protected readonly warehouseZones = signal<WarehouseZone[]>([]);
+  protected readonly permissions = signal<
+    {id: number, name: string, selected: boolean} []
+  >([]);
 
   ngOnInit(): void {
     this.loadUsers();
@@ -71,6 +73,12 @@ export class UserAccess implements OnInit {
       next: warehouses => this.warehouses.set(warehouses),
       error: () => {
         this.errorMessage.set('No se pudieron cargar los almacenes.');
+      }
+    });
+    this.zonesApi.getAll().subscribe({
+      next: zones => this.warehouseZones.set(zones),
+      error: () => {
+        this.errorMessage.set('No se pudieron cargar los almacenes');
       }
     });
   }
@@ -91,7 +99,8 @@ export class UserAccess implements OnInit {
             email: user.email,
             role: this.getRoleLabel(role),
             status: this.getRoleStatus(role),
-            companyId: user.companyId
+            companyId: user.companyId,
+            warehouseId: Number(user.warehouseId ?? 0)
           };
         });
 
@@ -223,6 +232,18 @@ export class UserAccess implements OnInit {
 
   protected openPermissions(user: TeamUser): void {
     this.selectedUser.set(user);
+
+    const zones = this.warehouseZones()
+      .filter(zone => Number(zone.warehouseId) === Number(user.warehouseId));
+
+    this.permissions.set(
+      zones.map(zone => ({
+        id: Number(zone.id),
+        name: zone.name,
+        selected: false
+      }))
+    );
+
     this.showPermissionsModal.set(true);
   }
 
