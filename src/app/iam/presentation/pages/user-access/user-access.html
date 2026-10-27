@@ -1,464 +1,425 @@
 <section class="team-page">
 
   <!-- HEADER -->
-
   <header class="team-header">
-
     <div>
-
-      <span class="team-eyebrow">
-        TEAM MANAGEMENT
-      </span>
-
-      <h1>
-        Equipo y Accesos
-      </h1>
-
+      <span class="team-eyebrow">{{ 'team.list.badge' | translate }}</span>
+      <h1>{{ 'team.list.title' | translate }}</h1>
       <p>
-        Administra los usuarios, roles y permisos de acceso
-        a tu infraestructura.
+        {{ 'team.list.subtitle' | translate }}
       </p>
-
     </div>
-
 
     <button
       type="button"
       class="invite-button"
       (click)="openInvite()"
     >
-      <span class="material-symbols-outlined">
-        person_add
-      </span>
-
-      Invitar nuevo usuario
+      <span class="material-symbols-outlined">person_add</span>
+      {{ 'team.list.invite' | translate }}
     </button>
-
   </header>
 
+  <!-- ESTADOS -->
+  @if (loading()) {
+    <div class="team-message" role="status">
+      {{ 'team.messages.loadingUsers' | translate }}
+    </div>
+  }
 
-  <!-- ADMINISTRATORS -->
+  @if (errorMessage()) {
+    <div class="team-message team-message--error" role="alert">
+      {{ errorMessage() | translate }}
+    </div>
+  }
 
+  @if (successMessage()) {
+    <div class="team-message team-message--success" role="status">
+      {{ successMessage() | translate }}
+    </div>
+  }
+
+  <!-- ADMINISTRADORES -->
   <section class="user-section">
-
     <div class="section-title">
-
-      <h2>
-        Administradores
-      </h2>
-
-      <span>
-        1
-      </span>
-
+      <h2>{{ 'team.list.administrators' | translate }}</h2>
+      <span>{{ administrators().length }}</span>
     </div>
 
+    <div class="user-grid">
+      @for (user of administrators(); track user.id) {
+        <article class="user-card">
+          <div class="avatar avatar--blue">
+            {{ getInitials(user.fullName) }}
+          </div>
+
+          <div class="user-information">
+            <h3>{{ user.fullName }}</h3>
+
+            <p class="user-email">{{ user.email }}</p>
+
+            <div class="user-meta">
+              <span class="role-badge role-badge--blue">
+                {{ roleKey(user.role) | translate }}
+              </span>
+
+              <span>{{ 'team.list.adminAccess' | translate }}</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="more-button"
+            [attr.aria-label]="'team.actions.managePermissions' | translate"
+            [title]="'team.actions.managePermissions' | translate"
+            (click)="openPermissions(user)"
+          >
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">more_vert</span>
+          </button>
+        </article>
+      } @empty {
+        @if (!loading()) {
+          <div class="empty-users">
+            {{ 'team.list.noAdministrators' | translate }}
+          </div>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- PERSONAL LOGÍSTICO -->
+  <section class="user-section">
+    <div class="section-title">
+      <h2>{{ 'team.list.otherRoles' | translate }}</h2>
+      <span>{{ logisticsUsers().length }}</span>
+    </div>
 
     <div class="user-grid">
+      @for (user of logisticsUsers(); track user.id) {
+        <article class="user-card">
+          <div class="avatar avatar--orange">
+            {{ getInitials(user.fullName) }}
+          </div>
 
-      @for (user of users(); track user.id) {
+          <div class="user-information">
+            <h3>{{ user.fullName }}</h3>
 
-        @if (user.status === 'ADMINISTRADOR') {
+            <p class="user-email">{{ user.email }}</p>
 
-          <article class="user-card">
+            <div class="user-meta">
+              <span class="role-badge role-badge--orange">
+                {{ roleKey(user.role) | translate }}
+              </span>
 
-            <div class="avatar avatar--blue">
-              AU
+              <span>{{ 'team.list.permissionAccess' | translate }}</span>
             </div>
+          </div>
 
-
-            <div class="user-information">
-
-              <h3>
-                {{ user.fullName }}
-              </h3>
-
-              <div class="user-meta">
-
-                <span class="role-badge role-badge--blue">
-                  {{ user.role }}
-                </span>
-
-                <span>
-                  Admin access
-                </span>
-
-              </div>
-
-            </div>
-
-
+          <div class="user-actions">
             <button
               type="button"
               class="more-button"
+              [attr.aria-label]="'team.actions.managePermissions' | translate"
+              [title]="'team.actions.managePermissions' | translate"
               (click)="openPermissions(user)"
             >
-              ⋮
+              <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">more_vert</span>
             </button>
 
-          </article>
-
+            <button
+              type="button"
+              class="delete-user-button"
+              [title]="'team.actions.deleteUser' | translate"
+              [attr.aria-label]="'team.actions.deleteUser' | translate"
+              (click)="openDelete(user)"
+            >
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </article>
+      } @empty {
+        @if (!loading()) {
+          <div class="empty-users">
+            {{ 'team.list.noOtherUsers' | translate }}
+          </div>
         }
-
       }
-
     </div>
-
-  </section>
-
-
-  <!-- LOGISTICS -->
-
-  <section class="user-section">
-
-    <div class="section-title">
-
-      <h2>
-        Personal Logístico
-      </h2>
-
-      <span>
-        {{ users().length - 1 }}
-      </span>
-
-    </div>
-
-
-    <div class="user-grid">
-
-      @for (user of users(); track user.id) {
-
-        @if (user.status !== 'ADMINISTRADOR') {
-
-          <article class="user-card">
-
-            <div class="avatar avatar--orange">
-              {{ user.fullName.substring(0, 2).toUpperCase() }}
-            </div>
-
-
-            <div class="user-information">
-
-              <h3>
-                {{ user.fullName }}
-              </h3>
-
-              <div class="user-meta">
-
-                <span class="role-badge role-badge--orange">
-                  {{ user.role }}
-                </span>
-
-                <span>
-                  Zones & Access
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div class="user-actions">
-
-              <button
-                type="button"
-                class="more-button"
-                (click)="openPermissions(user)"
-              >
-                ⋮
-              </button>
-
-            </div>
-
-          </article>
-
-        }
-
-      }
-
-    </div>
-
   </section>
 
 </section>
-
-
-<!-- =====================================================
-     INVITE MODAL
-===================================================== -->
+<!--MODAL: INVITAR USUARIO -->
 
 @if (showInviteModal()) {
-
-  <div
-    class="modal-overlay"
-    (click)="closeInvite()"
-  >
-
+  <div class="modal-overlay">
+    <button
+      type="button"
+      class="modal-backdrop"
+      [attr.aria-label]="'team.invite.closeDialog' | translate"
+      (click)="closeInvite()"
+    ></button>
     <section
       class="modal-card"
-      (click)="$event.stopPropagation()"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="invite-title"
     >
-
       <button
         type="button"
         class="modal-close"
+        [attr.aria-label]="'shared.actions.close' | translate"
         (click)="closeInvite()"
       >
-        ×
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
       </button>
 
+      <span class="team-eyebrow">{{ 'team.list.badge' | translate }}</span>
+      <h2 id="invite-title">{{ 'team.invite.title' | translate }}</h2>
 
-      <h2>
-        Invitar Nuevo Usuario
-      </h2>
-
-
-      <div class="modal-field">
-
-        <label>
-          Correo Electrónico
-        </label>
-
-        <input
-          type="email"
-          [(ngModel)]="email"
-          placeholder="usuario@empresa.com"
-        >
-
-      </div>
-
-
-      <div class="modal-field">
-
-        <label>
-          Rol en el sistema
-        </label>
-
-        <select [(ngModel)]="selectedRole">
-
-          <option value="Administrador">
-            Administrador
-          </option>
-
-          <option value="Almacenero">
-            Almacenero
-          </option>
-
-          <option value="Personal Logístico">
-            Personal Logístico
-          </option>
-
-          <option value="Auditor">
-            Auditor
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="modal-section">
-
-        <span class="modal-label">
-          Zonas de Acceso
-        </span>
-
-        <p>
-          Selecciona las zonas que podrá administrar.
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="modal-primary-button"
-        (click)="inviteUser()"
-      >
-        Enviar Invitación
-      </button>
-
-    </section>
-
-  </div>
-
-}
-
-
-<!-- =====================================================
-     DELETE MODAL
-===================================================== -->
-
-@if (showDeleteModal()) {
-
-  <div
-    class="modal-overlay"
-    (click)="closeDelete()"
-  >
-
-    <section
-      class="delete-modal"
-      (click)="$event.stopPropagation()"
-    >
-
-      <div class="delete-icon">
-        !
-      </div>
-
-
-      <h2>
-        ¿Eliminar a {{ selectedUser()?.fullName }}?
-      </h2>
-
-
-      <p>
-        Perderá acceso al sistema y dejará de recibir
-        notificaciones.
+      <p class="modal-description">
+        {{ 'team.invite.description' | translate }}
       </p>
 
+      <form (ngSubmit)="inviteUser()">
+        <div class="modal-field">
+          <label for="inviteFullName">{{ 'team.invite.fullName' | translate }}</label>
+          <input
+            id="inviteFullName"
+            type="text"
+            name="fullName"
+            [(ngModel)]="fullName"
+            [placeholder]="'team.invite.fullNamePlaceholder' | translate"
+            required
+          />
+        </div>
+        <div class="modal-field">
+          <label for="inviteEmail">{{ 'team.invite.email' | translate }}</label>
+          <input
+            id="inviteEmail"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            [placeholder]="'team.invite.emailPlaceholder' | translate"
+            required
+            email
+          />
+        </div>
 
-      <div class="delete-actions">
+        <div class="modal-field">
+          <label for="inviteRole">{{ 'team.invite.role' | translate }}</label>
+          <select
+            id="inviteRole"
+            name="role"
+            [(ngModel)]="selectedRole"
+            required
+          >
+            @for (role of roles; track role) {
+              <option [value]="role">{{ roleKey(role) | translate }}</option>
+            }
+          </select>
+        </div>
 
-        <button
-          type="button"
-          class="cancel-button"
-          (click)="closeDelete()"
-        >
-          Cancelar
-        </button>
+        <div class="modal-field">
+          <label for="inviteWarehouse">{{ 'team.invite.warehouse' | translate }}</label>
 
+          <select
+            id="inviteWarehouse"
+            name="warehouseId"
+            [(ngModel)]="selectedWarehouseId"
+            required
+          >
+            <option value="" disabled>{{ 'team.invite.selectWarehouse' | translate }}</option>
 
-        <button
-          type="button"
-          class="delete-button"
-          (click)="deleteUser()"
-        >
-          Sí, eliminar
-        </button>
+            @for (warehouse of warehouses(); track warehouse.id) {
+              <option [value]="warehouse.id">
+                {{ warehouse.name }}
+              </option>
+            }
+          </select>
+        </div>
 
-      </div>
+        <div class="modal-note">
+          {{ 'team.invite.note' | translate }}
+        </div>
 
+        @if (errorMessage()) {
+          <p class="team-message team-message--error" role="alert">
+            {{ errorMessage() | translate }}
+          </p>
+        }
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="secondary-button ns-has-icon"
+            (click)="closeInvite()"
+          >
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+            {{ 'shared.actions.cancel' | translate }}
+          </button>
+
+          <button type="submit" class="invite-button">
+            <span class="material-symbols-outlined">send</span>
+            {{ 'team.invite.send' | translate }}
+          </button>
+        </div>
+      </form>
     </section>
-
   </div>
-
 }
+<!-- MODAL: ELIMINAR USUARIO-->
 
-
-<!-- =====================================================
-     PERMISSIONS MODAL
-===================================================== -->
-
-@if (showPermissionsModal()) {
-
-  <div
-    class="modal-overlay"
-    (click)="closePermissions()"
-  >
-
+@if (showDeleteModal()) {
+  <div class="modal-overlay">
+    <button
+      type="button"
+      class="modal-backdrop"
+      [attr.aria-label]="'team.delete.closeDialog' | translate"
+      (click)="closeDelete()"
+    ></button>
     <section
-      class="permissions-modal"
-      (click)="$event.stopPropagation()"
+      class="modal-card modal-card--small"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-title"
     >
-
-      <div class="permissions-header">
-
-        <div>
-
-          <span class="modal-eyebrow">
-            ACCESS CONTROL
-          </span>
-
-          <h2>
-            Editar Permisos
-          </h2>
-
-        </div>
-
-        <button
-          type="button"
-          class="modal-close"
-          (click)="closePermissions()"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="permission-user">
-
-        <div class="avatar avatar--orange">
-          {{ selectedUser()?.fullName?.substring(0, 2)?.toUpperCase() }}
-        </div>
-
-        <div>
-
-          <strong>
-            {{ selectedUser()?.fullName }}
-          </strong>
-
-          <span>
-            {{ selectedUser()?.role }}
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="permissions-content">
-
-        <h3>
-          Zonas Asignadas
-        </h3>
-
-        <p>
-          Selecciona las zonas a las que este usuario tendrá acceso.
-        </p>
-
-
-        <div class="permission-list">
-
-          @for (
-            permission of permissions();
-            track permission.id;
-            let i = $index
-            ) {
-
-            <label class="permission-item">
-
-              <input
-                type="checkbox"
-                [checked]="permission.selected"
-                (change)="togglePermission(i)"
-              >
-
-              <span class="custom-checkbox"></span>
-
-              <span>
-                {{ permission.name }}
-              </span>
-
-            </label>
-
-          }
-
-        </div>
-
-      </div>
-
-
       <button
         type="button"
-        class="modal-primary-button"
-        (click)="savePermissions()"
+        class="modal-close"
+        [attr.aria-label]="'shared.actions.close' | translate"
+        (click)="closeDelete()"
       >
-        Guardar Cambios
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
       </button>
 
+      <div class="modal-icon modal-icon--danger">
+        <span class="material-symbols-outlined">delete</span>
+      </div>
+
+      <h2 id="delete-title">{{ 'team.delete.title' | translate }}</h2>
+
+      <p class="modal-description">
+        {{ 'team.delete.messageBefore' | translate }}
+        <strong>{{ selectedUser()?.fullName }}</strong>?
+        {{ 'team.delete.message' | translate }}
+      </p>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="secondary-button ns-has-icon"
+          (click)="closeDelete()"
+        >
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+          {{ 'team.delete.cancel' | translate }}
+        </button>
+
+        <button
+          type="button"
+          class="danger-button ns-has-icon"
+          (click)="deleteUser()"
+        >
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">delete</span>
+          {{ 'team.delete.confirm' | translate }}
+        </button>
+      </div>
     </section>
-
   </div>
+}
+<!--MODAL: PERMISOS-->
 
+@if (showPermissionsModal()) {
+  <div class="modal-overlay">
+    <button
+      type="button"
+      class="modal-backdrop"
+      [attr.aria-label]="'team.permissions.closeDialog' | translate"
+      (click)="closePermissions()"
+    ></button>
+    <section
+      class="modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="permissions-title"
+    >
+      <button
+        type="button"
+        class="modal-close"
+        [attr.aria-label]="'shared.actions.close' | translate"
+        (click)="closePermissions()"
+      >
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+      </button>
+
+      <span class="team-eyebrow">{{ 'team.permissions.badge' | translate }}</span>
+      <h2 id="permissions-title">{{ 'team.permissions.title' | translate }}</h2>
+
+      @if (selectedUser(); as user) {
+        <div class="selected-user">
+          <div class="avatar avatar--blue">
+            {{ getInitials(user.fullName) }}
+          </div>
+
+          <div>
+            <strong>{{ user.fullName }}</strong>
+            <p>{{ user.email }}</p>
+            <span class="role-badge role-badge--blue">
+              {{ roleKey(user.role) | translate }}
+            </span>
+          </div>
+        </div>
+      }
+
+      <div class="modal-section">
+        <span class="modal-label">{{ 'team.permissions.assignedZones' | translate }}</span>
+
+        <p class="modal-description">
+          {{ 'team.permissions.selectZones' | translate }}
+        </p>
+
+        @for (permission of permissions(); track permission.id; let i = $index) {
+          <label class="permission-option">
+            <input
+              type="checkbox"
+              [checked]="permission.selected"
+              (change)="togglePermission(i)"
+            />
+
+            <span class="permission-option__text">
+              <strong>{{ permission.name }}</strong>
+              <small>{{ 'team.permissions.zoneAccess' | translate }}</small>
+            </span>
+          </label>
+        } @empty {
+          <p class="empty-users">
+            {{ 'team.permissions.noZones' | translate }}
+          </p>
+        }
+      </div>
+
+      <div class="modal-note">
+        {{ 'team.permissions.note' | translate }}
+      </div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="secondary-button ns-has-icon"
+          (click)="closePermissions()"
+        >
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+          {{ 'shared.actions.cancel' | translate }}
+        </button>
+
+        <button
+          type="button"
+          class="invite-button"
+          (click)="savePermissions()"
+        >
+          <span class="material-symbols-outlined">save</span>
+          {{ 'team.permissions.save' | translate }}
+        </button>
+      </div>
+    </section>
+  </div>
 }

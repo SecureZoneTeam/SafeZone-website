@@ -4,8 +4,8 @@ import { Warehouse } from '../domain/model/warehouse.entity';
 import { WarehouseZone } from '../domain/model/warehouse-zone.entity';
 import { WarehousesApiEndpoint } from '../infrastructure/warehouses-api.endpoint';
 import { WarehouseZonesApiEndpoint } from '../infrastructure/warehouse-zones-api.endpoint';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 
-/** Application state management for the Warehouse Management bounded context. */
 @Injectable({ providedIn: 'root' })
 export class WarehouseStore {
   private readonly warehousesApi = inject(WarehousesApiEndpoint);
@@ -45,12 +45,45 @@ export class WarehouseStore {
     });
   }
 
-  createWarehouse(warehouse: Warehouse): void {
-    this.warehousesApi.create(warehouse).subscribe({
-      next: (created) => this.warehousesSignal.update((current) => [...current, created]),
-      error: (error: Error) => this.errorSignal.set(error.message)
-    });
+
+
+  createWarehouse(warehouse: Warehouse): Observable<Warehouse> {
+    this.errorSignal.set(null);
+
+    return this.warehousesApi.create(warehouse).pipe(
+      tap((created) => {
+        this.warehousesSignal.update((current)=> [
+          ...current,
+          created
+        ]);
+      }),
+      catchError((error: Error) =>{
+        this.errorSignal.set(error.message);
+        return throwError(()=> error);
+      })
+    );
   }
+
+  getWarehouseById(id: number | string): Observable<Warehouse> {
+    return this.warehousesApi.getById(id);
+  }
+
+  updateWarehouse(id: number | string, warehouse: Warehouse): Observable<Warehouse> {
+    this.errorSignal.set(null);
+
+    return this.warehousesApi.update(id, warehouse).pipe(
+      tap((updated) => {
+        this.warehousesSignal.update((current) =>
+          current.map((item) => item.id === id ? updated : item)
+        );
+      }),
+      catchError((error: Error) => {
+        this.errorSignal.set(error.message);
+        return throwError(() => error);
+      })
+    );
+  }
+
 
   deleteWarehouse(id: number | string): void {
     this.warehousesApi.delete(id).subscribe({

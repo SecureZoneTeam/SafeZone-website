@@ -7,17 +7,16 @@ import {
 } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { TranslatePipe } from '@ngx-translate/core';
+
+import { LanguageService } from '../../../../shared/infrastructure/language.service';
 
 import { SubscriptionStore } from '../../../application/subscription.store';
 
 @Component({
   selector: 'app-subscription-checkout',
   standalone: true,
-  imports: [
-    TranslatePipe
-  ],
+  imports: [TranslatePipe],
   templateUrl: './subscription-checkout.html',
   styleUrl: './subscription-checkout.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,6 +25,7 @@ export class SubscriptionCheckout implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly language = inject(LanguageService);
 
   protected readonly subscriptionStore = inject(SubscriptionStore);
 
@@ -50,6 +50,12 @@ export class SubscriptionCheckout implements OnInit {
       .find(plan => plan.code === code);
   }
 
+  /** Translation key of a plan name (BASIC / PREMIUM / CORPORATE); other plans keep their API name. */
+  protected planNameKey(plan: { code: string; name: string }): string {
+    const known = ['BASIC', 'PREMIUM', 'CORPORATE'];
+    return known.includes(plan.code) ? `subscriptions.plans.${plan.code.toLowerCase()}` : plan.name;
+  }
+
   protected goBack(): void {
 
     void this.router.navigate(['/subscription']);
@@ -57,6 +63,6 @@ export class SubscriptionCheckout implements OnInit {
 
   protected confirmPayment(): void {
 
-    alert('Payment confirmed successfully.');
+    alert(this.language.instant('subscriptions.checkout.confirmed'));
   }
 }

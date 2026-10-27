@@ -1,11 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  inject,
+  OnInit,
   signal
 } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
-
+import { TranslatePipe } from '@ngx-translate/core';
+import {UsersApiEndpoint, TeamUser as ApiTeamUser} from "../../../infrastructure/users-api.endpoint";
+import {WarehousesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouses-api.endpoint";
+import {WarehouseZonesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouse-zones-api.endpoint";
+import {Warehouse} from "../../../../warehouse-management/domain/model/warehouse.entity";
+import {WarehouseZone} from "../../../../warehouse-management/domain/model/warehouse-zone.entity";
 
 interface TeamUser {
   id: number;
@@ -15,202 +22,249 @@ interface TeamUser {
   role: string;
   status: string;
   companyId: number;
+  warehouseId: number;
 }
-
 
 @Component({
   selector: 'app-user-access',
-
   standalone: true,
-
-  imports: [
-    FormsModule
-  ],
-
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './user-access.html',
-
   styleUrl: './user-access.css',
-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserAccess {
+export class UserAccess implements OnInit {
+  private readonly usersApi = inject(UsersApiEndpoint);
+  private readonly warehousesApi = inject(WarehousesApiEndpoint);
 
-  protected readonly users = signal<TeamUser[]>([
-    {
-      id: 1,
-      fullName: 'A. Usuario (Tú)',
-      username: 'fperez',
-      email: 'fernando.perez@safezone.pe',
-      role: 'Administrador',
-      status: 'ADMINISTRADOR',
-      companyId: 1
-    },
-    {
-      id: 2,
-      fullName: 'Carlos Pérez',
-      username: 'cperez',
-      email: 'carlos.perez@safezone.pe',
-      role: 'Almacenero',
-      status: 'ALMACENERO',
-      companyId: 1
-    },
-    {
-      id: 3,
-      fullName: 'Alex Alvarez',
-      username: 'aalvarez',
-      email: 'alex.alvarez@safezone.pe',
-      role: 'Personal Logístico',
-      status: 'LOGISTICO',
-      companyId: 1
-    }
-  ]);
+  protected readonly warehouses = signal<Warehouse[]>([]);
+  protected selectedWarehouseId = '';
 
+  protected readonly users = signal<TeamUser[]>([]);
+  protected readonly loading = signal(false);
+  /** Translation keys (public/i18n -> team.messages.*), rendered with the translate pipe. */
+  protected readonly errorMessage = signal('');
+  protected readonly successMessage = signal('');
+
+  /** Roles that can be assigned in the invitation form. */
+  protected readonly roles = ['ROLE_ADMINISTRATOR', 'ROLE_SECURITY_MANAGER', 'ROLE_WAREHOUSE_KEEPER', 'ROLE_AUDITOR'];
+
+  protected readonly administrators = computed(
+    () => this.users().filter(user => user.status === 'ADMINISTRADOR')
+  );
+
+  protected readonly logisticsUsers = computed(
+    () => this.users().filter(user => user.status !== 'ADMINISTRADOR')
+  );
 
   protected readonly showInviteModal = signal(false);
-
   protected readonly showDeleteModal = signal(false);
-
   protected readonly showPermissionsModal = signal(false);
-
-
   protected readonly selectedUser = signal<TeamUser | null>(null);
 
-
+  protected fullName = '';
   protected email = '';
+  protected selectedRole = 'ROLE_WAREHOUSE_KEEPER';
 
-  protected selectedRole = 'Administrador';
+  private readonly zonesApi = inject(WarehouseZonesApiEndpoint);
+  protected readonly warehouseZones = signal<WarehouseZone[]>([]);
+  protected readonly permissions = signal<
+    {id: number, name: string, selected: boolean} []
+  >([]);
 
-
-  protected readonly permissions = signal([
-    {
-      id: 1,
-      name: 'Zona A (Almacén Principal)',
-      selected: true
-    },
-    {
-      id: 2,
-      name: 'Zona B (Recepción / Devoluciones)',
-      selected: false
-    },
-    {
-      id: 3,
-      name: 'Zona C (Carga y Descarga)',
-      selected: true
-    }
-  ]);
-
-
-  protected openInvite(): void {
-    this.email = '';
-    this.selectedRole = 'Administrador';
-
-    this.showInviteModal.set(true);
+  ngOnInit(): void {
+    this.loadUsers();
+    this.warehousesApi.getAll().subscribe({
+      next: warehouses => this.warehouses.set(warehouses),
+      error: () => {
+        this.errorMessage.set('team.messages.loadWarehousesError');
+      }
+    });
+    this.zonesApi.getAll().subscribe({
+      next: zones => this.warehouseZones.set(zones),
+      error: () => {
+        this.errorMessage.set('team.messages.loadZonesError');
+      }
+    });
   }
 
+  protected loadUsers(): void {
+    this.loading.set(true);
+    this.errorMessage.set('');
+
+    this.usersApi.getAll().subscribe({
+      next: (apiUsers: ApiTeamUser[]) => {
+        const mappedUsers = apiUsers.map(user => {
+          const role = user.roles[0] ?? 'ROLE_WAREHOUSE_KEEPER';
+
+          return {
+            id: user.id,
+            fullName: user.fullName,
+            username: user.username,
+            email: user.email,
+            role,
+            status: this.getRoleStatus(role),
+            companyId: user.companyId,
+            warehouseId: Number(user.warehouseId ?? 0)
+          };
+        });
+
+        this.users.set(mappedUsers);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('team.messages.loadUsersError');
+        this.loading.set(false);
+      }
+    });
+  }
+
+  /** Translation key of a role code (e.g. ROLE_AUDITOR -> team.roles.ROLE_AUDITOR). */
+  protected roleKey(role: string): string {
+    return this.roles.includes(role) ? `team.roles.${role}` : role;
+  }
+
+  private getRoleStatus(role: string): string {
+    return role === 'ROLE_ADMINISTRATOR'
+      ? 'ADMINISTRADOR'
+      : role;
+  }
+
+  protected openInvite(): void {
+    this.fullName='';
+    this.email='';
+    this.selectedRole = 'ROLE_WAREHOUSE_KEEPER';
+    this.selectedWarehouseId ='';
+
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.showInviteModal.set(true);
+  }
 
   protected closeInvite(): void {
     this.showInviteModal.set(false);
   }
 
-
   protected inviteUser(): void {
+    this.errorMessage.set('');
+    this.successMessage.set('');
 
-    if (!this.email.trim()) {
+    const fullName = this.fullName.trim();
+    const email = this.email.trim().toLowerCase();
+    const warehouseId = Number(this.selectedWarehouseId);
+
+    if (!fullName || !email || !this.selectedWarehouseId) {
+      this.errorMessage.set('team.messages.requiredFields');
       return;
     }
 
-    console.log('Invitation:', {
-      email: this.email,
-      role: this.selectedRole
+    const existingUser = this.users().some(
+      user => user.email.toLowerCase() === email
+    );
+
+    if (existingUser) {
+      this.errorMessage.set('team.messages.emailTaken');
+      return;
+    }
+
+    const username = email.split('@')[0];
+    const companyId = this.users()[0]?.companyId ?? 1;
+
+    this.usersApi.create({
+      username,
+      email,
+      fullName,
+      roles: [this.selectedRole],
+      companyId,
+      warehouseId
+    }).subscribe({
+      next: () => {
+        this.closeInvite();
+        this.successMessage.set('team.messages.userCreated');
+        this.loadUsers();
+      },
+      error: () => {
+        this.errorMessage.set('team.messages.createError');
+      }
     });
-
-    this.showInviteModal.set(false);
-
   }
-
 
   protected openDelete(user: TeamUser): void {
-
     this.selectedUser.set(user);
-
     this.showDeleteModal.set(true);
-
   }
-
 
   protected closeDelete(): void {
-
     this.showDeleteModal.set(false);
-
     this.selectedUser.set(null);
-
   }
 
-
   protected deleteUser(): void {
-
     const user = this.selectedUser();
 
     if (!user) {
       return;
     }
 
-    this.users.update(users =>
-      users.filter(item => item.id !== user.id)
-    );
-
-    this.closeDelete();
-
+    this.usersApi.delete(user.id).subscribe({
+      next: () => {
+        this.users.update(current =>
+          current.filter(item => item.id !== user.id)
+        );
+        this.successMessage.set('team.messages.userDeleted');
+        this.closeDelete();
+      },
+      error: () => {
+        this.errorMessage.set('team.messages.deleteError');
+        this.closeDelete();
+      }
+    });
   }
-
 
   protected openPermissions(user: TeamUser): void {
-
     this.selectedUser.set(user);
 
+    const zones = this.warehouseZones()
+      .filter(zone => Number(zone.warehouseId) === Number(user.warehouseId));
+
+    this.permissions.set(
+      zones.map(zone => ({
+        id: Number(zone.id),
+        name: zone.name,
+        selected: false
+      }))
+    );
+
     this.showPermissionsModal.set(true);
-
   }
-
 
   protected closePermissions(): void {
-
     this.showPermissionsModal.set(false);
-
     this.selectedUser.set(null);
-
   }
-
 
   protected togglePermission(index: number): void {
-
     this.permissions.update(items =>
-
       items.map((item, i) =>
-
         i === index
-          ? {
-            ...item,
-            selected: !item.selected
-          }
+          ? { ...item, selected: !item.selected }
           : item
-
       )
-
     );
-
   }
-
 
   protected savePermissions(): void {
-
-    console.log(
-      'Permissions:',
-      this.permissions()
-    );
-
-    this.closePermissions();
-
+    this.errorMessage.set('team.messages.permissionsNotSaved');
   }
 
+  protected getInitials(fullName: string): string {
+    return fullName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(part => part[0])
+      .join('')
+      .toUpperCase();
+  }
 }
+

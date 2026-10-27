@@ -23,6 +23,12 @@ export class SubscriptionPlanList implements OnInit {
     this.subscriptionStore.loadPlans();
   }
 
+  /** Translation key of a plan name (BASIC / PREMIUM / CORPORATE); other plans keep their API name. */
+  protected planNameKey(plan: { code: string; name: string }): string {
+    const known = ['BASIC', 'PREMIUM', 'CORPORATE'];
+    return known.includes(plan.code) ? `subscriptions.plans.${plan.code.toLowerCase()}` : plan.name;
+  }
+
   protected selectPlan(planCode: string): void {
     void this.router.navigate(
       ['/subscription/checkout'],

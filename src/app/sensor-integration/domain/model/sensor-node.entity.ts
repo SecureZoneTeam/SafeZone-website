@@ -11,8 +11,10 @@ export enum ConnectionStatus {
 export enum SensorType {
   MagneticContact = 'MAGNETIC_CONTACT',
   Motion = 'MOTION',
-  Vibration = 'VIBRATION'
+  Vibration = 'VIBRATION',
+  RFIDReader = 'RFIDReader'
 }
+
 
 /** SensorNode aggregate root of the Sensor Integration bounded context (user story US19). */
 export class SensorNode implements BaseEntity {

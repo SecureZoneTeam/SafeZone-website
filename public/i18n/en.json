@@ -15,7 +15,9 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "signOut": "Sign Out",
-    "language": "Language"
+    "language": "Language",
+    "alerts": "Alerts",
+    "user": "User"
   },
   "shared": {
     "actions": {
@@ -34,7 +36,8 @@
       "view": "View",
       "update": "Update",
       "close": "Close",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "saving": "Saving..."
     },
     "states": {
       "loading": "Loading...",
@@ -51,7 +54,8 @@
       "company": "Company",
       "legal": "Legal",
       "landing": "Landing Page",
-      "team": "Our Team"
+      "team": "Our Team",
+      "location": "Lima, Peru"
     }
   },
   "iam": {
@@ -61,7 +65,8 @@
       "password": "Password",
       "submit": "Sign In",
       "invalidCredentials": "Invalid credentials",
-      "noAccount": "Do not have an account yet?"
+      "noAccount": "Do not have an account yet?",
+      "subtitle": "Access your account to continue."
     },
     "signUp": {
       "title": "Create your NodeSecure account",
@@ -71,7 +76,12 @@
       "submit": "Sign Up",
       "haveAccount": "Already registered?",
       "planNotice": "You are signing up for the plan",
-      "fullName": "Full name"
+      "fullName": "Full name",
+      "subtitle": "Protect your warehouses and start using NodeSecure."
+    },
+    "brand": {
+      "headline": "Smart logistics auditing",
+      "description": "Control your inventory, detect events and ensure real-time traceability."
     }
   },
   "warehouses": {
@@ -89,7 +99,10 @@
       "delete": "Delete",
       "active": "Active",
       "suspended": "Suspended",
-      "warehouseCount": "warehouses"
+      "warehouseCount": "warehouses",
+      "viewTooltip": "View warehouse",
+      "editTooltip": "Edit warehouse",
+      "deleteTooltip": "Delete warehouse"
     },
     "form": {
       "createTitle": "Register warehouse",
@@ -98,7 +111,71 @@
       "street": "Street address",
       "district": "District",
       "city": "City",
-      "country": "Country"
+      "country": "Country",
+      "errors": {
+        "nameRequired": "The name is required.",
+        "nameMaxLength": "The name cannot exceed 80 characters.",
+        "streetRequired": "The address is required.",
+        "districtRequired": "The district is required.",
+        "cityRequired": "The city is required.",
+        "countryRequired": "The country is required.",
+        "countryMaxLength": "Use a code of at most 2 characters."
+      }
+    },
+    "messages": {
+      "loadError": "The warehouse could not be loaded.",
+      "loadForEditError": "The warehouse you want to edit could not be loaded.",
+      "saveError": "The warehouse could not be saved.",
+      "notSpecified": "No warehouse was specified.",
+      "loadUsersError": "The assigned users could not be loaded."
+    },
+    "zones": {
+      "badge": "WAREHOUSE MANAGEMENT",
+      "title": "Warehouse zones",
+      "subtitle": "Manage the areas where you will install your IoT devices.",
+      "count": "Zones: {{count}}",
+      "name": "Zone name",
+      "namePlaceholder": "E.g. Main storage",
+      "code": "Code",
+      "codePlaceholder": "E.g. ZONE-01",
+      "riskLevel": "Risk level",
+      "risk": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "CRITICAL": "Critical"
+      },
+      "shiftStart": "Shift start",
+      "shiftEnd": "Shift end",
+      "add": "Add zone",
+      "registered": "Registered zones",
+      "empty": "There are no zones registered in this warehouse yet.",
+      "messages": {
+        "loadError": "Zones could not be loaded.",
+        "created": "Zone created successfully.",
+        "createError": "The zone could not be created."
+      }
+    },
+    "detail": {
+      "loading": "Loading warehouse information...",
+      "backToList": "Back to my warehouses",
+      "updating": "Updating...",
+      "activate": "Activate warehouse",
+      "deactivate": "Deactivate warehouse",
+      "confirmActivate": "Are you sure you want to activate the warehouse \"{{name}}\"?",
+      "confirmDeactivate": "Are you sure you want to deactivate the warehouse \"{{name}}\"?",
+      "activated": "Warehouse activated successfully.",
+      "deactivated": "Warehouse deactivated successfully.",
+      "statusError": "The warehouse status could not be updated.",
+      "information": "Warehouse information",
+      "iotNodes": "IoT nodes",
+      "iotNodesDescription": "The sensors linked to the zones of this warehouse are managed from the IoT devices module.",
+      "viewDevices": "View IoT devices",
+      "assignedUsers": "Assigned users",
+      "noUsers": "There are no users assigned to this warehouse.",
+      "lastMovements": "Latest physical movements",
+      "lastMovementsDescription": "Movements and alerts of this warehouse will be shown here once the traceability query is connected.",
+      "viewTraceability": "View traceability"
     }
   },
   "devices": {
@@ -120,7 +197,37 @@
       "noRfid": "No RFID readers registered",
       "noRfidSubtitle": "Link a new device to start monitoring movements using RFID.",
       "sensor": "Magnetic sensor",
-      "zoneLabel": "ZONE"
+      "zoneLabel": "ZONE",
+      "filterByWarehouse": "Filter by warehouse",
+      "allWarehouses": "All warehouses",
+      "loading": "Loading IoT devices",
+      "motionSensors": "Motion Sensors",
+      "vibrationSensors": "Vibration Sensors",
+      "warehouse": "Warehouse",
+      "unknownWarehouse": "Unidentified warehouse",
+      "zoneFallback": "Zone {{id}}",
+      "editData": "Edit data",
+      "disconnect": "Disconnect",
+      "activate": "Activate",
+      "warehouseSuspended": "Warehouse suspended",
+      "empty": {
+        "magnetic": {
+          "title": "No magnetic sensors registered",
+          "subtitle": "Link a device to start monitoring doors and access points."
+        },
+        "motion": {
+          "title": "No motion sensors registered",
+          "subtitle": "Link a device to start monitoring movement."
+        },
+        "vibration": {
+          "title": "No vibration sensors registered",
+          "subtitle": "Link a device to start detecting vibrations."
+        },
+        "rfid": {
+          "title": "No RFID readers registered",
+          "subtitle": "Link a new device to start monitoring movements using RFID."
+        }
+      }
     },
     "form": {
       "title": "Link IoT sensor node",
@@ -132,7 +239,39 @@
       "deviceName": "Device Name",
       "assignZone": "Assign to Zone",
       "link": "Link Device",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "badge": "IOT MANAGEMENT",
+      "editTitle": "Edit device",
+      "subtitle": "Register an IoT device and assign it to a zone of your warehouse.",
+      "cardBadge": "IOT DEVICE",
+      "cardSubtitle": "Fill in the information to link the sensor to the system.",
+      "selectZone": "Select a zone",
+      "loadingData": "Loading warehouses and zones...",
+      "noZones": "This warehouse has no registered zones.",
+      "saving": "Saving...",
+      "errors": {
+        "macRequired": "Enter the MAC address of the device (e.g. A4:CF:12:9B:1E:44).",
+        "macInvalid": "The MAC address does not have a valid format.",
+        "modelRequired": "Enter the device model.",
+        "warehouseRequired": "Select a valid warehouse.",
+        "zoneRequired": "Select a valid zone.",
+        "zoneMismatch": "Select a zone that belongs to the chosen warehouse."
+      },
+      "messages": {
+        "loadWarehousesError": "Warehouses could not be loaded.",
+        "loadZonesError": "Zones could not be loaded.",
+        "zoneNotFound": "The zone of the sensor was not found.",
+        "loadSensorError": "The sensor could not be loaded.",
+        "updated": "Sensor updated successfully.",
+        "created": "Sensor registered successfully.",
+        "saveError": "The sensor could not be saved."
+      }
+    },
+    "types": {
+      "MAGNETIC_CONTACT": "Magnetic sensor",
+      "MOTION": "Motion sensor",
+      "VIBRATION": "Vibration sensor",
+      "RFIDReader": "RFID reader"
     }
   },
   "traceability": {
@@ -156,7 +295,53 @@
       "physicalDiscrepancies": "Physical discrepancies",
       "systemEvents": "System events",
       "dateRange": "DATE RANGE",
-      "applyFilters": "Apply Filters"
+      "applyFilters": "Apply Filters",
+      "searchPlaceholder": "Search events...",
+      "range": {
+        "0": "All dates",
+        "7": "Last 7 days",
+        "30": "Last 30 days",
+        "90": "Last 90 days"
+      },
+      "loading": "Loading traceability log",
+      "viewDetail": "View event detail",
+      "noEvents": "No events found",
+      "noEventsHint": "Try other filters or clear the search."
+    },
+    "types": {
+      "PHYSICAL_ACCESS": "Physical access",
+      "INVENTORY_MOVEMENT": "Inventory movement",
+      "DISCREPANCY": "Physical discrepancy",
+      "NODE_DISCONNECTION": "Sensor disconnection"
+    },
+    "detail": {
+      "back": "Back to traceability",
+      "title": "Event Detail",
+      "loading": "Loading event...",
+      "evidence": "EVENT EVIDENCE",
+      "noEvidence": "Evidence not available",
+      "noEvidenceDescription": "This record does not contain an associated image or recording.",
+      "record": "Record #{{id}}",
+      "eventData": "Event data",
+      "type": "Type",
+      "dateTime": "Date and time",
+      "location": "Location",
+      "warehouseId": "Warehouse ID",
+      "zoneId": "Zone ID",
+      "justifyTitle": "Justify discrepancy",
+      "justifyReason": "Reason for the justification",
+      "justifyPlaceholder": "Describe the reason and observations...",
+      "incidentTitle": "Inventory incident",
+      "incidentDescription": "Register a shrinkage if an inventory loss has been detected.",
+      "reportShrinkage": "Report shrinkage",
+      "notFound": "Event not found",
+      "notFoundDescription": "No record was found with the requested identifier.",
+      "backToHistory": "Back to history",
+      "messages": {
+        "justificationRequired": "Write a justification before continuing.",
+        "justificationNotSaved": "The justification is ready, but it is not saved on the server yet.",
+        "shrinkageNotSaved": "Reporting shrinkage requires an endpoint to save the incident."
+      }
     }
   },
   "subscriptions": {
@@ -176,13 +361,30 @@
       "premium": "Premium",
       "corporate": "Corporate",
       "enterpriseBadge": "IDEAL FOR LARGE COMPANIES",
-      "update": "Update to"
+      "update": "Update to",
+      "loading": "Loading subscription plans"
     },
     "current": {
       "title": "My Subscription",
       "plan": "Current plan",
       "status": "Status",
       "renewsAt": "Renews at"
+    },
+    "checkout": {
+      "selectPlan": "Select Plan",
+      "badge": "SUBSCRIPTION & BILLING",
+      "title": "Payment Summary",
+      "subtitle": "Review the details of your new plan before confirming.",
+      "planDetails": "Details of your new plan",
+      "plan": "Plan",
+      "paymentMethod": "Payment method",
+      "changePayment": "Change payment method",
+      "totalToday": "Total due today",
+      "confirm": "Confirm and Pay",
+      "confirmed": "Payment confirmed successfully.",
+      "noPlan": "No plan selected",
+      "noPlanHint": "Select a plan to continue.",
+      "backToPlans": "Back to plans"
     }
   },
   "team": {
@@ -197,7 +399,11 @@
       "zonesAccess": "Zones & Access",
       "warehouseKeeper": "Warehouse Keeper",
       "logisticsStaff": "Logistics Staff",
-      "count": "users"
+      "count": "users",
+      "noAdministrators": "There are no administrators registered.",
+      "otherRoles": "Staff and other roles",
+      "permissionAccess": "Permission-based access",
+      "noOtherUsers": "There are no other users registered."
     },
     "invite": {
       "title": "Invite New User",
@@ -211,7 +417,15 @@
       "securityDescription": "Monitor alerts and security events.",
       "zones": "Access Zones",
       "send": "Send Invitation",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "closeDialog": "Close invitation dialog",
+      "description": "Set up the role of the user who will have access to the platform.",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "First and last name",
+      "emailPlaceholder": "user@company.com",
+      "warehouse": "Assigned warehouse",
+      "selectWarehouse": "Select a warehouse",
+      "note": "Creating accounts and sending invitations requires integration with the users service."
     },
     "permissions": {
       "title": "Edit Permissions",
@@ -220,13 +434,74 @@
       "save": "Save Changes",
       "zone1": "Zone A (Main Warehouse)",
       "zone2": "Zone B (Quarantine / Restrictions)",
-      "zone3": "Zone C (Loading & Unloading)"
+      "zone3": "Zone C (Loading & Unloading)",
+      "badge": "ACCESS CONTROL",
+      "closeDialog": "Close permissions dialog",
+      "zoneAccess": "Access to this zone",
+      "noZones": "There are no zones available to assign.",
+      "note": "The permissions shown are provisional until they are connected to the authorization API."
     },
     "delete": {
       "title": "Delete user?",
       "message": "This action will permanently remove the user and their access permissions.",
       "cancel": "Cancel",
-      "confirm": "Delete"
+      "confirm": "Delete",
+      "closeDialog": "Close delete dialog",
+      "messageBefore": "Are you sure you want to delete"
+    },
+    "actions": {
+      "managePermissions": "Manage user permissions",
+      "deleteUser": "Delete user"
+    },
+    "roles": {
+      "ROLE_ADMINISTRATOR": "Administrator",
+      "ROLE_SECURITY_MANAGER": "Security Manager",
+      "ROLE_WAREHOUSE_KEEPER": "Warehouse Keeper",
+      "ROLE_AUDITOR": "Auditor",
+      "none": "No role"
+    },
+    "messages": {
+      "loadingUsers": "Loading users...",
+      "loadUsersError": "Users could not be loaded. Check that JSON Server is running.",
+      "loadWarehousesError": "Warehouses could not be loaded.",
+      "loadZonesError": "Warehouse zones could not be loaded.",
+      "requiredFields": "Fill in the name, the email and the assigned warehouse.",
+      "emailTaken": "A user with that email already exists.",
+      "userCreated": "User created successfully.",
+      "createError": "The user could not be created. Check that JSON Server is running.",
+      "userDeleted": "User deleted successfully.",
+      "deleteError": "The user could not be deleted.",
+      "permissionsNotSaved": "Permissions are not saved yet because their structure is not defined in the API."
     }
+  },
+  "titles": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "warehouses": "My Warehouses",
+    "warehouseNew": "Register Warehouse",
+    "warehouseView": "View Warehouse",
+    "warehouseEdit": "Edit Warehouse",
+    "devices": "IoT Devices",
+    "deviceNew": "Link IoT Device",
+    "deviceEdit": "Edit IoT Device",
+    "team": "Team & Access",
+    "traceability": "Traceability Log",
+    "eventDetail": "Event Detail",
+    "subscription": "Subscription",
+    "checkout": "Payment Summary",
+    "notFound": "Page not found"
+  },
+  "language": {
+    "en": "English",
+    "es": "Spanish"
+  },
+  "a11y": {
+    "mainNavigation": "Main navigation",
+    "landingPage": "NodeSecure Landing Page"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The requested view does not exist in NodeSecure.",
+    "back": "Back to My Warehouses"
   }
 }

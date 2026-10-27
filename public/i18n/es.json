@@ -15,7 +15,9 @@
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
     "signOut": "Cerrar sesión",
-    "language": "Idioma"
+    "language": "Idioma",
+    "alerts": "Alertas",
+    "user": "Usuario"
   },
   "shared": {
     "actions": {
@@ -34,7 +36,8 @@
       "view": "Ver",
       "update": "Actualizar",
       "close": "Cerrar",
-      "confirm": "Confirmar"
+      "confirm": "Confirmar",
+      "saving": "Guardando..."
     },
     "states": {
       "loading": "Cargando...",
@@ -51,7 +54,8 @@
       "company": "Empresa",
       "legal": "Legal",
       "landing": "Landing Page",
-      "team": "Nuestro Equipo"
+      "team": "Nuestro Equipo",
+      "location": "Lima, Perú"
     }
   },
   "iam": {
@@ -61,7 +65,8 @@
       "password": "Contraseña",
       "submit": "Iniciar sesión",
       "invalidCredentials": "Credenciales inválidas",
-      "noAccount": "¿Aún no tienes una cuenta?"
+      "noAccount": "¿Aún no tienes una cuenta?",
+      "subtitle": "Accede a tu cuenta para continuar."
     },
     "signUp": {
       "title": "Crea tu cuenta de NodeSecure",
@@ -71,7 +76,12 @@
       "submit": "Registrarse",
       "haveAccount": "¿Ya estás registrado?",
       "planNotice": "Te estás registrando en el plan",
-      "fullName": "Nombres y apellidos"
+      "fullName": "Nombres y apellidos",
+      "subtitle": "Protege tus almacenes y comienza a utilizar NodeSecure."
+    },
+    "brand": {
+      "headline": "Auditoría logística inteligente",
+      "description": "Controla tu inventario, detecta eventos y asegura la trazabilidad en tiempo real."
     }
   },
   "warehouses": {
@@ -89,7 +99,10 @@
       "delete": "Eliminar",
       "active": "Activo",
       "suspended": "Suspendido",
-      "warehouseCount": "almacenes"
+      "warehouseCount": "almacenes",
+      "viewTooltip": "Ver almacén",
+      "editTooltip": "Editar almacén",
+      "deleteTooltip": "Eliminar almacén"
     },
     "form": {
       "createTitle": "Registrar almacén",
@@ -98,7 +111,71 @@
       "street": "Dirección",
       "district": "Distrito",
       "city": "Ciudad",
-      "country": "País"
+      "country": "País",
+      "errors": {
+        "nameRequired": "El nombre es obligatorio.",
+        "nameMaxLength": "El nombre no puede superar los 80 caracteres.",
+        "streetRequired": "La dirección es obligatoria.",
+        "districtRequired": "El distrito es obligatorio.",
+        "cityRequired": "La ciudad es obligatoria.",
+        "countryRequired": "El país es obligatorio.",
+        "countryMaxLength": "Usa un código de máximo 2 caracteres."
+      }
+    },
+    "messages": {
+      "loadError": "No se pudo cargar el almacén.",
+      "loadForEditError": "No se pudo cargar el almacén que deseas editar.",
+      "saveError": "No se pudo guardar el almacén.",
+      "notSpecified": "No se especificó el almacén.",
+      "loadUsersError": "No se pudieron cargar los usuarios asignados."
+    },
+    "zones": {
+      "badge": "GESTIÓN DE ALMACENES",
+      "title": "Zonas del almacén",
+      "subtitle": "Administra las áreas donde instalarás tus dispositivos IoT.",
+      "count": "Zonas: {{count}}",
+      "name": "Nombre de la zona",
+      "namePlaceholder": "Ej. Almacén principal",
+      "code": "Código",
+      "codePlaceholder": "Ej. ZONA-01",
+      "riskLevel": "Nivel de riesgo",
+      "risk": {
+        "LOW": "Bajo",
+        "MEDIUM": "Medio",
+        "HIGH": "Alto",
+        "CRITICAL": "Crítico"
+      },
+      "shiftStart": "Inicio del turno",
+      "shiftEnd": "Fin del turno",
+      "add": "Agregar zona",
+      "registered": "Zonas registradas",
+      "empty": "Todavía no hay zonas registradas en este almacén.",
+      "messages": {
+        "loadError": "No se pudieron cargar las zonas.",
+        "created": "Zona creada correctamente.",
+        "createError": "No se pudo crear la zona."
+      }
+    },
+    "detail": {
+      "loading": "Cargando información del almacén...",
+      "backToList": "Volver a mis almacenes",
+      "updating": "Actualizando...",
+      "activate": "Activar almacén",
+      "deactivate": "Desactivar almacén",
+      "confirmActivate": "¿Estás seguro de que deseas activar el almacén \"{{name}}\"?",
+      "confirmDeactivate": "¿Estás seguro de que deseas desactivar el almacén \"{{name}}\"?",
+      "activated": "Almacén activado correctamente.",
+      "deactivated": "Almacén desactivado correctamente.",
+      "statusError": "No se pudo actualizar el estado del almacén.",
+      "information": "Información del almacén",
+      "iotNodes": "Nodos IoT",
+      "iotNodesDescription": "Los sensores vinculados a las zonas de este almacén se consultan desde el módulo de dispositivos IoT.",
+      "viewDevices": "Ver dispositivos IoT",
+      "assignedUsers": "Usuarios asignados",
+      "noUsers": "No hay usuarios asignados a este almacén.",
+      "lastMovements": "Últimos movimientos físicos",
+      "lastMovementsDescription": "Los movimientos y alertas asociados a este almacén se mostrarán aquí cuando conectemos la consulta de trazabilidad.",
+      "viewTraceability": "Ver trazabilidad"
     }
   },
   "devices": {
@@ -120,7 +197,37 @@
       "noRfid": "No hay lectores RFID registrados",
       "noRfidSubtitle": "Vincula un nuevo dispositivo para comenzar a monitorear movimientos mediante RFID.",
       "sensor": "Sensor magnético",
-      "zoneLabel": "ZONA"
+      "zoneLabel": "ZONA",
+      "filterByWarehouse": "Filtrar por almacén",
+      "allWarehouses": "Todos los almacenes",
+      "loading": "Cargando dispositivos IoT",
+      "motionSensors": "Sensores de movimiento",
+      "vibrationSensors": "Sensores de vibración",
+      "warehouse": "Almacén",
+      "unknownWarehouse": "Almacén no identificado",
+      "zoneFallback": "Zona {{id}}",
+      "editData": "Editar datos",
+      "disconnect": "Desconectar",
+      "activate": "Activar",
+      "warehouseSuspended": "Almacén suspendido",
+      "empty": {
+        "magnetic": {
+          "title": "No hay sensores magnéticos registrados",
+          "subtitle": "Vincula un dispositivo para comenzar a monitorear puertas y accesos."
+        },
+        "motion": {
+          "title": "No hay sensores de movimiento registrados",
+          "subtitle": "Vincula un dispositivo para comenzar a monitorear movimiento."
+        },
+        "vibration": {
+          "title": "No hay sensores de vibración registrados",
+          "subtitle": "Vincula un dispositivo para comenzar a detectar vibraciones."
+        },
+        "rfid": {
+          "title": "No hay lectores RFID registrados",
+          "subtitle": "Vincula un nuevo dispositivo para comenzar a monitorear movimientos mediante RFID."
+        }
+      }
     },
     "form": {
       "title": "Vincular nodo sensor IoT",
@@ -132,7 +239,39 @@
       "deviceName": "Nombre del dispositivo",
       "assignZone": "Asignar a zona",
       "link": "Vincular dispositivo",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "badge": "GESTIÓN IOT",
+      "editTitle": "Editar dispositivo",
+      "subtitle": "Registra un dispositivo IoT y asígnalo a una zona de tu almacén.",
+      "cardBadge": "DISPOSITIVO IOT",
+      "cardSubtitle": "Completa la información para vincular el sensor al sistema.",
+      "selectZone": "Selecciona una zona",
+      "loadingData": "Cargando almacenes y zonas...",
+      "noZones": "Este almacén no tiene zonas registradas.",
+      "saving": "Guardando...",
+      "errors": {
+        "macRequired": "Ingresa la dirección MAC del dispositivo (ej. A4:CF:12:9B:1E:44).",
+        "macInvalid": "La dirección MAC no tiene un formato válido.",
+        "modelRequired": "Ingresa el modelo del dispositivo.",
+        "warehouseRequired": "Selecciona un almacén válido.",
+        "zoneRequired": "Selecciona una zona válida.",
+        "zoneMismatch": "Selecciona una zona perteneciente al almacén elegido."
+      },
+      "messages": {
+        "loadWarehousesError": "No se pudieron cargar los almacenes.",
+        "loadZonesError": "No se pudieron cargar las zonas.",
+        "zoneNotFound": "No se encontró la zona del sensor.",
+        "loadSensorError": "No se pudo cargar el sensor.",
+        "updated": "Sensor actualizado correctamente.",
+        "created": "Sensor registrado correctamente.",
+        "saveError": "No se pudo guardar el sensor."
+      }
+    },
+    "types": {
+      "MAGNETIC_CONTACT": "Sensor magnético",
+      "MOTION": "Sensor de movimiento",
+      "VIBRATION": "Sensor de vibración",
+      "RFIDReader": "Lector RFID"
     }
   },
   "traceability": {
@@ -156,7 +295,53 @@
       "physicalDiscrepancies": "Discrepancias físicas",
       "systemEvents": "Eventos del sistema",
       "dateRange": "RANGO DE FECHAS",
-      "applyFilters": "Aplicar Filtros"
+      "applyFilters": "Aplicar Filtros",
+      "searchPlaceholder": "Buscar eventos...",
+      "range": {
+        "0": "Todas las fechas",
+        "7": "Últimos 7 días",
+        "30": "Últimos 30 días",
+        "90": "Últimos 90 días"
+      },
+      "loading": "Cargando registro de trazabilidad",
+      "viewDetail": "Ver detalle del evento",
+      "noEvents": "No se encontraron eventos",
+      "noEventsHint": "Prueba con otros filtros o limpia la búsqueda."
+    },
+    "types": {
+      "PHYSICAL_ACCESS": "Acceso físico",
+      "INVENTORY_MOVEMENT": "Movimiento de inventario",
+      "DISCREPANCY": "Discrepancia física",
+      "NODE_DISCONNECTION": "Desconexión de sensor"
+    },
+    "detail": {
+      "back": "Volver a trazabilidad",
+      "title": "Detalle del Evento",
+      "loading": "Cargando evento...",
+      "evidence": "EVIDENCIA DEL EVENTO",
+      "noEvidence": "Evidencia no disponible",
+      "noEvidenceDescription": "Este registro no contiene una imagen ni una grabación asociada.",
+      "record": "Registro #{{id}}",
+      "eventData": "Datos del evento",
+      "type": "Tipo",
+      "dateTime": "Fecha y hora",
+      "location": "Ubicación",
+      "warehouseId": "ID de almacén",
+      "zoneId": "ID de zona",
+      "justifyTitle": "Justificar discrepancia",
+      "justifyReason": "Motivo de la justificación",
+      "justifyPlaceholder": "Describe el motivo y las observaciones...",
+      "incidentTitle": "Incidencia de inventario",
+      "incidentDescription": "Registra una merma si se ha detectado una pérdida de inventario.",
+      "reportShrinkage": "Reportar merma",
+      "notFound": "Evento no encontrado",
+      "notFoundDescription": "No se encontró un registro con el identificador solicitado.",
+      "backToHistory": "Volver al historial",
+      "messages": {
+        "justificationRequired": "Escribe una justificación antes de continuar.",
+        "justificationNotSaved": "La justificación está preparada, pero todavía no se guarda en el servidor.",
+        "shrinkageNotSaved": "El reporte de merma requiere integrar un endpoint para guardar el incidente."
+      }
     }
   },
   "subscriptions": {
@@ -176,13 +361,30 @@
       "premium": "Premium",
       "corporate": "Corporativo",
       "enterpriseBadge": "IDEAL PARA GRANDES EMPRESAS",
-      "update": "Actualizar a"
+      "update": "Actualizar a",
+      "loading": "Cargando planes de suscripción"
     },
     "current": {
       "title": "Mi Suscripción",
       "plan": "Plan actual",
       "status": "Estado",
       "renewsAt": "Se renueva el"
+    },
+    "checkout": {
+      "selectPlan": "Seleccionar plan",
+      "badge": "SUSCRIPCIÓN Y FACTURACIÓN",
+      "title": "Resumen de Pago",
+      "subtitle": "Revisa los detalles de tu nuevo plan antes de confirmar.",
+      "planDetails": "Detalles de tu nuevo plan",
+      "plan": "Plan",
+      "paymentMethod": "Método de pago",
+      "changePayment": "Cambiar método de pago",
+      "totalToday": "Total a pagar hoy",
+      "confirm": "Confirmar y Pagar",
+      "confirmed": "Pago confirmado correctamente.",
+      "noPlan": "No se seleccionó ningún plan",
+      "noPlanHint": "Selecciona un plan para continuar.",
+      "backToPlans": "Volver a planes"
     }
   },
   "team": {
@@ -197,7 +399,11 @@
       "zonesAccess": "Zonas y Accesos",
       "warehouseKeeper": "Almacenero",
       "logisticsStaff": "Personal Logístico",
-      "count": "usuarios"
+      "count": "usuarios",
+      "noAdministrators": "No hay administradores registrados.",
+      "otherRoles": "Personal y otros roles",
+      "permissionAccess": "Acceso por permisos",
+      "noOtherUsers": "No hay otros usuarios registrados."
     },
     "invite": {
       "title": "Invitar Nuevo Usuario",
@@ -211,7 +417,15 @@
       "securityDescription": "Supervisa alertas y eventos de seguridad.",
       "zones": "Zonas de Acceso",
       "send": "Enviar Invitación",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "closeDialog": "Cerrar ventana de invitación",
+      "description": "Configura el rol del usuario que tendrá acceso a la plataforma.",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Nombre y apellidos",
+      "emailPlaceholder": "usuario@empresa.com",
+      "warehouse": "Almacén asignado",
+      "selectWarehouse": "Selecciona un almacén",
+      "note": "La creación de cuentas y el envío de invitaciones requieren integración con el servicio de usuarios."
     },
     "permissions": {
       "title": "Editar Permisos",
@@ -220,13 +434,74 @@
       "save": "Guardar Cambios",
       "zone1": "Zona A (Almacén Principal)",
       "zone2": "Zona B (Cuarentena / Restricciones)",
-      "zone3": "Zona C (Carga y Descarga)"
+      "zone3": "Zona C (Carga y Descarga)",
+      "badge": "CONTROL DE ACCESO",
+      "closeDialog": "Cerrar ventana de permisos",
+      "zoneAccess": "Acceso a esta zona",
+      "noZones": "No hay zonas disponibles para asignar.",
+      "note": "Los permisos mostrados son provisionales hasta conectarlos con la API de autorizaciones."
     },
     "delete": {
       "title": "¿Eliminar usuario?",
       "message": "Esta acción eliminará permanentemente al usuario y sus permisos de acceso.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "closeDialog": "Cerrar ventana de eliminación",
+      "messageBefore": "¿Estás seguro de que deseas eliminar a"
+    },
+    "actions": {
+      "managePermissions": "Gestionar permisos del usuario",
+      "deleteUser": "Eliminar usuario"
+    },
+    "roles": {
+      "ROLE_ADMINISTRATOR": "Administrador",
+      "ROLE_SECURITY_MANAGER": "Responsable de seguridad",
+      "ROLE_WAREHOUSE_KEEPER": "Encargado de almacén",
+      "ROLE_AUDITOR": "Auditor",
+      "none": "Sin rol"
+    },
+    "messages": {
+      "loadingUsers": "Cargando usuarios...",
+      "loadUsersError": "No se pudieron cargar los usuarios. Comprueba que JSON Server esté ejecutándose.",
+      "loadWarehousesError": "No se pudieron cargar los almacenes.",
+      "loadZonesError": "No se pudieron cargar las zonas de los almacenes.",
+      "requiredFields": "Completa el nombre, el correo y el almacén asignado.",
+      "emailTaken": "Ya existe un usuario registrado con ese correo.",
+      "userCreated": "Usuario creado correctamente.",
+      "createError": "No se pudo crear el usuario. Comprueba que JSON Server esté ejecutándose.",
+      "userDeleted": "Usuario eliminado correctamente.",
+      "deleteError": "No se pudo eliminar el usuario.",
+      "permissionsNotSaved": "Los permisos aún no se guardan porque falta definir su estructura en la API."
     }
+  },
+  "titles": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "warehouses": "Mis Almacenes",
+    "warehouseNew": "Registrar almacén",
+    "warehouseView": "Ver almacén",
+    "warehouseEdit": "Editar almacén",
+    "devices": "Dispositivos IoT",
+    "deviceNew": "Vincular dispositivo IoT",
+    "deviceEdit": "Editar dispositivo IoT",
+    "team": "Equipo y Accesos",
+    "traceability": "Registro de trazabilidad",
+    "eventDetail": "Detalle del evento",
+    "subscription": "Suscripción",
+    "checkout": "Resumen de pago",
+    "notFound": "Página no encontrada"
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "a11y": {
+    "mainNavigation": "Navegación principal",
+    "landingPage": "Landing Page de NodeSecure"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "subtitle": "La vista solicitada no existe en NodeSecure.",
+    "back": "Volver a Mis Almacenes"
   }
 }

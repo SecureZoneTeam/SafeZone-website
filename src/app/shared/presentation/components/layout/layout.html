@@ -4,19 +4,16 @@
 
     <!-- LOGO -->
     <div class="app-sidebar__logo">
-      <img
-        src="assets/logos/logo-principal.png"
-        alt="NodeSecure"
-      />
+      <img ngSrc="/assets/logos/logo-principal.png" alt="NodeSecure" height="500" width="500"/>
     </div>
 
     <!-- USER -->
     <div class="app-sidebar__user">
       <div class="app-sidebar__avatar">
-        AU
+        {{ userInitials() }}
       </div>
 
-      <span>A. Usuario</span>
+      <span>{{ iamStore.currentUser()?.username || ('nav.user' | translate) }}</span>
     </div>
 
     <!-- MENU -->
@@ -33,7 +30,7 @@
         </span>
 
         <span>
-          {{ 'warehouses.list.title' | translate }}
+          {{ 'nav.warehouses' | translate }}
         </span>
       </a>
 

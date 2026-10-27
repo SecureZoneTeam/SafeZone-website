@@ -866,3 +866,401 @@
   }
 
 }
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(2 6 23 / 75%);
+  backdrop-filter: blur(4px);
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.modal-card {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================
+   TEAM & ACCESS — MODALES
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  overflow-y: auto;
+  background: rgb(3 9 22 / 78%);
+  backdrop-filter: blur(6px);
+}
+
+/* Fondo accesible: siempre detrás del modal */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+/* Paneles de los modales */
+.modal-card,
+.modal-card--small {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 540px;
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+  padding: 2rem;
+  border: 1px solid #33445f;
+  border-radius: 1rem;
+  background: #1b2a40;
+  color: #f8fafc;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 35%);
+}
+
+.modal-card--small {
+  max-width: 460px;
+}
+
+/* Tipografía y jerarquía */
+.modal-card h2,
+.modal-card--small h2 {
+  margin: 0.65rem 0 0.75rem;
+  color: #f8fafc;
+  font-size: 1.45rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.modal-description {
+  margin: 0 0 1.5rem;
+  color: #aabbd1;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.modal-description strong {
+  color: #f8fafc;
+}
+
+.modal-label,
+.modal-field label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #dce6f4;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+/* Botón de cerrar */
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: #9aacc4;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+  background: #293b54;
+  color: #fff;
+}
+
+/* Campos del formulario */
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+
+.modal-field input,
+.modal-field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #3b4d67;
+  border-radius: 0.6rem;
+  background: #101c30;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-field input::placeholder {
+  color: #71839c;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 16%);
+}
+
+.modal-field select option {
+  background: #101c30;
+  color: #f8fafc;
+}
+
+/* Nota informativa */
+.modal-note {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #334763;
+  border-radius: 0.65rem;
+  background: #142238;
+  color: #aabbd1;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* Botones */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.modal-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.invite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 46px;
+  padding: 0.75rem 1.2rem;
+  border: 1px solid #3b82f6;
+  border-radius: 0.65rem;
+  background: #3478f6;
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.invite-button:hover {
+  background: #2563eb;
+}
+
+.secondary-button {
+  border-color: #43546c !important;
+  background: #22334b;
+  color: #e2e8f0;
+}
+
+.secondary-button:hover {
+  background: #2c405b;
+}
+
+.danger-button {
+  background: #dc2626;
+  color: #fff;
+}
+
+.danger-button:hover {
+  background: #b91c1c;
+}
+
+/* Usuario seleccionado en permisos */
+.selected-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid #33445f;
+  border-radius: 0.8rem;
+  background: #15243a;
+}
+
+.selected-user strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.selected-user p {
+  margin: 0 0 0.65rem;
+  color: #aabbd1;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+/* Lista de zonas y permisos */
+.modal-section {
+  margin-top: 1.5rem;
+}
+
+.permission-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+  padding: 1rem;
+  border: 1px solid #34465f;
+  border-radius: 0.75rem;
+  background: #15243a;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.permission-option:hover {
+  border-color: #4b78b8;
+  background: #1b2d47;
+}
+
+.permission-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0.15rem 0 0;
+  accent-color: #3478f6;
+  cursor: pointer;
+}
+
+.permission-option__text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.permission-option__text strong {
+  color: #eaf1fb;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.permission-option__text small {
+  color: #91a5bf;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Icono de eliminación de usuario */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.delete-user-button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #573b48;
+  border-radius: 0.55rem;
+  background: #2a2332;
+  color: #f87171;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.delete-user-button:hover {
+  border-color: #ef4444;
+  background: #43232d;
+}
+
+.delete-user-button .material-symbols-outlined {
+  font-size: 19px;
+}
+
+/* Mensajes */
+.team-message {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.team-message--error {
+  color: #fca5a5;
+}
+
+.team-message--success {
+  color: #86efac;
+}
+
+/* Accesibilidad */
+.modal-overlay button:focus-visible,
+.modal-overlay input:focus-visible,
+.modal-overlay select:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+
+  .modal-card,
+  .modal-card--small {
+    max-height: calc(100vh - 1.5rem);
+    padding: 1.4rem;
+    border-radius: 0.85rem;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}
+

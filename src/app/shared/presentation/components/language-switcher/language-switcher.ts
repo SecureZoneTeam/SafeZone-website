@@ -4,19 +4,23 @@ import {
   inject
 } from '@angular/core';
 
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import {
   MatButtonToggle,
   MatButtonToggleGroup
 } from '@angular/material/button-toggle';
 
+import { LanguageService } from '../../../infrastructure/language.service';
+
+/** EN / ES toggle. The selected language is applied to every text of the app (public/i18n). */
 @Component({
   selector: 'app-language-switcher',
   standalone: true,
   imports: [
     MatButtonToggleGroup,
-    MatButtonToggle
+    MatButtonToggle,
+    TranslatePipe
   ],
   templateUrl: './language-switcher.html',
   styleUrl: './language-switcher.css',
@@ -24,33 +28,9 @@ import {
 })
 export class LanguageSwitcher {
 
-  private readonly translate = inject(TranslateService);
-
-  protected currentLanguage = 'en';
-
-  protected readonly languages = ['en', 'es'];
-
-  constructor() {
-    this.currentLanguage =
-      this.translate.currentLang || 'en';
-  }
+  protected readonly language = inject(LanguageService);
 
   protected useLanguage(language: string): void {
-    console.log('Idioma seleccionado:', language);
-
-    this.translate.use(language).subscribe({
-      next: () => {
-        this.currentLanguage = language;
-
-        console.log('Idioma actual:', this.translate.currentLang);
-        console.log(
-          'Traducción:',
-          this.translate.instant('warehouses.list.title')
-        );
-      },
-      error: (error) => {
-        console.error('Error loading language:', error);
-      }
-    });
+    this.language.use(language);
   }
 }
