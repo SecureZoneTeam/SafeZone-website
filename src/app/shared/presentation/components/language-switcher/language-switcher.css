@@ -51,3 +51,40 @@
 
   background: #3b82f6;
 }
+
+/* Globe icon next to the EN / ES toggle */
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.language-switcher__globe {
+  font-size: 20px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.75;
+}
+
+/* Readable toggle on dark backgrounds (sidebar / auth pages) */
+.language-switcher ::ng-deep .mat-button-toggle-group {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.language-switcher ::ng-deep .mat-button-toggle {
+  color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+  font-size: 12px;
+}
+
+.language-switcher ::ng-deep .mat-button-toggle-checked {
+  color: #ffffff;
+  background: #3b82f6;
+}
+
+.language-switcher ::ng-deep .mat-button-toggle-checked .mat-pseudo-checkbox {
+  color: #ffffff;
+}

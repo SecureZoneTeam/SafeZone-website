@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './iam/infrastructure/authentication.guard';
 
+// Titles are translation keys (public/i18n -> "titles"), translated by TranslatedTitleStrategy.
 export const routes: Routes = [
   {
     path: 'sign-in',
-    title: 'Sign In | NodeSecure',
+    title: 'titles.signIn',
     loadComponent: () =>
       import('./iam/presentation/pages/sign-in/sign-in')
         .then((m) => m.SignIn)
@@ -12,7 +13,7 @@ export const routes: Routes = [
 
   {
     path: 'sign-up',
-    title: 'Sign Up | NodeSecure',
+    title: 'titles.signUp',
     loadComponent: () =>
       import('./iam/presentation/pages/sign-up/sign-up')
         .then((m) => m.SignUp)
@@ -39,7 +40,7 @@ export const routes: Routes = [
 
       {
         path: 'warehouses',
-        title: 'My Warehouses | NodeSecure',
+        title: 'titles.warehouses',
         loadComponent: () =>
           import('./warehouse-management/presentation/pages/warehouse-list/warehouse-list')
             .then((m) => m.WarehouseList)
@@ -47,7 +48,7 @@ export const routes: Routes = [
 
       {
         path: 'warehouses/new',
-        title: 'Register Warehouse | NodeSecure',
+        title: 'titles.warehouseNew',
         loadComponent: () =>
           import('./warehouse-management/presentation/pages/warehouse-form/warehouse-form')
             .then((m) => m.WarehouseForm)
@@ -55,7 +56,7 @@ export const routes: Routes = [
 
       {
         path: 'warehouses/:id',
-        title: 'View Warehouse | NodeSecure',
+        title: 'titles.warehouseView',
         loadComponent: () =>
           import('./warehouse-management/presentation/pages/warehouse-detail/warehouse-detail')
             .then((m) => m.WarehouseDetail)
@@ -63,7 +64,7 @@ export const routes: Routes = [
 
       {
         path: 'warehouses/:id/edit',
-        title: 'Edit Warehuose | NodeSecure',
+        title: 'titles.warehouseEdit',
         loadComponent: () =>
           import ('./warehouse-management/presentation/pages/warehouse-form/warehouse-form')
             .then((m) => m.WarehouseForm)
@@ -71,7 +72,7 @@ export const routes: Routes = [
 
       {
         path: 'devices',
-        title: 'IoT Devices | NodeSecure',
+        title: 'titles.devices',
         loadComponent: () =>
           import('./sensor-integration/presentation/pages/sensor-node-list/sensor-node-list')
             .then((m) => m.SensorNodeList)
@@ -79,7 +80,7 @@ export const routes: Routes = [
 
       {
         path: 'devices/new',
-        title: 'Link IoT Device | NodeSecure',
+        title: 'titles.deviceNew',
         loadComponent: () =>
           import('./sensor-integration/presentation/pages/sensor-node-form/sensor-node-form')
             .then((m) => m.SensorNodeForm)
@@ -87,15 +88,15 @@ export const routes: Routes = [
 
       {
         path: 'devices/edit/:id',
-        title: 'Edit IoT Device | NodeScure',
+        title: 'titles.deviceEdit',
         loadComponent: () =>
           import('./sensor-integration/presentation/pages/sensor-node-form/sensor-node-form')
-          .then((m) => m.SensorNodeForm)
+            .then((m) => m.SensorNodeForm)
       },
 
       {
         path: 'team',
-        title: 'Team & Access | NodeSecure',
+        title: 'titles.team',
         loadComponent: () =>
           import('./iam/presentation/pages/user-access/user-access')
             .then((m) => m.UserAccess)
@@ -103,7 +104,7 @@ export const routes: Routes = [
 
       {
         path: 'traceability',
-        title: 'Traceability Log | NodeSecure',
+        title: 'titles.traceability',
         loadComponent: () =>
           import('./reporting/presentation/pages/traceability-log/traceability-log')
             .then((m) => m.TraceabilityLog)
@@ -111,7 +112,7 @@ export const routes: Routes = [
 
       {
         path: 'traceability/:id',
-        title: 'Event Detail | NodeSecure',
+        title: 'titles.eventDetail',
         loadComponent: () =>
           import('./reporting/presentation/pages/traceability-detail/traceability-detail')
             .then((m) => m.TraceabilityDetail)
@@ -119,7 +120,7 @@ export const routes: Routes = [
 
       {
         path: 'subscription',
-        title: 'Subscription | NodeSecure',
+        title: 'titles.subscription',
         loadComponent: () =>
           import('./subscription-management/presentation/pages/subscription-plan-list/subscription-plan-list')
             .then((m) => m.SubscriptionPlanList)
@@ -127,7 +128,7 @@ export const routes: Routes = [
 
       {
         path: 'subscription/checkout',
-        title: 'Payment Summary | NodeSecure',
+        title: 'titles.checkout',
         canActivate: [authenticationGuard],
         loadComponent: () =>
           import('./subscription-management/presentation/pages/subscription-plan-checkout/subscription-checkout')
@@ -144,6 +145,7 @@ export const routes: Routes = [
 
   {
     path: '**',
+    title: 'titles.notFound',
     loadComponent: () =>
       import('./shared/presentation/pages/page-not-found/page-not-found')
         .then((m) => m.PageNotFound)

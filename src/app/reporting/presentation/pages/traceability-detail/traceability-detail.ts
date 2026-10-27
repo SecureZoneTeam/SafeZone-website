@@ -8,13 +8,16 @@ import {
   signal
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { LanguageService } from '../../../../shared/infrastructure/language.service';
 import { ReportingStore } from '../../../application/reporting.store';
 
 @Component({
   selector: 'app-traceability-detail',
   standalone: true,
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, TranslatePipe],
   templateUrl: './traceability-detail.html',
   styleUrl: './traceability-detail.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,6 +25,8 @@ import { ReportingStore } from '../../../application/reporting.store';
 export class TraceabilityDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  /** Gives the DatePipe the locale of the selected language. */
+  protected readonly language = inject(LanguageService);
 
   protected readonly reportingStore = inject(ReportingStore);
   protected readonly eventId = signal<string | null>(null);
@@ -71,20 +76,14 @@ export class TraceabilityDetail implements OnInit {
 
   protected justifyDiscrepancy(): void {
     if (!this.justification().trim()) {
-      this.actionMessage.set(
-        'Escribe una justificación antes de continuar.'
-      );
+      this.actionMessage.set('traceability.detail.messages.justificationRequired');
       return;
     }
 
-    this.actionMessage.set(
-      'La justificación está preparada, pero todavía no se guarda en el servidor.'
-    );
+    this.actionMessage.set('traceability.detail.messages.justificationNotSaved');
   }
 
   protected reportShrinkage(): void {
-    this.actionMessage.set(
-      'El reporte de merma requiere integrar un endpoint para guardar el incidente.'
-    );
+    this.actionMessage.set('traceability.detail.messages.shrinkageNotSaved');
   }
 }

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { SubscriptionStore } from '../../../application/subscription.store';
 
 @Component({
   selector: 'app-subscription-plan-list',
-  imports: [MatProgressBarModule],
+  imports: [MatProgressBarModule, TranslatePipe],
   templateUrl: './subscription-plan-list.html',
   styleUrl: './subscription-plan-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,6 +21,12 @@ export class SubscriptionPlanList implements OnInit {
   ngOnInit(): void {
     this.selectedPlanCode.set(this.route.snapshot.queryParamMap.get('plan'));
     this.subscriptionStore.loadPlans();
+  }
+
+  /** Translation key of a plan name (BASIC / PREMIUM / CORPORATE); other plans keep their API name. */
+  protected planNameKey(plan: { code: string; name: string }): string {
+    const known = ['BASIC', 'PREMIUM', 'CORPORATE'];
+    return known.includes(plan.code) ? `subscriptions.plans.${plan.code.toLowerCase()}` : plan.name;
   }
 
   protected selectPlan(planCode: string): void {

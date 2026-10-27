@@ -1,11 +1,18 @@
 import {
   ApplicationConfig,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection
 } from '@angular/core';
 
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { MatIconRegistry } from '@angular/material/icon';
+
 import {
   provideRouter,
+  TitleStrategy,
   withComponentInputBinding
 } from '@angular/router';
 
@@ -37,6 +44,11 @@ import {
   environment
 } from '../environments/environment';
 
+import { TranslatedTitleStrategy } from './shared/infrastructure/translated-title.strategy';
+
+// Spanish month / day names for the DatePipe (e.g. "oct 26" instead of "Oct 26").
+registerLocaleData(localeEs, 'es');
+
 
 export const appConfig: ApplicationConfig = {
 
@@ -52,6 +64,17 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding()
     ),
+
+    // Page titles are translation keys ("titles.*") translated on every language change.
+    {
+      provide: TitleStrategy,
+      useClass: TranslatedTitleStrategy
+    },
+
+    // <mat-icon> uses the same font that is loaded in index.html (Material Symbols Outlined).
+    provideAppInitializer(() => {
+      inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');
+    }),
 
     provideHttpClient(
       withXhr(),

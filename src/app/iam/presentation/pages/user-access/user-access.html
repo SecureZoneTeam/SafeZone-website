@@ -1,14 +1,12 @@
-
 <section class="team-page">
 
   <!-- HEADER -->
   <header class="team-header">
     <div>
-      <span class="team-eyebrow">TEAM MANAGEMENT</span>
-      <h1>Equipo y Accesos</h1>
+      <span class="team-eyebrow">{{ 'team.list.badge' | translate }}</span>
+      <h1>{{ 'team.list.title' | translate }}</h1>
       <p>
-        Administra los usuarios, roles y permisos de acceso
-        a tu infraestructura.
+        {{ 'team.list.subtitle' | translate }}
       </p>
     </div>
 
@@ -18,33 +16,33 @@
       (click)="openInvite()"
     >
       <span class="material-symbols-outlined">person_add</span>
-      Invitar nuevo usuario
+      {{ 'team.list.invite' | translate }}
     </button>
   </header>
 
   <!-- ESTADOS -->
   @if (loading()) {
     <div class="team-message" role="status">
-      Cargando usuarios...
+      {{ 'team.messages.loadingUsers' | translate }}
     </div>
   }
 
   @if (errorMessage()) {
     <div class="team-message team-message--error" role="alert">
-      {{ errorMessage() }}
+      {{ errorMessage() | translate }}
     </div>
   }
 
   @if (successMessage()) {
     <div class="team-message team-message--success" role="status">
-      {{ successMessage() }}
+      {{ successMessage() | translate }}
     </div>
   }
 
   <!-- ADMINISTRADORES -->
   <section class="user-section">
     <div class="section-title">
-      <h2>Administradores</h2>
+      <h2>{{ 'team.list.administrators' | translate }}</h2>
       <span>{{ administrators().length }}</span>
     </div>
 
@@ -62,27 +60,27 @@
 
             <div class="user-meta">
               <span class="role-badge role-badge--blue">
-                {{ user.role }}
+                {{ roleKey(user.role) | translate }}
               </span>
 
-              <span>Acceso administrativo</span>
+              <span>{{ 'team.list.adminAccess' | translate }}</span>
             </div>
           </div>
 
           <button
             type="button"
             class="more-button"
-            aria-label="Gestionar permisos del usuario"
-            title="Gestionar permisos"
+            [attr.aria-label]="'team.actions.managePermissions' | translate"
+            [title]="'team.actions.managePermissions' | translate"
             (click)="openPermissions(user)"
           >
-            ⋮
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">more_vert</span>
           </button>
         </article>
       } @empty {
         @if (!loading()) {
           <div class="empty-users">
-            No hay administradores registrados.
+            {{ 'team.list.noAdministrators' | translate }}
           </div>
         }
       }
@@ -92,7 +90,7 @@
   <!-- PERSONAL LOGÍSTICO -->
   <section class="user-section">
     <div class="section-title">
-      <h2>Personal y otros roles</h2>
+      <h2>{{ 'team.list.otherRoles' | translate }}</h2>
       <span>{{ logisticsUsers().length }}</span>
     </div>
 
@@ -110,10 +108,10 @@
 
             <div class="user-meta">
               <span class="role-badge role-badge--orange">
-                {{ user.role }}
+                {{ roleKey(user.role) | translate }}
               </span>
 
-              <span>Acceso por permisos</span>
+              <span>{{ 'team.list.permissionAccess' | translate }}</span>
             </div>
           </div>
 
@@ -121,18 +119,18 @@
             <button
               type="button"
               class="more-button"
-              aria-label="Gestionar permisos del usuario"
-              title="Gestionar permisos"
+              [attr.aria-label]="'team.actions.managePermissions' | translate"
+              [title]="'team.actions.managePermissions' | translate"
               (click)="openPermissions(user)"
             >
-              ⋮
+              <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">more_vert</span>
             </button>
 
             <button
               type="button"
               class="delete-user-button"
-              title="Eliminar usuario"
-              aria-label="Eliminar usuario"
+              [title]="'team.actions.deleteUser' | translate"
+              [attr.aria-label]="'team.actions.deleteUser' | translate"
               (click)="openDelete(user)"
             >
               <span class="material-symbols-outlined">delete</span>
@@ -142,7 +140,7 @@
       } @empty {
         @if (!loading()) {
           <div class="empty-users">
-            No hay otros usuarios registrados.
+            {{ 'team.list.noOtherUsers' | translate }}
           </div>
         }
       }
@@ -157,7 +155,7 @@
     <button
       type="button"
       class="modal-backdrop"
-      aria-label="Cerrar ventana de invitación"
+      [attr.aria-label]="'team.invite.closeDialog' | translate"
       (click)="closeInvite()"
     ></button>
     <section
@@ -169,61 +167,60 @@
       <button
         type="button"
         class="modal-close"
-        aria-label="Cerrar"
+        [attr.aria-label]="'shared.actions.close' | translate"
         (click)="closeInvite()"
       >
-        ×
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
       </button>
 
-      <span class="team-eyebrow">TEAM MANAGEMENT</span>
-      <h2 id="invite-title">Invitar nuevo usuario</h2>
+      <span class="team-eyebrow">{{ 'team.list.badge' | translate }}</span>
+      <h2 id="invite-title">{{ 'team.invite.title' | translate }}</h2>
 
       <p class="modal-description">
-        Configura el rol del usuario que tendrá acceso a la plataforma.
+        {{ 'team.invite.description' | translate }}
       </p>
 
       <form (ngSubmit)="inviteUser()">
         <div class="modal-field">
-          <label for="inviteFullName">Nombre completo</label>
+          <label for="inviteFullName">{{ 'team.invite.fullName' | translate }}</label>
           <input
             id="inviteFullName"
             type="text"
             name="fullName"
             [(ngModel)]="fullName"
-            placeholder="Nombre y apellidos"
+            [placeholder]="'team.invite.fullNamePlaceholder' | translate"
             required
           />
         </div>
         <div class="modal-field">
-          <label for="inviteEmail">Correo electrónico</label>
+          <label for="inviteEmail">{{ 'team.invite.email' | translate }}</label>
           <input
             id="inviteEmail"
             type="email"
             name="email"
             [(ngModel)]="email"
-            placeholder="usuario@empresa.com"
+            [placeholder]="'team.invite.emailPlaceholder' | translate"
             required
             email
           />
         </div>
 
         <div class="modal-field">
-          <label for="inviteRole">Rol en el sistema</label>
+          <label for="inviteRole">{{ 'team.invite.role' | translate }}</label>
           <select
             id="inviteRole"
             name="role"
             [(ngModel)]="selectedRole"
             required
           >
-            <option value="ROLE_ADMINISTRATOR">Administrador</option>
-            <option value="ROLE_SECURITY_MANAGER">Security Manager</option>
-            <option value="ROLE_WAREHOUSE_KEEPER">Warehouse Keeper</option>
-            <option value="ROLE_AUDITOR">Auditor</option>
+            @for (role of roles; track role) {
+              <option [value]="role">{{ roleKey(role) | translate }}</option>
+            }
           </select>
         </div>
 
         <div class="modal-field">
-          <label for="inviteWarehouse">Warehouse asignado</label>
+          <label for="inviteWarehouse">{{ 'team.invite.warehouse' | translate }}</label>
 
           <select
             id="inviteWarehouse"
@@ -231,7 +228,7 @@
             [(ngModel)]="selectedWarehouseId"
             required
           >
-            <option value="" disabled>Selecciona un warehouse</option>
+            <option value="" disabled>{{ 'team.invite.selectWarehouse' | translate }}</option>
 
             @for (warehouse of warehouses(); track warehouse.id) {
               <option [value]="warehouse.id">
@@ -242,27 +239,28 @@
         </div>
 
         <div class="modal-note">
-          La creación de cuentas y el envío de invitaciones requieren
-          integración con el servicio de usuarios.
+          {{ 'team.invite.note' | translate }}
         </div>
 
         @if (errorMessage()) {
           <p class="team-message team-message--error" role="alert">
-            {{ errorMessage() }}
+            {{ errorMessage() | translate }}
           </p>
         }
 
         <div class="modal-actions">
           <button
             type="button"
-            class="secondary-button"
+            class="secondary-button ns-has-icon"
             (click)="closeInvite()"
           >
-            Cancelar
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+            {{ 'shared.actions.cancel' | translate }}
           </button>
 
           <button type="submit" class="invite-button">
-            Continuar
+            <span class="material-symbols-outlined">send</span>
+            {{ 'team.invite.send' | translate }}
           </button>
         </div>
       </form>
@@ -276,7 +274,7 @@
     <button
       type="button"
       class="modal-backdrop"
-      aria-label="Cerrar ventana de borrar"
+      [attr.aria-label]="'team.delete.closeDialog' | translate"
       (click)="closeDelete()"
     ></button>
     <section
@@ -288,39 +286,41 @@
       <button
         type="button"
         class="modal-close"
-        aria-label="Cerrar"
+        [attr.aria-label]="'shared.actions.close' | translate"
         (click)="closeDelete()"
       >
-        ×
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
       </button>
 
       <div class="modal-icon modal-icon--danger">
         <span class="material-symbols-outlined">delete</span>
       </div>
 
-      <h2 id="delete-title">Eliminar usuario</h2>
+      <h2 id="delete-title">{{ 'team.delete.title' | translate }}</h2>
 
       <p class="modal-description">
-        ¿Estás seguro de que deseas eliminar a
+        {{ 'team.delete.messageBefore' | translate }}
         <strong>{{ selectedUser()?.fullName }}</strong>?
-        Esta acción eliminará el registro del usuario en el servidor.
+        {{ 'team.delete.message' | translate }}
       </p>
 
       <div class="modal-actions">
         <button
           type="button"
-          class="secondary-button"
+          class="secondary-button ns-has-icon"
           (click)="closeDelete()"
         >
-          Cancelar
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+          {{ 'team.delete.cancel' | translate }}
         </button>
 
         <button
           type="button"
-          class="danger-button"
+          class="danger-button ns-has-icon"
           (click)="deleteUser()"
         >
-          Eliminar usuario
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">delete</span>
+          {{ 'team.delete.confirm' | translate }}
         </button>
       </div>
     </section>
@@ -333,7 +333,7 @@
     <button
       type="button"
       class="modal-backdrop"
-      aria-label="Cerrar ventana de permisos"
+      [attr.aria-label]="'team.permissions.closeDialog' | translate"
       (click)="closePermissions()"
     ></button>
     <section
@@ -345,14 +345,14 @@
       <button
         type="button"
         class="modal-close"
-        aria-label="Cerrar"
+        [attr.aria-label]="'shared.actions.close' | translate"
         (click)="closePermissions()"
       >
-        ×
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
       </button>
 
-      <span class="team-eyebrow">ACCESS CONTROL</span>
-      <h2 id="permissions-title">Permisos de acceso</h2>
+      <span class="team-eyebrow">{{ 'team.permissions.badge' | translate }}</span>
+      <h2 id="permissions-title">{{ 'team.permissions.title' | translate }}</h2>
 
       @if (selectedUser(); as user) {
         <div class="selected-user">
@@ -364,17 +364,17 @@
             <strong>{{ user.fullName }}</strong>
             <p>{{ user.email }}</p>
             <span class="role-badge role-badge--blue">
-              {{ user.role }}
+              {{ roleKey(user.role) | translate }}
             </span>
           </div>
         </div>
       }
 
       <div class="modal-section">
-        <span class="modal-label">Zonas autorizadas</span>
+        <span class="modal-label">{{ 'team.permissions.assignedZones' | translate }}</span>
 
         <p class="modal-description">
-          Selecciona las zonas que este usuario podrá administrar.
+          {{ 'team.permissions.selectZones' | translate }}
         </p>
 
         @for (permission of permissions(); track permission.id; let i = $index) {
@@ -387,28 +387,28 @@
 
             <span class="permission-option__text">
               <strong>{{ permission.name }}</strong>
-              <small>Acceso a esta zona</small>
+              <small>{{ 'team.permissions.zoneAccess' | translate }}</small>
             </span>
           </label>
         } @empty {
           <p class="empty-users">
-            No hay zonas disponibles para asignar.
+            {{ 'team.permissions.noZones' | translate }}
           </p>
         }
       </div>
 
       <div class="modal-note">
-        Los permisos mostrados son provisionales hasta conectarlos
-        con la API de autorizaciones.
+        {{ 'team.permissions.note' | translate }}
       </div>
 
       <div class="modal-actions">
         <button
           type="button"
-          class="secondary-button"
+          class="secondary-button ns-has-icon"
           (click)="closePermissions()"
         >
-          Cancelar
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+          {{ 'shared.actions.cancel' | translate }}
         </button>
 
         <button
@@ -416,7 +416,8 @@
           class="invite-button"
           (click)="savePermissions()"
         >
-          Guardar permisos
+          <span class="material-symbols-outlined">save</span>
+          {{ 'team.permissions.save' | translate }}
         </button>
       </div>
     </section>

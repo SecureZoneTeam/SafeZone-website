@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageService } from '../../../../shared/infrastructure/language.service';
 import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse, WarehouseStatus } from '../../../domain/model/warehouse.entity';
 import {UsersApiEndpoint, TeamUser} from "../../../../iam/infrastructure/users-api.endpoint";
@@ -14,7 +16,7 @@ import {UsersApiEndpoint, TeamUser} from "../../../../iam/infrastructure/users-a
 
 @Component({
   selector: 'app-warehouse-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './warehouse-detail.html',
   styleUrl: './warehouse-detail.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,6 +25,7 @@ export class WarehouseDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly warehouseStore = inject(WarehouseStore);
   private readonly usersApi = inject(UsersApiEndpoint);
+  private readonly language = inject(LanguageService);
 
   protected readonly assignedUsers = signal<TeamUser[]>([]);
   protected readonly usersLoading = signal(true);
@@ -40,7 +43,7 @@ export class WarehouseDetail implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id === null) {
-      this.error.set('No se especificó el almacén.');
+      this.error.set('warehouses.messages.notSpecified');
       this.loading.set(false);
       return;
     }
@@ -63,15 +66,13 @@ export class WarehouseDetail implements OnInit {
             this.usersLoading.set(false);
           },
           error: () => {
-            this.usersError.set(
-              'No se pudieron cargar los usuarios asignados.'
-            );
+            this.usersError.set('warehouses.messages.loadUsersError');
             this.usersLoading.set(false);
           }
         });
       },
       error: (error: Error) => {
-        this.error.set(error.message || 'No se pudo cargar el almacén.');
+        this.error.set(error.message || 'warehouses.messages.loadError');
         this.loading.set(false);
       }
     });
@@ -88,13 +89,13 @@ export class WarehouseDetail implements OnInit {
         ? WarehouseStatus.Suspended
         : WarehouseStatus.Active;
 
-    const action =
+    const confirmKey =
       nextStatus === WarehouseStatus.Suspended
-        ? 'desactivar'
-        : 'activar';
+        ? 'warehouses.detail.confirmDeactivate'
+        : 'warehouses.detail.confirmActivate';
 
     const confirmed = window.confirm(
-      `¿Estás seguro de que deseas ${action} el almacén "${currentWarehouse.name}"?`
+      this.language.instant(confirmKey, { name: currentWarehouse.name })
     );
 
     if (!confirmed) {
@@ -117,15 +118,13 @@ export class WarehouseDetail implements OnInit {
           this.warehouse.set(warehouse);
           this.statusMessage.set(
             nextStatus === WarehouseStatus.Active
-              ? 'Almacén activado correctamente.'
-              : 'Almacén desactivado correctamente.'
+              ? 'warehouses.detail.activated'
+              : 'warehouses.detail.deactivated'
           );
           this.savingStatus.set(false);
         },
         error: () => {
-          this.statusError.set(
-            'No se pudo actualizar el estado del almacén.'
-          );
+          this.statusError.set('warehouses.detail.statusError');
           this.savingStatus.set(false);
         }
       });

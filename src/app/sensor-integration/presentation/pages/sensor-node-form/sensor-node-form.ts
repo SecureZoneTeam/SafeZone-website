@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, Observable } from 'rxjs';
 
 import { SensorIntegrationStore } from '../../../application/sensor-integration.store';
@@ -38,7 +39,8 @@ import { Warehouse } from '../../../../warehouse-management/domain/model/warehou
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './sensor-node-form.html',
   styleUrl: './sensor-node-form.css',
@@ -78,19 +80,19 @@ export class SensorNodeForm implements OnInit {
   protected readonly sensorTypes = [
     {
       value: SensorType.MagneticContact,
-      label: 'Sensor magnético'
+      labelKey: 'devices.types.MAGNETIC_CONTACT'
     },
     {
       value: SensorType.Motion,
-      label: 'Sensor de movimiento'
+      labelKey: 'devices.types.MOTION'
     },
     {
       value: SensorType.Vibration,
-      label: 'Sensor de vibración'
+      labelKey: 'devices.types.VIBRATION'
     },
     {
       value: SensorType.RFIDReader,
-      label: 'Lector RFID'
+      labelKey: 'devices.types.RFIDReader'
     }
   ];
 
@@ -169,13 +171,13 @@ export class SensorNodeForm implements OnInit {
           },
           error: () => {
             this.loadingData = false;
-            this.errorMessage = 'No se pudieron cargar los almacenes.';
+            this.errorMessage = 'devices.form.messages.loadWarehousesError';
           }
         });
       },
       error: () => {
         this.loadingData = false;
-        this.errorMessage = 'No se pudieron cargar las zonas.';
+        this.errorMessage = 'devices.form.messages.loadZonesError';
       }
     });
   }
@@ -189,7 +191,7 @@ export class SensorNodeForm implements OnInit {
         );
         if (!zone) {
           this.loadingData = false;
-          this.errorMessage = 'No se encontró la zona del sensor.';
+          this.errorMessage = 'devices.form.messages.zoneNotFound';
           return;
         }
         this.form.patchValue({
@@ -209,7 +211,7 @@ export class SensorNodeForm implements OnInit {
       },
       error: () => {
         this.loadingData = false;
-        this.errorMessage = 'No se pudo cargar el sensor.';
+        this.errorMessage = 'devices.form.messages.loadSensorError';
       }
     });
   }
@@ -254,7 +256,7 @@ export class SensorNodeForm implements OnInit {
     );
 
     if (!selectedWarehouse) {
-      this.errorMessage = 'Selecciona un almacén válido.';
+      this.errorMessage = 'devices.form.errors.warehouseRequired';
       return;
     }
 
@@ -262,8 +264,7 @@ export class SensorNodeForm implements OnInit {
       !selectedZone ||
       Number(selectedZone.warehouseId) !== Number(value.warehouseId)
     ) {
-      this.errorMessage =
-        'Selecciona una zona perteneciente al almacén elegido.';
+      this.errorMessage = 'devices.form.errors.zoneMismatch';
       return;
     }
 
@@ -274,8 +275,7 @@ export class SensorNodeForm implements OnInit {
         invalidMac: true
       });
 
-      this.errorMessage =
-        'La dirección MAC no tiene un formato válido.';
+      this.errorMessage = 'devices.form.errors.macInvalid';
       return;
     }
 
@@ -309,36 +309,15 @@ export class SensorNodeForm implements OnInit {
       .subscribe({
         next: () => {
           this.successMessage = this.originalSensor
-            ? 'Sensor actualizado correctamente.'
-            : 'Sensor registrado correctamente.';
+            ? 'devices.form.messages.updated'
+            : 'devices.form.messages.created';
 
           void this.router.navigate(['/devices']);
         },
         error: (error: Error) => {
           this.errorMessage =
-            error.message || 'No se pudo guardar el sensor.';
+            error.message || 'devices.form.messages.saveError';
         }
       });
-    /*por borrar, primero comprobar*/
-    /*this.sensorStore.registerSensorNode(node)
-      .pipe(
-        finalize(() => {
-          this.saving = false;
-        })
-      )
-      .subscribe({
-        next: () => {
-          this.successMessage =
-            'Dispositivo IoT registrado correctamente.';
-
-          void this.router.navigate(['/devices']);
-        },
-
-        error: (error: Error) => {
-          this.errorMessage =
-            error.message ||
-            'No se pudo registrar el dispositivo.';
-        }
-      });*/
   }
 }

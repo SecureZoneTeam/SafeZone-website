@@ -313,3 +313,32 @@ a {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ---------------------------------------------------------------- Button icons */
+
+/* Material Symbols icon placed inside a button or link (e.g. "add", "save", "arrow_forward"). */
+.ns-btn-icon {
+  font-size: 18px;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Lays out icon + text of a button that was not already a flex container. */
+.ns-has-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Spinning icon while an action is in progress ("progress_activity"). */
+.ns-spin {
+  animation: ns-spin 1s linear infinite;
+}
+
+@keyframes ns-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

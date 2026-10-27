@@ -10,12 +10,15 @@ import {
 import { DatePipe } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { LanguageService } from '../../../../shared/infrastructure/language.service';
 
 import { ReportingStore } from '../../../application/reporting.store';
 
 @Component({
   selector: 'app-traceability-log',
-  imports: [DatePipe, MatProgressBarModule],
+  imports: [DatePipe, MatProgressBarModule, TranslatePipe],
   templateUrl: './traceability-log.html',
   styleUrl: './traceability-log.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,6 +26,11 @@ import { ReportingStore } from '../../../application/reporting.store';
 export class TraceabilityLog implements OnInit {
   protected readonly reportingStore = inject(ReportingStore);
   private readonly router = inject(Router);
+  /** Gives the DatePipe the locale of the selected language. */
+  protected readonly language = inject(LanguageService);
+
+  /** Options of the date filter (days); labels in public/i18n -> traceability.list.range.* */
+  protected readonly dateRanges = ['0', '7', '30', '90'];
 
   protected readonly searchText = signal('');
   protected readonly selectedTypes = signal<string[]>([]);
@@ -30,10 +38,10 @@ export class TraceabilityLog implements OnInit {
   protected readonly menuRecord = signal<any | null>(null);
 
   protected readonly eventTypes = [
-    { value: 'PHYSICAL_ACCESS', label: 'Acceso físico' },
-    { value: 'NODE_DISCONNECTION', label: 'Desconexión de sensor' },
-    { value: 'INVENTORY_MOVEMENT', label: 'Movimiento de inventario' },
-    { value: 'DISCREPANCY', label: 'Discrepancia física' }
+    { value: 'PHYSICAL_ACCESS', labelKey: 'traceability.types.PHYSICAL_ACCESS' },
+    { value: 'NODE_DISCONNECTION', labelKey: 'traceability.types.NODE_DISCONNECTION' },
+    { value: 'INVENTORY_MOVEMENT', labelKey: 'traceability.types.INVENTORY_MOVEMENT' },
+    { value: 'DISCREPANCY', labelKey: 'traceability.types.DISCREPANCY' }
   ];
 
   protected readonly filteredRecords = computed(() => {

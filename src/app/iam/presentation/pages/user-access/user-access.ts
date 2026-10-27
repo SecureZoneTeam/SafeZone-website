@@ -7,6 +7,7 @@ import {
   signal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import {UsersApiEndpoint, TeamUser as ApiTeamUser} from "../../../infrastructure/users-api.endpoint";
 import {WarehousesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouses-api.endpoint";
 import {WarehouseZonesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouse-zones-api.endpoint";
@@ -27,7 +28,7 @@ interface TeamUser {
 @Component({
   selector: 'app-user-access',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './user-access.html',
   styleUrl: './user-access.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,8 +42,12 @@ export class UserAccess implements OnInit {
 
   protected readonly users = signal<TeamUser[]>([]);
   protected readonly loading = signal(false);
+  /** Translation keys (public/i18n -> team.messages.*), rendered with the translate pipe. */
   protected readonly errorMessage = signal('');
   protected readonly successMessage = signal('');
+
+  /** Roles that can be assigned in the invitation form. */
+  protected readonly roles = ['ROLE_ADMINISTRATOR', 'ROLE_SECURITY_MANAGER', 'ROLE_WAREHOUSE_KEEPER', 'ROLE_AUDITOR'];
 
   protected readonly administrators = computed(
     () => this.users().filter(user => user.status === 'ADMINISTRADOR')
@@ -72,13 +77,13 @@ export class UserAccess implements OnInit {
     this.warehousesApi.getAll().subscribe({
       next: warehouses => this.warehouses.set(warehouses),
       error: () => {
-        this.errorMessage.set('No se pudieron cargar los almacenes.');
+        this.errorMessage.set('team.messages.loadWarehousesError');
       }
     });
     this.zonesApi.getAll().subscribe({
       next: zones => this.warehouseZones.set(zones),
       error: () => {
-        this.errorMessage.set('No se pudieron cargar los almacenes');
+        this.errorMessage.set('team.messages.loadZonesError');
       }
     });
   }
@@ -97,7 +102,7 @@ export class UserAccess implements OnInit {
             fullName: user.fullName,
             username: user.username,
             email: user.email,
-            role: this.getRoleLabel(role),
+            role,
             status: this.getRoleStatus(role),
             companyId: user.companyId,
             warehouseId: Number(user.warehouseId ?? 0)
@@ -108,23 +113,15 @@ export class UserAccess implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.errorMessage.set(
-          'No se pudieron cargar los usuarios. Comprueba que JSON Server esté ejecutándose.'
-        );
+        this.errorMessage.set('team.messages.loadUsersError');
         this.loading.set(false);
       }
     });
   }
 
-  private getRoleLabel(role: string): string {
-    const labels: Record<string, string> = {
-      ROLE_ADMINISTRATOR: 'Administrador',
-      ROLE_SECURITY_MANAGER: 'Security Manager',
-      ROLE_WAREHOUSE_KEEPER: 'Warehouse Keeper',
-      ROLE_AUDITOR: 'Auditor'
-    };
-
-    return labels[role] ?? role;
+  /** Translation key of a role code (e.g. ROLE_AUDITOR -> team.roles.ROLE_AUDITOR). */
+  protected roleKey(role: string): string {
+    return this.roles.includes(role) ? `team.roles.${role}` : role;
   }
 
   private getRoleStatus(role: string): string {
@@ -157,9 +154,7 @@ export class UserAccess implements OnInit {
     const warehouseId = Number(this.selectedWarehouseId);
 
     if (!fullName || !email || !this.selectedWarehouseId) {
-      this.errorMessage.set(
-        'Completa el nombre, el correo y el almacén asignado.'
-      );
+      this.errorMessage.set('team.messages.requiredFields');
       return;
     }
 
@@ -168,9 +163,7 @@ export class UserAccess implements OnInit {
     );
 
     if (existingUser) {
-      this.errorMessage.set(
-        'Ya existe un usuario registrado con ese correo.'
-      );
+      this.errorMessage.set('team.messages.emailTaken');
       return;
     }
 
@@ -187,13 +180,11 @@ export class UserAccess implements OnInit {
     }).subscribe({
       next: () => {
         this.closeInvite();
-        this.successMessage.set('Usuario creado correctamente.');
+        this.successMessage.set('team.messages.userCreated');
         this.loadUsers();
       },
       error: () => {
-        this.errorMessage.set(
-          'No se pudo crear el usuario. Comprueba que JSON Server esté ejecutándose.'
-        );
+        this.errorMessage.set('team.messages.createError');
       }
     });
   }
@@ -220,11 +211,11 @@ export class UserAccess implements OnInit {
         this.users.update(current =>
           current.filter(item => item.id !== user.id)
         );
-        this.successMessage.set('Usuario eliminado correctamente.');
+        this.successMessage.set('team.messages.userDeleted');
         this.closeDelete();
       },
       error: () => {
-        this.errorMessage.set('No se pudo eliminar el usuario.');
+        this.errorMessage.set('team.messages.deleteError');
         this.closeDelete();
       }
     });
@@ -263,9 +254,7 @@ export class UserAccess implements OnInit {
   }
 
   protected savePermissions(): void {
-    this.errorMessage.set(
-      'Los permisos aún no se persisten porque falta definir su estructura en la API.'
-    );
+    this.errorMessage.set('team.messages.permissionsNotSaved');
   }
 
   protected getInitials(fullName: string): string {

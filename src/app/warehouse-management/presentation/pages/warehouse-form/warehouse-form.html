@@ -12,7 +12,7 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
       @if (submitError) {
         <div class="warehouse-form__error" role="alert">
-          {{submitError}}
+          {{ submitError | translate }}
         </div>
       }
       <mat-form-field appearance="outline" class="warehouse-form__field">
@@ -21,11 +21,11 @@
 
         @if (form.controls.name.hasError('required') &&
           form.controls.name.touched){
-          <mat-error>El nombre es obligatorio.</mat-error>
+          <mat-error>{{ 'warehouses.form.errors.nameRequired' | translate }}</mat-error>
         }
 
-        @if (form.controls.name.hasError('maxlenght')){
-          <mat-error>El nombre no puede superar los 80 caracteres.</mat-error>
+        @if (form.controls.name.hasError('maxlength')){
+          <mat-error>{{ 'warehouses.form.errors.nameMaxLength' | translate }}</mat-error>
         }
       </mat-form-field>
 
@@ -35,7 +35,7 @@
 
         @if (form.controls.street.hasError('required') &&
         form.controls.street.touched) {
-          <mat-error>La dirección es obligatoria.</mat-error>
+          <mat-error>{{ 'warehouses.form.errors.streetRequired' | translate }}</mat-error>
         }
       </mat-form-field>
 
@@ -46,7 +46,7 @@
 
           @if (form.controls.district.hasError('required') &&
           form.controls.district.touched) {
-            <mat-error>El distrito es obligatorio.</mat-error>
+            <mat-error>{{ 'warehouses.form.errors.districtRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
@@ -56,7 +56,7 @@
 
           @if (form.controls.city.hasError('required') &&
           form.controls.city.touched) {
-            <mat-error>La ciudad es obligatoria.</mat-error>
+            <mat-error>{{ 'warehouses.form.errors.cityRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
@@ -66,17 +66,18 @@
 
           @if (form.controls.country.hasError('required') &&
           form.controls.country.touched) {
-            <mat-error>El país es obligatorio.</mat-error>
+            <mat-error>{{ 'warehouses.form.errors.countryRequired' | translate }}</mat-error>
           }
 
           @if (form.controls.country.hasError('maxlength')) {
-            <mat-error>Usa un código de máximo 2 caracteres.</mat-error>
+            <mat-error>{{ 'warehouses.form.errors.countryMaxLength' | translate }}</mat-error>
           }
         </mat-form-field>
       </div>
 
       <div class="warehouse-form__actions">
         <a class="ns-button ns-button--secondary" routerLink="/warehouses">
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
           {{ 'shared.actions.cancel' | translate }}
         </a>
         <button
@@ -84,12 +85,12 @@
           type="submit"
           [disabled]="submitting || form.invalid"
         >
+          <span class="material-symbols-outlined ns-btn-icon" [class.ns-spin]="submitting" aria-hidden="true">{{ submitting ? 'progress_activity' : 'save' }}</span>
           {{
             (submitting
               ? 'shared.actions.saving'
               : 'shared.actions.save') | translate
           }}
-          <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
     </form>
@@ -97,11 +98,11 @@
       <section class="warehouse-zones">
         <div class="warehouse-zones__header">
           <div>
-            <span class="warehouse-zones__badge">WAREHOUSE MANAGEMENT</span>
-            <h2>Zonas del almacén</h2>
-            <p>Administra las áreas donde instalarás tus dispositivos IoT.</p>
+            <span class="warehouse-zones__badge">{{ 'warehouses.zones.badge' | translate }}</span>
+            <h2>{{ 'warehouses.zones.title' | translate }}</h2>
+            <p>{{ 'warehouses.zones.subtitle' | translate }}</p>
           </div>
-          <span class="warehouse-zones__count">{{ zones().length }} zonas</span>
+          <span class="warehouse-zones__count">{{ 'warehouses.zones.count' | translate: { count: zones().length } }}</span>
         </div>
 
         <form
@@ -111,36 +112,36 @@
         >
           <div class="zone-form__grid">
             <div class="zone-field zone-field--wide">
-              <label for="zoneName">Nombre de la zona</label>
+              <label for="zoneName">{{ 'warehouses.zones.name' | translate }}</label>
               <input
                 id="zoneName"
                 type="text"
                 formControlName="name"
-                placeholder="Ej. Almacén principal"
+                [placeholder]="'warehouses.zones.namePlaceholder' | translate"
               />
             </div>
 
             <div class="zone-field">
-              <label for="zoneCode">Código</label>
+              <label for="zoneCode">{{ 'warehouses.zones.code' | translate }}</label>
               <input
                 id="zoneCode"
                 type="text"
                 formControlName="code"
-                placeholder="Ej. ZONA-01"
+                [placeholder]="'warehouses.zones.codePlaceholder' | translate"
               />
             </div>
 
             <div class="zone-field">
-              <label for="zoneRisk">Nivel de riesgo</label>
+              <label for="zoneRisk">{{ 'warehouses.zones.riskLevel' | translate }}</label>
               <select id="zoneRisk" formControlName="riskLevel">
                 @for (risk of riskLevels; track risk.value) {
-                  <option [ngValue]="risk.value">{{ risk.label }}</option>
+                  <option [ngValue]="risk.value">{{ risk.labelKey | translate }}</option>
                 }
               </select>
             </div>
 
             <div class="zone-field">
-              <label for="zoneStart">Inicio del turno</label>
+              <label for="zoneStart">{{ 'warehouses.zones.shiftStart' | translate }}</label>
               <input
                 id="zoneStart"
                 type="time"
@@ -149,7 +150,7 @@
             </div>
 
             <div class="zone-field">
-              <label for="zoneEnd">Fin del turno</label>
+              <label for="zoneEnd">{{ 'warehouses.zones.shiftEnd' | translate }}</label>
               <input
                 id="zoneEnd"
                 type="time"
@@ -160,13 +161,13 @@
 
           @if (zoneError) {
             <p class="zone-message zone-message--error" role="alert">
-              {{ zoneError }}
+              {{ zoneError | translate }}
             </p>
           }
 
           @if (zoneSuccess) {
             <p class="zone-message zone-message--success" role="status">
-              {{ zoneSuccess }}
+              {{ zoneSuccess | translate }}
             </p>
           }
 
@@ -176,14 +177,15 @@
               class="ns-button ns-button--primary"
               [disabled]="savingZone || zoneForm.invalid"
             >
-              <span>{{ savingZone ? 'Guardando...' : '＋ Agregar zona' }}</span>
+              <span class="material-symbols-outlined ns-btn-icon" [class.ns-spin]="savingZone" aria-hidden="true">{{ savingZone ? 'progress_activity' : 'add_location_alt' }}</span>
+              <span>{{ (savingZone ? 'shared.actions.saving' : 'warehouses.zones.add') | translate }}</span>
             </button>
           </div>
         </form>
 
         <div class="warehouse-zones__list">
           <div class="warehouse-zones__list-header">
-            <h3>Zonas registradas</h3>
+            <h3>{{ 'warehouses.zones.registered' | translate }}</h3>
             <span>{{ zones().length }}</span>
           </div>
 
@@ -198,12 +200,12 @@
                 class="zone-risk"
                 [class.zone-risk--high]="zone.riskLevel === 'HIGH' || zone.riskLevel === 'CRITICAL'"
               >
-          {{ zone.riskLevel }}
+          {{ ('warehouses.zones.risk.' + zone.riskLevel) | translate }}
         </span>
             </article>
           } @empty {
             <div class="zone-empty">
-              Todavía no hay zonas registradas en este almacén.
+              {{ 'warehouses.zones.empty' | translate }}
             </div>
           }
         </div>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { SensorIntegrationStore } from '../../../application/sensor-integration.store';
 import {RouterLink} from "@angular/router";
@@ -15,7 +16,7 @@ import { Warehouse } from '../../../../warehouse-management/domain/model/warehou
 /** IoT device list with connection status (user story US02). */
 @Component({
   selector: 'app-sensor-node-list',
-  imports: [MatTableModule, MatProgressBarModule, RouterLink],
+  imports: [MatTableModule, MatProgressBarModule, RouterLink, TranslatePipe],
   templateUrl: './sensor-node-list.html',
   styleUrl: './sensor-node-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -45,6 +46,19 @@ export class SensorNodeList implements OnInit {
     this.filteredSensorNodes().filter(
       node => node.sensorType === SensorType.Motion
     );
+
+  protected readonly vibrationSensors = () =>
+    this.filteredSensorNodes().filter(
+      node => node.sensorType === SensorType.Vibration
+    );
+
+  /** Sections rendered in the template (title / empty-state texts are translation keys). */
+  protected readonly sections = [
+    { type: SensorType.MagneticContact, titleKey: 'devices.list.magneticSensors', emptyKey: 'devices.list.empty.magnetic', emptyIcon: 'MAG', nodes: this.magneticSensors },
+    { type: SensorType.Motion, titleKey: 'devices.list.motionSensors', emptyKey: 'devices.list.empty.motion', emptyIcon: 'MOV', nodes: this.motionSensors },
+    { type: SensorType.Vibration, titleKey: 'devices.list.vibrationSensors', emptyKey: 'devices.list.empty.vibration', emptyIcon: 'VIB', nodes: this.vibrationSensors },
+    { type: SensorType.RFIDReader, titleKey: 'devices.list.rfidReaders', emptyKey: 'devices.list.empty.rfid', emptyIcon: 'RFID', nodes: this.rfidReaders }
+  ];
 
   protected readonly selectedWarehouseId = signal('all');
   protected onWarehouseFilterChange(value: string): void{
@@ -91,12 +105,12 @@ export class SensorNodeList implements OnInit {
       (item) => Number(item.id) === Number(zoneId)
     );
     if (!zone) {
-      return 'Almacén no identificado';
+      return ''; // the template shows "devices.list.unknownWarehouse"
     }
     const warehouse = this.warehouses().find(
       (item) => Number(item.id) === Number(zone.warehouseId)
     );
-    return warehouse?.name ?? 'Almacén no identificado';
+    return warehouse?.name ?? '';
   }
 
   protected isWarehouseSuspended(zoneId: number | string): boolean {
@@ -120,7 +134,7 @@ export class SensorNodeList implements OnInit {
     const zone = this.zones().find(
       item => String(item.id) === String(zoneId)
     );
-    return zone?.name ?? `Zona ${zoneId}`;
+    return zone?.name ?? ''; // the template shows "devices.list.zoneFallback"
   }
 
   protected toggleSensorStatus(node: SensorNode): void {

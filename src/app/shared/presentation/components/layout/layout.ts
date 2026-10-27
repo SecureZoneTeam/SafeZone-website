@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
 import { LanguageSwitcher } from '../language-switcher/language-switcher';
 
@@ -32,7 +32,15 @@ import {NgOptimizedImage} from "@angular/common";
 })
 export class Layout {
 
-  private readonly iamStore = inject(IamStore);
+  protected readonly iamStore = inject(IamStore);
+
+  /** Initials of the signed-in user for the sidebar avatar (e.g. "fperez" -> "FP"). */
+  protected readonly userInitials = computed(() => {
+    const username = this.iamStore.currentUser()?.username ?? '';
+    const parts = username.split(/[\s._-]+/).filter(Boolean);
+    const initials = parts.length > 1 ? parts[0][0] + parts[1][0] : username.slice(0, 2);
+    return (initials || 'NS').toUpperCase();
+  });
 
   signOut(): void {
     this.iamStore.signOut();

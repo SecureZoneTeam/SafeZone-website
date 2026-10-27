@@ -1,19 +1,20 @@
-
 <section class="warehouse-detail">
   @if (loading()) {
     <p class="warehouse-detail__message">
-      Cargando información del almacén...
+      {{ 'warehouses.detail.loading' | translate }}
     </p>
   } @else if (error()) {
     <div class="warehouse-detail__error" role="alert">
-      {{ error() }}
+      {{ error() | translate }}
     </div>
-    <a class="warehouse-detail__secondary" routerLink="/warehouses">
-      ← Volver a mis almacenes
+    <a class="warehouse-detail__secondary ns-has-icon" routerLink="/warehouses">
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+      {{ 'warehouses.detail.backToList' | translate }}
     </a>
   } @else if (warehouse(); as item) {
-    <a class="warehouse-detail__back" routerLink="/warehouses">
-      ← Volver a mis almacenes
+    <a class="warehouse-detail__back ns-has-icon" routerLink="/warehouses">
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+      {{ 'warehouses.detail.backToList' | translate }}
     </a>
 
     <header class="warehouse-detail__header">
@@ -24,14 +25,14 @@
           [class.warehouse-detail__status--inactive]="item.status !== 'ACTIVE'"
         >
           <span class="warehouse-detail__status-dot"></span>
-          {{ item.status === 'ACTIVE' ? 'Activo' : 'Suspendido' }}
+          {{ (item.status === 'ACTIVE' ? 'warehouses.list.active' : 'warehouses.list.suspended') | translate }}
         </span>
       </div>
 
       <div class="warehouse-detail__header-actions">
         <button
           type="button"
-          class="warehouse-detail__status-button"
+          class="warehouse-detail__status-button ns-has-icon"
           [class.warehouse-detail__status-button--activate]="
       item.status === WarehouseStatus.Suspended
     "
@@ -39,58 +40,63 @@
           (click)="toggleWarehouseStatus()"
         >
           @if (savingStatus()) {
-            Actualizando...
+            <span class="material-symbols-outlined ns-btn-icon ns-spin" aria-hidden="true">progress_activity</span>
+            {{ 'warehouses.detail.updating' | translate }}
           } @else {
-            {{ item.status === WarehouseStatus.Active
-            ? 'Desactivar almacén'
-            : 'Activar almacén' }}
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">
+              {{ item.status === WarehouseStatus.Active ? 'block' : 'check_circle' }}
+            </span>
+            {{ (item.status === WarehouseStatus.Active
+            ? 'warehouses.detail.deactivate'
+            : 'warehouses.detail.activate') | translate }}
           }
         </button>
 
         <a
-          class="warehouse-detail__edit"
+          class="warehouse-detail__edit ns-has-icon"
           [routerLink]="['/warehouses', item.id, 'edit']"
         >
-          Editar almacén
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">edit</span>
+          {{ 'warehouses.form.editTitle' | translate }}
         </a>
       </div>
     </header>
     @if (statusMessage()) {
       <p class="warehouse-detail__status-message" role="status">
-        {{ statusMessage() }}
+        {{ statusMessage() | translate }}
       </p>
     }
 
     @if (statusError()) {
       <p class="warehouse-detail__status-error" role="alert">
-        {{ statusError() }}
+        {{ statusError() | translate }}
       </p>
     }
     <section class="warehouse-detail__summary">
       <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
-          <h2>Información del almacén</h2>
+          <h2>{{ 'warehouses.detail.information' | translate }}</h2>
         </header>
 
         <div class="warehouse-detail__card-body">
           <div class="warehouse-detail__row">
-            <span>Dirección</span>
+            <span>{{ 'warehouses.form.street' | translate }}</span>
             <strong>{{ item.address.street }}</strong>
           </div>
           <div class="warehouse-detail__row">
-            <span>Distrito</span>
+            <span>{{ 'warehouses.form.district' | translate }}</span>
             <strong>{{ item.address.district }}</strong>
           </div>
           <div class="warehouse-detail__row">
-            <span>Ciudad</span>
+            <span>{{ 'warehouses.form.city' | translate }}</span>
             <strong>{{ item.address.city }}</strong>
           </div>
           <div class="warehouse-detail__row">
-            <span>País</span>
+            <span>{{ 'warehouses.form.country' | translate }}</span>
             <strong>{{ item.address.country }}</strong>
           </div>
           <div class="warehouse-detail__row">
-            <span>Zonas registradas</span>
+            <span>{{ 'warehouses.zones.registered' | translate }}</span>
             <strong>{{ item.zoneCount }}</strong>
           </div>
         </div>
@@ -98,39 +104,39 @@
 
       <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
-          <h2>Nodos IoT</h2>
+          <h2>{{ 'warehouses.detail.iotNodes' | translate }}</h2>
         </header>
 
         <div class="warehouse-detail__card-body">
           <p class="warehouse-detail__description">
-            Los sensores vinculados a las zonas de este almacén se consultarán
-            desde el módulo de dispositivos IoT.
+            {{ 'warehouses.detail.iotNodesDescription' | translate }}
           </p>
 
-          <a class="warehouse-detail__secondary" routerLink="/devices">
-            Ver dispositivos IoT →
+          <a class="warehouse-detail__secondary ns-has-icon" routerLink="/devices">
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">sensors</span>
+            {{ 'warehouses.detail.viewDevices' | translate }}
           </a>
         </div>
       </article>
 
       <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
-          <h2>Usuarios asignados</h2>
+          <h2>{{ 'warehouses.detail.assignedUsers' | translate }}</h2>
           <span>{{ assignedUsers().length }}</span>
         </header>
 
         <div class="warehouse-detail__card-body">
           @if (usersLoading()) {
             <p class="warehouse-detail__description">
-              Cargando usuarios...
+              {{ 'team.messages.loadingUsers' | translate }}
             </p>
           } @else if (usersError()) {
             <p class="warehouse-detail__description">
-              {{ usersError() }}
+              {{ usersError() | translate }}
             </p>
           } @else if (assignedUsers().length === 0) {
             <p class="warehouse-detail__description">
-              No hay usuarios asignados a este almacén.
+              {{ 'warehouses.detail.noUsers' | translate }}
             </p>
           } @else {
             <div class="warehouse-detail__users">
@@ -144,17 +150,7 @@
                     <strong>{{ user.fullName }}</strong>
                     <span>{{ user.email }}</span>
                     <small>
-                      {{
-                        user.roles[0] === 'ROLE_ADMINISTRATOR'
-                          ? 'Administrador'
-                          : user.roles[0] === 'ROLE_SECURITY_MANAGER'
-                            ? 'Security Manager'
-                            : user.roles[0] === 'ROLE_WAREHOUSE_KEEPER'
-                              ? 'Warehouse Keeper'
-                              : user.roles[0] === 'ROLE_AUDITOR'
-                                ? 'Auditor'
-                                : user.roles[0] || 'Sin rol'
-                      }}
+                      {{ (user.roles[0] ? 'team.roles.' + user.roles[0] : 'team.roles.none') | translate }}
                     </small>
                   </div>
                 </div>
@@ -166,17 +162,17 @@
 
       <article class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
-          <h2>Últimos movimientos físicos</h2>
+          <h2>{{ 'warehouses.detail.lastMovements' | translate }}</h2>
         </header>
 
         <div class="warehouse-detail__card-body">
           <p class="warehouse-detail__description">
-            Los movimientos y alertas asociados a este almacén se mostrarán
-            aquí cuando conectemos la consulta de trazabilidad.
+            {{ 'warehouses.detail.lastMovementsDescription' | translate }}
           </p>
 
-          <a class="warehouse-detail__secondary" routerLink="/traceability">
-            Ver trazabilidad →
+          <a class="warehouse-detail__secondary ns-has-icon" routerLink="/traceability">
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">history</span>
+            {{ 'warehouses.detail.viewTraceability' | translate }}
           </a>
         </div>
       </article>
@@ -184,17 +180,19 @@
 
     <footer class="warehouse-detail__actions">
       <a
-        class="warehouse-detail__primary"
+        class="warehouse-detail__primary ns-has-icon"
         routerLink="/traceability"
       >
-        Ver trazabilidad
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">history</span>
+        {{ 'warehouses.detail.viewTraceability' | translate }}
       </a>
 
       <a
-        class="warehouse-detail__secondary"
+        class="warehouse-detail__secondary ns-has-icon"
         routerLink="/warehouses"
       >
-        Volver a mis almacenes
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+        {{ 'warehouses.detail.backToList' | translate }}
       </a>
     </footer>
   }

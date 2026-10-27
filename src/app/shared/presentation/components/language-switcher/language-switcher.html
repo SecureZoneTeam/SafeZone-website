@@ -1,12 +1,21 @@
-<mat-button-toggle-group
-  [value]="currentLanguage"
-  (change)="useLanguage($event.value)"
->
-  <mat-button-toggle value="en">
-    EN
-  </mat-button-toggle>
+<div class="language-switcher">
+  <span
+    class="material-symbols-outlined language-switcher__globe"
+    aria-hidden="true"
+  >translate</span>
 
-  <mat-button-toggle value="es">
-    ES
-  </mat-button-toggle>
-</mat-button-toggle-group>
+  <mat-button-toggle-group
+    [value]="language.currentLanguage()"
+    (change)="useLanguage($event.value)"
+    [attr.aria-label]="'nav.language' | translate"
+  >
+    @for (code of language.supportedLanguages; track code) {
+      <mat-button-toggle
+        [value]="code"
+        [attr.aria-label]="('language.' + code) | translate"
+      >
+        {{ code.toUpperCase() }}
+      </mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+</div>

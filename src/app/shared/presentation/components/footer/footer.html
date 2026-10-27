@@ -2,7 +2,7 @@
   <div class="footer-container">
     <div class="footer-main">
       <div class="footer-brand">
-        <a class="footer-logo" [href]="landingPageUrl" aria-label="NodeSecure Landing Page">
+        <a class="footer-logo" [href]="landingPageUrl" [attr.aria-label]="'a11y.landingPage' | translate">
           <img src="assets/logos/logo-principal.png" alt="NodeSecure" />
         </a>
         <p>{{ 'app.tagline' | translate }}</p>
@@ -29,7 +29,7 @@
         <a href="terms-and-conditions.html">{{ 'shared.footer.terms' | translate }}</a>
         <a href="privacy-policy.html">{{ 'shared.footer.privacy' | translate }}</a>
         <span>contacto&#64;nodesecure.com</span>
-        <span>Lima, Per&uacute;</span>
+        <span>{{ 'shared.footer.location' | translate }}</span>
       </div>
     </div>
 

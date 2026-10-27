@@ -64,10 +64,10 @@ export class WarehouseForm implements OnInit {
   protected zoneSuccess = '';
 
   protected readonly riskLevels = [
-    { value: ZoneRiskLevel.Low, label: 'Bajo' },
-    { value: ZoneRiskLevel.Medium, label: 'Medio' },
-    { value: ZoneRiskLevel.High, label: 'Alto' },
-    { value: ZoneRiskLevel.Critical, label: 'Crítico' }
+    { value: ZoneRiskLevel.Low, labelKey: 'warehouses.zones.risk.LOW' },
+    { value: ZoneRiskLevel.Medium, labelKey: 'warehouses.zones.risk.MEDIUM' },
+    { value: ZoneRiskLevel.High, labelKey: 'warehouses.zones.risk.HIGH' },
+    { value: ZoneRiskLevel.Critical, labelKey: 'warehouses.zones.risk.CRITICAL' }
   ];
 
   protected readonly zoneForm = this.formBuilder.nonNullable.group({
@@ -96,7 +96,7 @@ export class WarehouseForm implements OnInit {
         );
       },
       error: () => {
-        this.zoneError = 'No se pudieron cargar las zonas.';
+        this.zoneError = 'warehouses.zones.messages.loadError';
       }
     });
   }
@@ -133,12 +133,12 @@ export class WarehouseForm implements OnInit {
           openingShiftEnd: '18:00'
         });
 
-        this.zoneSuccess = 'Zona creada correctamente.';
+        this.zoneSuccess = 'warehouses.zones.messages.created';
         this.loadZones(this.currentWarehouse!.id);
         this.savingZone = false;
       },
       error: (error: Error) => {
-        this.zoneError = error.message || 'No se pudo crear la zona.';
+        this.zoneError = error.message || 'warehouses.zones.messages.createError';
         this.savingZone = false;
       }
     });
@@ -174,7 +174,7 @@ export class WarehouseForm implements OnInit {
         },
         error: (error: Error) => {
           this.submitError =
-            error.message || 'No se pudo cargar el almacén.';
+            error.message || 'warehouses.messages.loadError';
 
           console.error('Error al cargar el almacén:', error);
         }
@@ -189,7 +189,7 @@ export class WarehouseForm implements OnInit {
 
     if (this.isEditMode &&
       (!this.currentWarehouse || this.warehouseId === null)) {
-      this.submitError = 'No se pudo cargar el almacén que deseas editar.';
+      this.submitError = 'warehouses.messages.loadForEditError';
       return;
     }
 
@@ -229,7 +229,7 @@ export class WarehouseForm implements OnInit {
         },
         error: (error: Error) => {
           this.submitError =
-            error.message || 'No se pudo guardar el almacén.';
+            error.message || 'warehouses.messages.saveError';
 
           console.error('Error al guardar el almacén:', error);
         }

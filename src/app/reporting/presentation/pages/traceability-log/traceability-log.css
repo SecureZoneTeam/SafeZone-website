@@ -780,3 +780,18 @@ mat-progress-bar {
 .event-item__content {
   position: relative;
 }
+
+/* Icon inside the "more" button (overrides .event-item__time span) */
+.event-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.event-item__time .event-menu-button .ns-btn-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: inherit;
+}

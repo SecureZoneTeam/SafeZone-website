@@ -10,10 +10,10 @@
     <!-- USER -->
     <div class="app-sidebar__user">
       <div class="app-sidebar__avatar">
-        AU
+        {{ userInitials() }}
       </div>
 
-      <span>A. Usuario</span>
+      <span>{{ iamStore.currentUser()?.username || ('nav.user' | translate) }}</span>
     </div>
 
     <!-- MENU -->
@@ -30,7 +30,7 @@
         </span>
 
         <span>
-          {{ 'warehouses.list.title' | translate }}
+          {{ 'nav.warehouses' | translate }}
         </span>
       </a>
 
