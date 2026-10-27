@@ -5,13 +5,13 @@
 
     <div class="traceability-header__title">
       <span class="traceability-badge">
-        AUDIT & TRACEABILITY
+        {{ 'traceability.list.badge' | translate }}
       </span>
 
-      <h1>Event History</h1>
+      <h1>{{ 'traceability.list.title' | translate }}</h1>
 
       <p>
-        Review every physical and system event recorded across your operation.
+        {{ 'traceability.list.subtitle' | translate }}
       </p>
     </div>
 
@@ -27,22 +27,30 @@
       <div class="events-panel__header">
 
         <div>
-          <h2>Event History</h2>
-          <p>Immutable traceability records</p>
+          <h2>{{ 'traceability.list.eventHistory' | translate }}</h2>
+          <p>{{ 'traceability.list.immutableRecords' | translate }}</p>
         </div>
 
         <div class="event-controls">
+          <input
+            class="filter-button search-input"
+            type="search"
+            [placeholder]="'traceability.list.searchPlaceholder' | translate"
+            [attr.aria-label]="'traceability.list.searchPlaceholder' | translate"
+            [value]="searchText()"
+            (input)="searchText.set($any($event.target).value)"
+          />
 
-          <button class="filter-button">
-            <span>Type of event</span>
-            <span class="arrow">⌄</span>
-          </button>
-
-          <button class="filter-button">
-            <span>Últimos 7 días</span>
-            <span class="arrow">⌄</span>
-          </button>
-
+          <select
+            class="filter-button"
+            [attr.aria-label]="'traceability.list.dateRange' | translate"
+            [value]="dateRange()"
+            (change)="dateRange.set($any($event.target).value)"
+          >
+            @for (range of dateRanges; track range) {
+              <option [value]="range">{{ ('traceability.list.range.' + range) | translate }}</option>
+            }
+          </select>
         </div>
 
       </div>
@@ -51,14 +59,14 @@
       @if (reportingStore.loading()) {
         <mat-progress-bar
           mode="indeterminate"
-          aria-label="Loading traceability log">
+          [attr.aria-label]="'traceability.list.loading' | translate">
         </mat-progress-bar>
       }
 
 
       <div class="events-list">
 
-        @for (record of reportingStore.records(); track record.occurredAt) {
+        @for (record of filteredRecords(); track record.id) {
 
           <article
             class="event-item"
@@ -70,6 +78,7 @@
 
             <div class="event-item__indicator"></div>
 
+
             <div class="event-item__content">
 
               <div class="event-item__top">
@@ -77,7 +86,7 @@
                 <div class="event-item__title">
 
                   <span class="event-type">
-                    {{ record.recordType }}
+                    {{ ('traceability.types.' + record.recordType) | translate }}
                   </span>
 
                   <h3>
@@ -91,39 +100,57 @@
                 </div>
 
                 <div class="event-item__time">
+
                   <strong>
-                    {{ record.occurredAt | date: 'HH:mm' }}
+                    {{ record.occurredAt | date: 'HH:mm' : undefined : language.dateLocale() }}
                   </strong>
 
                   <span>
-                    {{ record.occurredAt | date: 'MMM d' }}
+                    {{ record.occurredAt | date: 'MMM d' : undefined : language.dateLocale() }}
                   </span>
+
+                  <button
+                    type="button"
+                    class="event-menu-button"
+                    [attr.aria-label]="'traceability.list.viewDetail' | translate"
+                    [title]="'traceability.list.viewDetail' | translate"
+                    (click)="toggleEventMenu(record)"
+                  >
+                    <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">more_vert</span>
+                  </button>
+
                 </div>
 
               </div>
 
+              @if (menuRecord()?.id === record.id) {
+                <div class="event-menu">
+
+                  <button
+                    type="button"
+                    class="ns-has-icon"
+                    (click)="openEvent(record)"
+                  >
+                    <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">visibility</span>
+                    {{ 'traceability.list.viewDetail' | translate }}
+                  </button>
+
+                </div>
+              }
+
             </div>
+
 
           </article>
 
         }
 
-        @if (!reportingStore.loading() && reportingStore.records().length === 0) {
-
+        @if (!reportingStore.loading() && filteredRecords().length === 0) {
           <div class="empty-state">
-
-            <div class="empty-state__icon">
-              ↺
-            </div>
-
-            <h3>No traceability records</h3>
-
-            <p>
-              There are no events available for the selected filters.
-            </p>
-
+            <div class="empty-state__icon">↺</div>
+            <h3>{{ 'traceability.list.noEvents' | translate }}</h3>
+            <p>{{ 'traceability.list.noEventsHint' | translate }}</p>
           </div>
-
         }
 
       </div>
@@ -136,14 +163,15 @@
 
       <div class="filters-panel__header">
 
-        <h2>Active Filters</h2>
+        <h2>{{ 'traceability.list.activeFilters' | translate }}</h2>
 
         <button
           type="button"
-          class="clear-button"
-          (click)="reportingStore.toggleDiscrepanciesOnly(false)"
+          class="clear-button ns-has-icon"
+          (click)="clearFilters()"
         >
-          Clear all
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">filter_alt_off</span>
+          {{ 'traceability.list.clearAll' | translate }}
         </button>
 
       </div>
@@ -152,7 +180,7 @@
       <div class="filter-section">
 
         <span class="filter-section__title">
-          TYPE OF EVENT
+          {{ 'traceability.list.typeOfEventUpper' | translate }}
         </span>
 
 
@@ -166,7 +194,7 @@
 
           <span class="checkbox-custom"></span>
 
-          <span>Physical discrepancies</span>
+          <span>{{ 'traceability.list.physicalDiscrepancies' | translate }}</span>
 
         </label>
 
@@ -179,7 +207,7 @@
 
           <span class="checkbox-custom"></span>
 
-          <span>System events</span>
+          <span>{{ 'traceability.list.systemEvents' | translate }}</span>
 
         </label>
 
@@ -189,23 +217,16 @@
       <div class="filter-section">
 
         <span class="filter-section__title">
-          DATE RANGE
+          {{ 'traceability.list.dateRange' | translate }}
         </span>
 
-        <button class="date-select">
-          <span>Últimos 7 días</span>
-          <span>⌄</span>
+        <button type="button" class="date-select">
+          <span>{{ ('traceability.list.range.' + dateRange()) | translate }}</span>
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">expand_more</span>
         </button>
 
       </div>
 
-
-      <button
-        class="apply-button"
-        type="button"
-      >
-        Apply Filters
-      </button>
 
     </aside>
 

@@ -1,67 +1,43 @@
 <section class="sensor-form-page">
-
-  <!-- TOP BAR -->
-
   <div class="form-topbar">
-
     <a
       routerLink="/devices"
       class="back-button"
     >
-      <span>←</span>
-      <span>Dispositivos IoT</span>
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+      <span>{{ 'devices.list.title' | translate }}</span>
     </a>
-
   </div>
 
-
   <!-- MAIN CONTENT -->
-
   <main class="sensor-form-content">
-
     <div class="form-introduction">
-
       <span class="form-badge">
-        IOT MANAGEMENT
+        {{ 'devices.form.badge' | translate }}
       </span>
-
       <h1>
-        Vincular dispositivo
+        {{ (editing() ? 'devices.form.editTitle' : 'devices.form.link') | translate }}
       </h1>
-
       <p>
-        Registra un nuevo dispositivo IoT y asígnalo
-        a una zona de tu almacén.
+        {{ 'devices.form.subtitle' | translate }}
       </p>
-
     </div>
 
-
     <!-- FORM CARD -->
-
     <section class="sensor-form-card">
-
       <div class="card-header">
-
         <div>
-
           <span class="card-eyebrow">
-            DISPOSITIVO IOT
+            {{ 'devices.form.cardBadge' | translate }}
           </span>
-
           <h2>
-            Datos del dispositivo
+            {{ 'devices.form.deviceInfo' | translate }}
           </h2>
-
           <p>
-            Completa la información para vincular el sensor
-            al sistema.
+            {{ 'devices.form.cardSubtitle' | translate }}
           </p>
-
         </div>
-
       </div>
-
 
       <form
         [formGroup]="form"
@@ -69,13 +45,11 @@
         class="sensor-form"
       >
 
-
         <!-- MAC ADDRESS -->
-
         <div class="form-field">
 
           <label for="macAddress">
-            MAC Address
+            {{ 'devices.list.macAddress' | translate }}
             <span>*</span>
           </label>
 
@@ -93,20 +67,18 @@
             ) {
 
             <small>
-              Ingresa la MAC Address del dispositivo.
+              {{ 'devices.form.errors.macRequired' | translate }}
             </small>
 
           }
 
         </div>
 
-
         <!-- MODEL -->
-
         <div class="form-field">
 
           <label for="model">
-            Nombre / modelo del dispositivo
+            {{ 'devices.form.deviceName' | translate }}
             <span>*</span>
           </label>
 
@@ -123,115 +95,135 @@
             ) {
 
             <small>
-              Ingresa el modelo del dispositivo.
+              {{ 'devices.form.errors.modelRequired' | translate }}
             </small>
 
           }
 
         </div>
 
-
-        <!-- SENSOR TYPE -->
-
+        <!-- TIPO DE SENSOR -->
         <div class="form-field">
-
           <label for="sensorType">
-            Tipo de sensor
-            <span>*</span>
+            {{ 'devices.form.sensorType' | translate }}
           </label>
 
           <div class="select-wrapper">
-
-            <select
-              id="sensorType"
-              formControlName="sensorType"
-            >
-
-              <option value="MAGNETIC_CONTACT">
-                Sensor magnético
-              </option>
-
-              <option value="RFID_READER">
-                Lector RFID
-              </option>
-
+            <select id="sensorType" formControlName="sensorType">
+              @for (type of sensorTypes; track type.value) {
+                <option [ngValue]="type.value">
+                  {{ type.labelKey | translate }}
+                </option>
+              }
             </select>
 
-            <span class="select-icon">
-              ▾
-            </span>
-
+            <span class="select-icon">▾</span>
           </div>
-
         </div>
 
-
-        <!-- ZONE -->
-
+        <!-- ALMACÉN -->
         <div class="form-field">
-
-          <label for="zoneId">
-            Asignar a zona
-            <span>*</span>
+          <label for="warehouseId">
+            {{ 'devices.list.warehouse' | translate }} <span>*</span>
           </label>
 
           <div class="select-wrapper">
+            <select id="warehouseId" formControlName="warehouseId" (change)="onWarehouseChange()">
+              <option [ngValue]="0" disabled>
+                {{ 'team.invite.selectWarehouse' | translate }}
+              </option>
 
+              @for (warehouse of warehouses(); track warehouse.id) {
+                <option [ngValue]="Number(warehouse.id)">
+                  {{ warehouse.name }}
+                </option>
+              }
+            </select>
+
+            <span class="select-icon">▾</span>
+          </div>
+
+          @if (
+            form.controls.warehouseId.invalid &&
+            form.controls.warehouseId.touched
+            ) {
+            <small>{{ 'devices.form.errors.warehouseRequired' | translate }}</small>
+          }
+        </div>
+
+        <!-- ZONA DEL ALMACÉN -->
+        <div class="form-field">
+          <label for="zoneId">
+            {{ 'devices.form.zone' | translate }} <span>*</span>
+          </label>
+
+          <div class="select-wrapper">
             <select
               id="zoneId"
               formControlName="zoneId"
+              [disabled]="loadingData || filteredZones().length === 0"
             >
-
-              <option [value]="1">
-                Zona 1
+              <option [ngValue]="0" disabled>
+                {{ 'devices.form.selectZone' | translate }}
               </option>
 
-              <option [value]="2">
-                Zona 2
-              </option>
-
-              <option [value]="3">
-                Zona 3
-              </option>
-
-              <option [value]="4">
-                Zona 4
-              </option>
-
+              @for (zone of filteredZones(); track zone.id) {
+                <option [ngValue]="Number(zone.id)">
+                  {{ zone.name }} — {{ zone.code }}
+                </option>
+              }
             </select>
 
-            <span class="select-icon">
-              ▾
-            </span>
-
+            <span class="select-icon">▾</span>
           </div>
 
+          @if (loadingData) {
+            <small>{{ 'devices.form.loadingData' | translate }}</small>
+          } @else if (filteredZones().length === 0) {
+            <small>{{ 'devices.form.noZones' | translate }}</small>
+          }
+
+          @if (
+            form.controls.zoneId.invalid &&
+            form.controls.zoneId.touched &&
+            filteredZones().length > 0
+            ) {
+            <small>{{ 'devices.form.errors.zoneRequired' | translate }}</small>
+          }
         </div>
 
 
-        <!-- BUTTON -->
+        @if (successMessage) {
+          <p class="success-message" role="status">
+            {{ successMessage | translate }}
+          </p>
+        }
+        @if (errorMessage) {
+          <p class="error-message" role="alert">
+            {{ errorMessage | translate }}
+          </p>
+        }
 
         <button
           type="submit"
           class="submit-button"
+          [disabled]="saving || loadingData || warehouses().length === 0"
         >
-
+          <span class="material-symbols-outlined ns-btn-icon" [class.ns-spin]="saving" aria-hidden="true">
+            {{ saving ? 'progress_activity' : (editing() ? 'save' : 'add_link') }}
+          </span>
           <span>
-            Vincular dispositivo
+            {{ (saving ? 'devices.form.saving' : (editing() ? 'shared.actions.save' : 'devices.form.link')) | translate }}
           </span>
-
-          <span class="button-arrow">
-            →
-          </span>
-
         </button>
 
 
         <a
           routerLink="/devices"
-          class="cancel-button"
+          class="cancel-button ns-has-icon"
         >
-          Cancelar
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">close</span>
+          {{ 'devices.form.cancel' | translate }}
         </a>
 
       </form>

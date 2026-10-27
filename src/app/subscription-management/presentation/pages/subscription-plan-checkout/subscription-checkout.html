@@ -11,8 +11,8 @@
       class="back-button"
       (click)="goBack()"
     >
-      <span aria-hidden="true">←</span>
-      <span>Seleccionar Plan</span>
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+      <span>{{ 'subscriptions.checkout.selectPlan' | translate }}</span>
     </button>
 
   </div>
@@ -27,15 +27,15 @@
     <div class="checkout-title">
 
       <span class="checkout-badge">
-        SUBSCRIPTION & BILLING
+        {{ 'subscriptions.checkout.badge' | translate }}
       </span>
 
       <h1>
-        Resumen de Pago
+        {{ 'subscriptions.checkout.title' | translate }}
       </h1>
 
       <p>
-        Revisa los detalles de tu nuevo plan antes de confirmar.
+        {{ 'subscriptions.checkout.subtitle' | translate }}
       </p>
 
     </div>
@@ -59,7 +59,7 @@
           <div class="checkout-card__header">
 
             <h2>
-              Detalles de tu nuevo plan
+              {{ 'subscriptions.checkout.planDetails' | translate }}
             </h2>
 
           </div>
@@ -72,11 +72,11 @@
               <div>
 
                 <span class="plan-summary__label">
-                  Plan
+                  {{ 'subscriptions.checkout.plan' | translate }}
                 </span>
 
                 <h3>
-                  {{ plan.name }}
+                  {{ planNameKey(plan) | translate }}
                 </h3>
 
               </div>
@@ -92,7 +92,7 @@
                 </strong>
 
                 <span>
-                  /mes
+                  /{{ 'subscriptions.plans.perMonth' | translate }}
                 </span>
 
               </div>
@@ -107,17 +107,17 @@
 
               <li>
                 <span>✓</span>
-                Warehouses: {{ plan.warehouseLimit }}
+                {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}
               </li>
 
               <li>
                 <span>✓</span>
-                IoT sensors: {{ plan.sensorNodeLimit }}
+                {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}
               </li>
 
               <li>
                 <span>✓</span>
-                Users: {{ plan.userLimit }}
+                {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}
               </li>
 
             </ul>
@@ -136,7 +136,7 @@
           <div class="checkout-card__header">
 
             <h2>
-              Método de pago
+              {{ 'subscriptions.checkout.paymentMethod' | translate }}
             </h2>
 
           </div>
@@ -169,9 +169,10 @@
 
           <button
             type="button"
-            class="change-payment"
+            class="change-payment ns-has-icon"
           >
-            Cambiar método de pago
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">credit_card</span>
+            {{ 'subscriptions.checkout.changePayment' | translate }}
           </button>
 
         </section>
@@ -189,7 +190,7 @@
         <div>
 
           <span>
-            Total a pagar hoy
+            {{ 'subscriptions.checkout.totalToday' | translate }}
           </span>
 
           <strong>
@@ -204,8 +205,8 @@
           class="confirm-button"
           (click)="confirmPayment()"
         >
-          Confirmar y Pagar
-          <span aria-hidden="true">→</span>
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">lock</span>
+          {{ 'subscriptions.checkout.confirm' | translate }}
         </button>
 
       </section>
@@ -215,11 +216,11 @@
       <div class="checkout-empty">
 
         <h2>
-          No plan selected
+          {{ 'subscriptions.checkout.noPlan' | translate }}
         </h2>
 
         <p>
-          Selecciona un plan para continuar.
+          {{ 'subscriptions.checkout.noPlanHint' | translate }}
         </p>
 
         <button
@@ -227,7 +228,8 @@
           class="confirm-button"
           (click)="goBack()"
         >
-          Volver a planes
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+          {{ 'subscriptions.checkout.backToPlans' | translate }}
         </button>
 
       </div>

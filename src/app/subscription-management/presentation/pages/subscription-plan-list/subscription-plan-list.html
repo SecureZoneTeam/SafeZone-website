@@ -4,15 +4,15 @@
   <header class="subscription-header">
 
     <div class="subscription-header__badge">
-      PLANS AND PRICING
+      {{ 'subscriptions.plans.badge' | translate }}
     </div>
 
     <h1>
-      Subscription Plans
+      {{ 'subscriptions.plans.title' | translate }}
     </h1>
 
     <p>
-      Scalable subscriptions that grow with your operation.
+      {{ 'subscriptions.plans.subtitle' | translate }}
     </p>
 
   </header>
@@ -23,7 +23,7 @@
 
     <mat-progress-bar
       mode="indeterminate"
-      aria-label="Loading subscription plans">
+      [attr.aria-label]="'subscriptions.plans.loading' | translate">
     </mat-progress-bar>
 
   }
@@ -42,7 +42,7 @@
         @if (plan.code === 'PREMIUM') {
 
           <span class="plan-card__badge">
-            MÁS POPULAR
+            {{ 'subscriptions.plans.popular' | translate }}
           </span>
 
         }
@@ -52,7 +52,7 @@
         @if (plan.code === 'CORPORATE') {
 
           <span class="plan-card__badge plan-card__badge--corporate">
-            IDEAL PARA GRANDES EMPRESAS
+            {{ 'subscriptions.plans.enterpriseBadge' | translate }}
           </span>
 
         }
@@ -60,7 +60,7 @@
 
         <!-- PLAN NAME -->
         <h2 class="plan-card__name">
-          {{ plan.name }}
+          {{ planNameKey(plan) | translate }}
         </h2>
 
 
@@ -76,7 +76,7 @@
           </span>
 
           <span class="plan-card__period">
-            / month
+            / {{ 'subscriptions.plans.perMonth' | translate }}
           </span>
 
         </div>
@@ -91,17 +91,17 @@
 
           <li>
             <span>✓</span>
-            Warehouses: {{ plan.warehouseLimit }}
+            {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}
           </li>
 
           <li>
             <span>✓</span>
-            IoT sensors: {{ plan.sensorNodeLimit }}
+            {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}
           </li>
 
           <li>
             <span>✓</span>
-            Users: {{ plan.userLimit }}
+            {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}
           </li>
 
         </ul>
@@ -115,8 +115,8 @@
             class="plan-card__button plan-card__button--corporate"
             (click)="selectPlan(plan.code)"
           >
-            Actualizar a Corporativo
-            <span aria-hidden="true">→</span>
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">upgrade</span>
+            {{ 'subscriptions.plans.update' | translate }} {{ 'subscriptions.plans.corporate' | translate }}
           </button>
 
         } @else {
@@ -126,8 +126,8 @@
             class="plan-card__button"
             (click)="selectPlan(plan.code)"
           >
-            Subscribe
-            <span aria-hidden="true">→</span>
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">shopping_cart_checkout</span>
+            {{ 'subscriptions.plans.subscribe' | translate }}
           </button>
 
         }

@@ -25,15 +25,9 @@
       routerLink="/warehouses/new"
     >
 
-      <span>
-        +
-      </span>
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">add</span>
 
       {{ 'warehouses.form.createTitle' | translate }}
-
-      <strong>
-        →
-      </strong>
 
     </a>
 
@@ -55,13 +49,11 @@
   @if (warehouseStore.error(); as errorMessage) {
 
     <div class="warehouse-error">
-      {{ errorMessage }}
+      {{ errorMessage | translate }}
     </div>
 
   }
 
-
-  <!-- EMPTY -->
   @if (warehouseStore.isEmpty()) {
 
     <div class="warehouse-empty">
@@ -78,7 +70,8 @@
         class="warehouse-create-button"
         routerLink="/warehouses/new"
       >
-        Register warehouse →
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">add</span>
+        {{ 'warehouses.form.createTitle' | translate }}
       </a>
 
     </div>
@@ -86,7 +79,6 @@
   } @else {
 
 
-    <!-- TABLE -->
     <div class="warehouse-table-wrapper">
 
       <table
@@ -96,7 +88,6 @@
       >
 
 
-        <!-- NAME -->
         <ng-container matColumnDef="name">
 
           <th
@@ -138,7 +129,6 @@
         </ng-container>
 
 
-        <!-- DISTRICT -->
         <ng-container matColumnDef="district">
 
           <th
@@ -160,7 +150,6 @@
         </ng-container>
 
 
-        <!-- ZONES -->
         <ng-container matColumnDef="zones">
 
           <th
@@ -177,7 +166,7 @@
 
             <span class="zones-chip">
 
-              {{ warehouse.zoneCount }}
+              {{ getZoneCount(warehouse.id) }}
 
             </span>
 
@@ -208,7 +197,7 @@
 
               <span class="status-dot"></span>
 
-              {{ warehouse.status }}
+              {{ (warehouse.status === 'ACTIVE' ? 'warehouses.list.active' : 'warehouses.list.suspended') | translate }}
 
             </span>
 
@@ -237,20 +226,28 @@
               <button
                 type="button"
                 class="action-button"
-                title="View warehouse"
+                [title]="'warehouses.list.viewTooltip' | translate"
+                [attr.aria-label]="'warehouses.list.viewTooltip' | translate"
+                [routerLink]="['/warehouses', warehouse.id]"
               >
-
-                <mat-icon>
-                  visibility
-                </mat-icon>
-
+                <mat-icon>visibility</mat-icon>
               </button>
 
+              <button
+                type="button"
+                class="action-button"
+                [title]="'warehouses.list.editTooltip' | translate"
+                [attr.aria-label]="'warehouses.list.editTooltip' | translate"
+                [routerLink]="['/warehouses', warehouse.id, 'edit']"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
               <button
                 type="button"
                 class="action-button action-button--danger"
-                title="Delete warehouse"
+                [title]="'warehouses.list.deleteTooltip' | translate"
+                [attr.aria-label]="'warehouses.list.deleteTooltip' | translate"
                 (click)="warehouseStore.deleteWarehouse(warehouse.id)"
               >
 
@@ -279,7 +276,6 @@
             columns: displayedColumns
           "
         ></tr>
-
       </table>
 
     </div>

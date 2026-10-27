@@ -1,4 +1,4 @@
-import { BaseResponse } from '../../shared/infrastructure/base-response';
+import { BaseResponse } from '@shared/infrastructure/base-response';
 
 /** Resource exposed by the NodeSecure RESTful API for the User aggregate. */
 export interface UserResponse extends BaseResponse {

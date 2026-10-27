@@ -1,6 +1,6 @@
 <header class="site-header">
-  <nav class="navbar" aria-label="Main navigation">
-    <a class="navbar-logo" [href]="landingPageUrl" aria-label="NodeSecure Landing Page">
+  <nav class="navbar" [attr.aria-label]="'a11y.mainNavigation' | translate">
+    <a class="navbar-logo" [href]="landingPageUrl" [attr.aria-label]="'a11y.landingPage' | translate">
       <img src="assets/logos/logo-principal.png" alt="NodeSecure" />
     </a>
 
@@ -20,17 +20,18 @@
       <app-language-switcher />
 
       @if (iamStore.isSignedIn()) {
-        <button class="navbar-button" type="button" (click)="signOut()">
+        <button class="navbar-button ns-has-icon" type="button" (click)="signOut()">
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">logout</span>
           {{ 'nav.signOut' | translate }}
-          <span aria-hidden="true">&rarr;</span>
         </button>
       } @else {
-        <a class="nav-link nav-link--ghost" routerLink="/sign-in">
+        <a class="nav-link nav-link--ghost ns-has-icon" routerLink="/sign-in">
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">login</span>
           {{ 'nav.signIn' | translate }}
         </a>
-        <a class="navbar-button" routerLink="/sign-up">
+        <a class="navbar-button ns-has-icon" routerLink="/sign-up">
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">person_add</span>
           {{ 'nav.signUp' | translate }}
-          <span aria-hidden="true">&rarr;</span>
         </a>
       }
     </div>

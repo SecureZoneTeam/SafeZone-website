@@ -10,11 +10,10 @@
 
       <h1>NODESECURE</h1>
 
-      <p>Auditoría logística inteligente</p>
+      <p>{{ 'iam.brand.headline' | translate }}</p>
 
       <span>
-        Controla tu inventario, detecta eventos
-        y asegura la trazabilidad en tiempo real.
+        {{ 'iam.brand.description' | translate }}
       </span>
 
     </div>
@@ -36,7 +35,7 @@
       </h2>
 
       <p class="auth-page__subtitle">
-        Protege tus almacenes y comienza a utilizar NodeSecure.
+        {{ 'iam.signUp.subtitle' | translate }}
       </p>
 
 
@@ -148,16 +147,14 @@
 
         <!-- BOTÓN -->
         <button
-          class="auth-page__submit"
+          class="auth-page__submit ns-has-icon"
           type="submit"
           [disabled]="iamStore.loading()"
         >
 
-          {{ 'iam.signUp.submit' | translate }}
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">person_add</span>
 
-          <span aria-hidden="true">
-            →
-          </span>
+          {{ 'iam.signUp.submit' | translate }}
 
         </button>
 

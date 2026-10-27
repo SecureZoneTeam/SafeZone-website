@@ -1,0 +1,177 @@
+<section class="detail-page">
+
+  <header class="detail-header">
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+      {{ 'traceability.detail.back' | translate }}
+    </button>
+
+    <h1>{{ 'traceability.detail.title' | translate }}</h1>
+  </header>
+
+  @if (reportingStore.loading()) {
+    <p class="detail-message">{{ 'traceability.detail.loading' | translate }}</p>
+  } @else if (record(); as event) {
+
+    <main class="detail-content">
+
+      <section class="event-heading">
+        <span
+          class="event-badge"
+          [class.event-badge--alert]="
+            isDiscrepancy() ||
+            event.recordType.toLowerCase().includes('alert')
+          "
+        >
+          {{ ('traceability.types.' + event.recordType) | translate }}
+        </span>
+
+        <h2>{{ event.description }}</h2>
+
+        <p class="event-date">
+          {{ event.occurredAt | date: 'EEE, d MMM y, HH:mm' : undefined : language.dateLocale() }}
+        </p>
+      </section>
+
+      <div class="detail-grid">
+
+        <section class="evidence-panel">
+          <div class="evidence-panel__header">
+            <span class="recording-indicator"></span>
+            <span>{{ 'traceability.detail.evidence' | translate }}</span>
+          </div>
+
+          <div class="evidence-placeholder">
+            <span class="evidence-icon">▣</span>
+            <h3>{{ 'traceability.detail.noEvidence' | translate }}</h3>
+            <p>
+              {{ 'traceability.detail.noEvidenceDescription' | translate }}
+            </p>
+          </div>
+
+          <footer class="evidence-panel__footer">
+            {{ 'traceability.detail.record' | translate: { id: event.id } }}
+          </footer>
+        </section>
+
+        <aside class="event-information">
+
+          <section class="information-card">
+            <h3>{{ 'traceability.detail.eventData' | translate }}</h3>
+
+            <div class="information-row">
+              <span>{{ 'traceability.detail.type' | translate }}</span>
+              <strong>{{ ('traceability.types.' + event.recordType) | translate }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>{{ 'traceability.list.actor' | translate }}</span>
+              <strong>{{ event.actor }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>{{ 'traceability.detail.dateTime' | translate }}</span>
+              <strong>
+                {{ event.occurredAt | date: 'dd/MM/yyyy HH:mm:ss' : undefined : language.dateLocale() }}
+              </strong>
+            </div>
+          </section>
+
+          <section class="information-card">
+            <h3>{{ 'traceability.detail.location' | translate }}</h3>
+
+            <div class="information-row">
+              <span>{{ 'traceability.detail.warehouseId' | translate }}</span>
+              <strong>{{ event.warehouseId }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>{{ 'traceability.detail.zoneId' | translate }}</span>
+              <strong>{{ event.zoneId }}</strong>
+            </div>
+          </section>
+
+          @if (isDiscrepancy()) {
+            <section class="action-card">
+              <h3>{{ 'traceability.detail.justifyTitle' | translate }}</h3>
+
+              <label for="justification">
+                {{ 'traceability.detail.justifyReason' | translate }}
+              </label>
+
+              <textarea
+                id="justification"
+                rows="4"
+                [value]="justification()"
+                (input)="onJustificationChange(
+                  $any($event.target).value
+                )"
+                [placeholder]="'traceability.detail.justifyPlaceholder' | translate"
+              ></textarea>
+
+              <button
+                type="button"
+                class="action-button action-button--success ns-has-icon"
+                (click)="justifyDiscrepancy()"
+              >
+                <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">task_alt</span>
+                {{ 'traceability.detail.justifyTitle' | translate }}
+              </button>
+            </section>
+          }
+
+          @if (isInventoryMovement()) {
+            <section class="action-card">
+              <h3>{{ 'traceability.detail.incidentTitle' | translate }}</h3>
+
+              <p>
+                {{ 'traceability.detail.incidentDescription' | translate }}
+              </p>
+
+              <button
+                type="button"
+                class="action-button action-button--danger ns-has-icon"
+                (click)="reportShrinkage()"
+              >
+                <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">report</span>
+                {{ 'traceability.detail.reportShrinkage' | translate }}
+              </button>
+            </section>
+          }
+
+          @if (actionMessage()) {
+            <p class="action-message" role="status">
+              {{ actionMessage() | translate }}
+            </p>
+          }
+
+        </aside>
+
+      </div>
+    </main>
+
+  } @else if (!reportingStore.loading()) {
+
+    <section class="detail-message detail-message--error">
+      <h2>{{ 'traceability.detail.notFound' | translate }}</h2>
+      <p>
+        {{ 'traceability.detail.notFoundDescription' | translate }}
+      </p>
+
+      <button
+        type="button"
+        class="action-button ns-has-icon"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">arrow_back</span>
+        {{ 'traceability.detail.backToHistory' | translate }}
+      </button>
+    </section>
+
+  }
+
+</section>
