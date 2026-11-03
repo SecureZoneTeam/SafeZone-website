@@ -3,4 +3,6 @@ export interface AuthenticatedUser {
   id: number | string;
   username: string;
   token: string;
+  roles?: string[];
+  warehouseId?: number | null;
 }

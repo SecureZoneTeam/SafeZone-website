@@ -98,29 +98,17 @@
           @if (isDiscrepancy()) {
             <section class="action-card">
               <h3>{{ 'traceability.detail.justifyTitle' | translate }}</h3>
-
-              <label for="justification">
-                {{ 'traceability.detail.justifyReason' | translate }}
-              </label>
-
-              <textarea
-                id="justification"
-                rows="4"
-                [value]="justification()"
-                (input)="onJustificationChange(
-                  $any($event.target).value
-                )"
-                [placeholder]="'traceability.detail.justifyPlaceholder' | translate"
-              ></textarea>
-
-              <button
-                type="button"
-                class="action-button action-button--success ns-has-icon"
-                (click)="justifyDiscrepancy()"
-              >
-                <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">task_alt</span>
-                {{ 'traceability.detail.justifyTitle' | translate }}
-              </button>
+              @if (canReconcile()) {
+                <p>{{ 'inventory.reconciliation.traceabilityPrompt' | translate }}</p>
+                <button
+                  type="button"
+                  class="action-button action-button--success ns-has-icon"
+                  (click)="justifyDiscrepancy()"
+                >
+                  <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">fact_check</span>
+                  {{ 'inventory.reconciliation.open' | translate }}
+                </button>
+              }
             </section>
           }
 

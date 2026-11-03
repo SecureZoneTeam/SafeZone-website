@@ -1,0 +1,48 @@
+<section class="quick-dispatch-page">
+  <a class="quick-dispatch-back" routerLink="/inventory"><mat-icon>arrow_back</mat-icon>{{ 'inventory.dispatch.back' | translate }}</a>
+  <header class="quick-dispatch-header">
+    <span class="inventory-eyebrow">{{ 'inventory.dispatch.badge' | translate }}</span>
+    <h1>{{ 'inventory.dispatch.title' | translate }}</h1>
+    <p>{{ 'inventory.dispatch.subtitle' | translate }}</p>
+  </header>
+
+  @if (inventoryStore.loading()) { <mat-progress-bar mode="indeterminate" /> }
+  <label class="dispatch-search">
+    <mat-icon>search</mat-icon>
+    <input #productSearchInput type="search" [value]="searchTerm()" (input)="updateSearch($any($event.target).value)" [placeholder]="'inventory.dispatch.search' | translate" />
+  </label>
+
+  @if (!selectedProduct()) {
+    <div class="dispatch-results">
+      @for (product of filteredProducts(); track product.id) {
+        <button type="button" class="dispatch-product-card" [disabled]="product.isOutOfStock" (click)="chooseProduct(product)">
+          <span class="dispatch-product-card__icon"><mat-icon>inventory_2</mat-icon></span>
+          <span class="dispatch-product-card__details"><strong>{{ product.name }}</strong><small>{{ product.sku.value }}</small></span>
+          <span class="dispatch-product-card__stock" [class.dispatch-product-card__stock--empty]="product.isOutOfStock">{{ product.currentStock }}<small>{{ 'inventory.dashboard.units' | translate }}</small></span>
+        </button>
+      } @empty {
+        <p class="dispatch-empty">{{ searchTerm() ? ('inventory.dispatch.noMatches' | translate) : ('inventory.dispatch.searchHint' | translate) }}</p>
+      }
+    </div>
+  } @else {
+    <section class="dispatch-confirm-card">
+      <div class="dispatch-selected-product">
+        <span class="dispatch-product-card__icon"><mat-icon>inventory_2</mat-icon></span>
+        <div><strong>{{ selectedProduct()?.name }}</strong><small>{{ selectedProduct()?.sku?.value }}</small></div>
+        <button type="button" class="dispatch-change" (click)="updateSearch('')">{{ 'inventory.dispatch.change' | translate }}</button>
+      </div>
+      <div class="dispatch-stock-line"><span>{{ 'inventory.dispatch.available' | translate }}</span><strong>{{ selectedProduct()?.currentStock }}</strong></div>
+      <div class="dispatch-stepper" aria-label="{{ 'inventory.dispatch.quantity' | translate }}">
+        <button type="button" [disabled]="quantity() <= 1" (click)="decrement()" [attr.aria-label]="'inventory.dispatch.decrease' | translate">−</button>
+        <strong>{{ quantity() }}</strong>
+        <button type="button" [disabled]="!selectedProduct()?.canDispatch(quantity() + 1)" (click)="increment()" [attr.aria-label]="'inventory.dispatch.increase' | translate">+</button>
+      </div>
+      <div class="dispatch-result-line"><span>{{ 'inventory.dispatch.remaining' | translate }}</span><strong>{{ (selectedProduct()?.currentStock ?? 0) - quantity() }}</strong></div>
+      <div class="dispatch-warehouse"><mat-icon>warehouse</mat-icon><span>{{ 'inventory.dispatch.warehouse' | translate }}</span><strong>{{ selectedWarehouseId() || ('inventory.dispatch.warehouseMissing' | translate) }}</strong></div>
+      @if (errorMessage()) { <p class="dispatch-error" role="alert">{{ errorMessage() | translate }}</p> }
+      <button class="dispatch-confirm-button" type="button" [disabled]="!canConfirm()" (click)="confirmDispatch()">
+        <mat-icon>outbox</mat-icon>{{ 'inventory.dispatch.confirm' | translate }}
+      </button>
+    </section>
+  }
+</section>

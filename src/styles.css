@@ -213,32 +213,42 @@ a {
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
 }
 
+
 /* ---------------------------------------------------------------- Tables */
 
 .ns-table {
   width: 100%;
-  background: transparent;
+  background: #172338;
 }
 
+/* Table header */
 .ns-table .mat-mdc-header-row {
-  background: rgba(248, 250, 252, 0.9);
+  background: #1e2d45;
 }
 
 .ns-table .mat-mdc-header-cell {
-  color: var(--ns-slate-500);
+  color: #93b4dc;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.4px;
   text-transform: uppercase;
+  border-bottom-color: #334155;
+}
+
+/* Table body */
+.ns-table .mat-mdc-row {
+  background: #172338;
 }
 
 .ns-table .mat-mdc-cell {
-  color: var(--ns-slate-700);
+  color: #e2e8f0;
   font-size: 14px;
+  border-bottom-color: #334155;
 }
 
+/* Hover effect */
 .ns-table .mat-mdc-row:hover {
-  background: rgba(239, 246, 255, 0.6);
+  background: #223550;
 }
 
 /* ---------------------------------------------------------------- Status chips */

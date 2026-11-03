@@ -1,0 +1,51 @@
+<section class="inventory-page product-form-page">
+  <a class="product-form-back" routerLink="/inventory/products"><mat-icon>arrow_back</mat-icon>{{ 'inventory.productForm.back' | translate }}</a>
+  <header class="inventory-page__header">
+    <div>
+      <span class="inventory-eyebrow">{{ 'inventory.productForm.badge' | translate }}</span>
+      <h1>{{ (isEditMode() ? 'inventory.productForm.editTitle' : 'inventory.productForm.title') | translate }}</h1>
+      <p>{{ 'inventory.productForm.subtitle' | translate }}</p>
+    </div>
+  </header>
+
+  @if (loading()) { <mat-progress-bar mode="indeterminate" /> }
+  <form class="inventory-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) { <div class="inventory-form__error" role="alert">{{ errorMessage() | translate }}</div> }
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.productForm.name' | translate }}</mat-label>
+      <input matInput formControlName="name" maxlength="80" />
+      @if (form.controls.name.hasError('required')) { <mat-error>{{ 'inventory.validation.nameRequired' | translate }}</mat-error> }
+      @if (form.controls.name.hasError('minlength')) { <mat-error>{{ 'inventory.validation.nameMinLength' | translate }}</mat-error> }
+      @if (form.controls.name.hasError('maxlength')) { <mat-error>{{ 'inventory.validation.nameMaxLength' | translate }}</mat-error> }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.productForm.sku' | translate }}</mat-label>
+      <input matInput formControlName="sku" maxlength="32" />
+      @if (form.controls.sku.hasError('required')) { <mat-error>{{ 'inventory.validation.skuRequired' | translate }}</mat-error> }
+      @if (form.controls.sku.hasError('skuInvalid')) { <mat-error>{{ 'inventory.validation.skuInvalid' | translate }}</mat-error> }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.productForm.category' | translate }}</mat-label>
+      <mat-select formControlName="category">
+        @for (category of categories; track category) { <mat-option [value]="category">{{ ('inventory.categories.' + category) | translate }}</mat-option> }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.productForm.unit' | translate }}</mat-label>
+      <input matInput formControlName="unit" maxlength="20" />
+      @if (form.controls.unit.hasError('required')) { <mat-error>{{ 'inventory.validation.unitRequired' | translate }}</mat-error> }
+    </mat-form-field>
+    <div class="product-form-stock">
+      <mat-icon>info</mat-icon>
+      <span>{{ 'inventory.productForm.stockManagedByMovements' | translate}}</span>
+      <strong>{{ originalProduct()?.currentStock ?? 0}}</strong>
+    </div>
+    <footer class="inventory-form__actions">
+      <a mat-button routerLink="/inventory/products">{{ 'shared.actions.cancel' | translate }}</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="saving() || loading()">
+        <mat-icon>{{ isEditMode() ? 'save' : 'add' }}</mat-icon>
+        {{ 'inventory.productForm.submit' | translate }}
+      </button>
+    </footer>
+  </form>
+</section>

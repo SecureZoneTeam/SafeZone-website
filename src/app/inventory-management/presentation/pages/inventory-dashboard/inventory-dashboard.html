@@ -1,0 +1,141 @@
+<section class="inventory-page inventory-dashboard">
+  <header class="inventory-page__header">
+    <div>
+      <span class="inventory-eyebrow">{{ 'inventory.dashboard.badge' | translate }}</span>
+      <h1>{{ 'inventory.dashboard.title' | translate }}</h1>
+      <p>{{ 'inventory.dashboard.subtitle' | translate }}</p>
+    </div>
+    <a class="inventory-button inventory-button--primary" routerLink="/inventory/products">
+      <mat-icon>inventory_2</mat-icon>
+      {{ 'inventory.dashboard.viewProducts' | translate }}
+    </a>
+  </header>
+
+  @if (inventoryStore.loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+  @if (inventoryStore.error(); as errorKey) {
+    <div class="inventory-state inventory-state--error" role="alert">{{ errorKey | translate }}</div>
+  }
+
+  <div class="inventory-kpis">
+    <article class="inventory-kpi">
+      <span class="inventory-kpi__icon"><mat-icon>widgets</mat-icon></span>
+      <span>{{ 'inventory.dashboard.totalUnits' | translate }}</span>
+      <strong>{{ inventoryStore.totalUnits() }}</strong>
+    </article>
+    <article class="inventory-kpi">
+      <span class="inventory-kpi__icon"><mat-icon>inventory_2</mat-icon></span>
+      <span>{{ 'inventory.dashboard.productCount' | translate }}</span>
+      <strong>{{ inventoryStore.productCount() }}</strong>
+    </article>
+    <article class="inventory-kpi inventory-kpi--warning">
+      <span class="inventory-kpi__icon"><mat-icon>production_quantity_limits</mat-icon></span>
+      <span>{{ 'inventory.dashboard.outOfStock' | translate }}</span>
+      <strong>{{ inventoryStore.outOfStockProducts().length }}</strong>
+    </article>
+    <article class="inventory-kpi">
+      <span class="inventory-kpi__icon"><mat-icon>today</mat-icon></span>
+      <span>{{ 'inventory.dashboard.movementsToday' | translate }}</span>
+      <strong>{{ todayMovementCount() }}</strong>
+    </article>
+  </div>
+
+  <section class="inventory-shortcuts" aria-label="{{ 'inventory.dashboard.shortcuts' | translate }}">
+    @if (canWrite('ROLE_ADMINISTRATOR')) {
+      <a class="inventory-shortcut" routerLink="/inventory/products/new">
+        <mat-icon>add_box</mat-icon><span>{{ 'inventory.dashboard.newProduct' | translate }}</span>
+      </a>
+    }
+    @if (canWrite('ROLE_ADMINISTRATOR') || canWrite('ROLE_WAREHOUSE_KEEPER')) {
+      <a class="inventory-shortcut" routerLink="/inventory/entries/new">
+        <mat-icon>move_to_inbox</mat-icon><span>{{ 'inventory.dashboard.registerEntry' | translate }}</span>
+      </a>
+      <a class="inventory-shortcut" routerLink="/inventory/dispatch">
+        <mat-icon>outbox</mat-icon><span>{{ 'inventory.dashboard.quickDispatch' | translate }}</span>
+      </a>
+    }
+    @if (canWrite('ROLE_ADMINISTRATOR') || canWrite('ROLE_SECURITY_MANAGER')) {
+      <button class="inventory-shortcut" type="button" (click)="openReconciliation()">
+        <mat-icon>fact_check</mat-icon><span>{{ 'inventory.dashboard.reconcile' | translate }}</span>
+      </button>
+    }
+  </section>
+
+  @if (!inventoryStore.loading() && inventoryStore.products().length === 0 && !inventoryStore.error()) {
+    <div class="inventory-state">
+      <mat-icon>inventory_2</mat-icon>
+      <h2>{{ 'inventory.dashboard.emptyTitle' | translate }}</h2>
+      <p>{{ 'inventory.dashboard.emptyDescription' | translate }}</p>
+    </div>
+  } @else {
+    <div class="inventory-dashboard__columns">
+      <section class="inventory-panel">
+        <header class="inventory-panel__header">
+          <div><h2>{{ 'inventory.dashboard.reconciliations' | translate }}</h2><p>{{ 'inventory.dashboard.lastReconciliations' | translate }}</p></div>
+          <mat-icon>fact_check</mat-icon>
+        </header>
+        @if (inventoryStore.lastReconciliations().length) {
+          <ul class="inventory-activity-list">
+            @for (movement of inventoryStore.lastReconciliations(); track movement.id) {
+              <li>
+                <span class="inventory-activity-list__icon"><mat-icon>sync</mat-icon></span>
+                <div><strong>{{ productName(movement.productId) }}</strong><span>{{ movement.previousStock }} → {{ movement.resultingStock }} · {{ movement.performedBy }}</span></div>
+                <time>{{ movement.occurredAt | date: 'short' }}</time>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="inventory-panel__empty">{{ 'inventory.dashboard.noReconciliations' | translate }}</p>
+        }
+      </section>
+
+      <section class="inventory-panel">
+        <header class="inventory-panel__header">
+          <div><h2>{{ 'inventory.dashboard.rotation' | translate }}</h2><p>{{ 'inventory.dashboard.rotationWindow' | translate }}</p></div>
+          <mat-icon>bar_chart</mat-icon>
+        </header>
+        @if (inventoryStore.topRotationProducts().length) {
+          <div class="inventory-rotation-list">
+            @for (item of inventoryStore.topRotationProducts(); track item.product.id) {
+              <div class="inventory-rotation-row">
+                <div><strong>{{ item.product.name }}</strong><span>{{ item.unitsDispatched }} {{ 'inventory.dashboard.units' | translate }}</span></div>
+                <div class="inventory-rotation-track"><span [style.width.%]="barWidth(item.unitsDispatched)"></span></div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="inventory-panel__empty">{{ 'inventory.dashboard.noRotation' | translate }}</p>
+        }
+      </section>
+    </div>
+
+    <section class="inventory-panel inventory-panel--wide">
+      <header class="inventory-panel__header">
+        <div><h2>{{ 'inventory.dashboard.recentMovements' | translate }}</h2><p>{{ 'inventory.dashboard.activityHistory' | translate }}</p></div>
+        <a routerLink="/traceability">{{ 'inventory.dashboard.viewTraceability' | translate }}</a>
+      </header>
+      @if (inventoryStore.recentMovements().length) {
+        <div class="inventory-table-wrap">
+          <table class="inventory-table">
+            <thead><tr><th>{{ 'inventory.products.product' | translate }}</th><th>{{ 'inventory.dashboard.movement' | translate }}</th><th>{{ 'inventory.dashboard.quantity' | translate }}</th><th>{{ 'inventory.dashboard.warehouse' | translate }}</th><th>{{ 'inventory.dashboard.performedBy' | translate }}</th><th>{{ 'inventory.dashboard.date' | translate }}</th></tr></thead>
+            <tbody>
+              @for (movement of inventoryStore.recentMovements(); track trackMovement($index, movement)) {
+                <tr>
+                  <td>{{ productName(movement.productId) }}</td>
+                  <td><span class="inventory-movement-chip" [attr.data-type]="movement.type">{{ ('inventory.movementTypes.' + movement.type) | translate }}</span></td>
+                  <td>{{ movement.quantity }}</td>
+                  <td>{{ movement.warehouseId }}</td>
+                  <td>{{ movement.performedBy }}</td>
+                  <td>{{ movement.occurredAt | date: 'short' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="inventory-panel__empty">{{ 'inventory.dashboard.noMovements' | translate }}</p>
+      }
+    </section>
+  }
+</section>
