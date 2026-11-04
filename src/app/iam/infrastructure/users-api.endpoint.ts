@@ -1,6 +1,6 @@
 import {Injectable, inject} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 
 export interface TeamUser {
@@ -25,14 +25,28 @@ export class UsersApiEndpoint {
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/users/${id}`);
+    // Deferred until the resource API contract is finalized with the backend.
+    // return this.http.delete<void>(`${this.baseUrl}/users/${id}`);
+    void id;
+    return this.pendingWriteError();
   }
 
   create(user: Omit<TeamUser, 'id'>): Observable<TeamUser> {
-    return this.http.post<TeamUser>(`${this.baseUrl}/users`, user);
+    // Deferred until the resource API contract is finalized with the backend.
+    // return this.http.post<TeamUser>(`${this.baseUrl}/users`, user);
+    void user;
+    return this.pendingWriteError();
   }
 
   update(id: number, user: Partial<TeamUser>): Observable<TeamUser> {
-    return this.http.patch<TeamUser>(`${this.baseUrl}/users/${id}`, user);
+    // Deferred until the resource API contract is finalized with the backend.
+    // return this.http.patch<TeamUser>(`${this.baseUrl}/users/${id}`, user);
+    void id;
+    void user;
+    return this.pendingWriteError();
+  }
+
+  private pendingWriteError<T>(): Observable<T> {
+    return throwError(() => new Error('shared.errors.resourceWritePending'));
   }
 }

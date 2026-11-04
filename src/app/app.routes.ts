@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './iam/infrastructure/authentication.guard';
+import { roleGuard } from './iam/infrastructure/role.guard';
 
 // Titles are translation keys (public/i18n -> "titles"), translated by TranslatedTitleStrategy.
 export const routes: Routes = [
@@ -36,6 +37,62 @@ export const routes: Routes = [
         path: '',
         redirectTo: 'warehouses',
         pathMatch: 'full'
+      },
+
+      {
+        path: 'inventory',
+        title: 'titles.inventory',
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/inventory-dashboard/inventory-dashboard')
+            .then((m) => m.InventoryDashboard)
+      },
+
+      {
+        path: 'inventory/products',
+        title: 'titles.products',
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/product-list/product-list')
+            .then((m) => m.ProductList)
+      },
+
+      {
+        path: 'inventory/products/new',
+        title: 'titles.productNew',
+        canActivate: [roleGuard],
+        data: { roles: ['ROLE_ADMINISTRATOR'] },
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/product-form/product-form')
+            .then((m) => m.ProductForm)
+      },
+
+      {
+        path: 'inventory/products/:id/edit',
+        title: 'titles.productEdit',
+        canActivate: [roleGuard],
+        data: { roles: ['ROLE_ADMINISTRATOR'] },
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/product-form/product-form')
+            .then((m) => m.ProductForm)
+      },
+
+      {
+        path: 'inventory/entries/new',
+        title: 'titles.stockEntry',
+        canActivate: [roleGuard],
+        data: { roles: ['ROLE_ADMINISTRATOR', 'ROLE_WAREHOUSE_KEEPER'] },
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/stock-entry-form/stock-entry-form')
+            .then((m) => m.StockEntryForm)
+      },
+
+      {
+        path: 'inventory/dispatch',
+        title: 'titles.quickDispatch',
+        canActivate: [roleGuard],
+        data: { roles: ['ROLE_ADMINISTRATOR', 'ROLE_WAREHOUSE_KEEPER'] },
+        loadComponent: () =>
+          import('./inventory-management/presentation/pages/quick-dispatch/quick-dispatch')
+            .then((m) => m.QuickDispatch)
       },
 
       {

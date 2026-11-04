@@ -9,9 +9,13 @@ import {
 } from '@angular/router';
 
 import { TranslatePipe } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { IamStore } from '../../../../iam/application/iam.store';
 import {NgOptimizedImage} from "@angular/common";
+import { LanguageService } from '../../../infrastructure/language.service';
 
 @Component({
   selector: 'app-layout',
@@ -22,7 +26,10 @@ import {NgOptimizedImage} from "@angular/common";
     RouterLinkActive,
     LanguageSwitcher,
     TranslatePipe,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
 
   templateUrl: './layout.html',
@@ -33,6 +40,7 @@ import {NgOptimizedImage} from "@angular/common";
 export class Layout {
 
   protected readonly iamStore = inject(IamStore);
+  protected readonly language = inject(LanguageService);
 
   /** Initials of the signed-in user for the sidebar avatar (e.g. "fperez" -> "FP"). */
   protected readonly userInitials = computed(() => {
@@ -44,5 +52,9 @@ export class Layout {
 
   signOut(): void {
     this.iamStore.signOut();
+  }
+
+  protected useLanguage(code: string): void {
+    this.language.use(code);
   }
 }

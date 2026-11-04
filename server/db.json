@@ -320,6 +320,232 @@
       "issuedAt": "2026-10-01T00:00:00Z"
     }
   ],
+  "products": [
+    {
+      "id": 1,
+      "companyId": 1,
+      "name": "Cable UTP Cat6 305m",
+      "sku": "NET-UTP6-305",
+      "category": "NETWORKING",
+      "unit": "UNIT",
+      "currentStock": 42,
+      "createdAt": "2026-10-01T09:00:00Z",
+      "createdBy": "fperez"
+    },
+    {
+      "id": 2,
+      "companyId": 1,
+      "name": "Router Wi-Fi 6 AX1800",
+      "sku": "NET-ROUTER-AX1800",
+      "category": "NETWORKING",
+      "unit": "UNIT",
+      "currentStock": 25,
+      "createdAt": "2026-10-01T09:15:00Z",
+      "createdBy": "fperez"
+    },
+    {
+      "id": 3,
+      "companyId": 1,
+      "name": "Switch Gigabit 24 puertos",
+      "sku": "NET-SWITCH-24P",
+      "category": "NETWORKING",
+      "unit": "UNIT",
+      "currentStock": 0,
+      "createdAt": "2026-10-01T09:30:00Z",
+      "createdBy": "fperez"
+    },
+    {
+      "id": 4,
+      "companyId": 1,
+      "name": "Cámara IP domo 4MP",
+      "sku": "SEC-CAMERA-DOME4",
+      "category": "SECURITY",
+      "unit": "UNIT",
+      "currentStock": 14,
+      "createdAt": "2026-10-01T10:00:00Z",
+      "createdBy": "lanahua"
+    },
+    {
+      "id": 5,
+      "companyId": 1,
+      "name": "Disco SSD 1TB",
+      "sku": "IT-SSD-1TB",
+      "category": "COMPUTING",
+      "unit": "UNIT",
+      "currentStock": 3,
+      "createdAt": "2026-10-01T10:15:00Z",
+      "createdBy": "fperez"
+    },
+    {
+      "id": 6,
+      "companyId": 1,
+      "name": "Teclado inalámbrico",
+      "sku": "IT-KEYBOARD-WL",
+      "category": "COMPUTING",
+      "unit": "UNIT",
+      "currentStock": 73,
+      "createdAt": "2026-10-01T10:30:00Z",
+      "createdBy": "fperez"
+    }
+  ],
+  "stock-movements": [
+    {
+      "id": 1,
+      "productId": 1,
+      "warehouseId": 1,
+      "type": "ENTRY",
+      "quantity": 50,
+      "previousStock": 0,
+      "resultingStock": 50,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-02T08:15:00Z",
+      "justification": null
+    },
+    {
+      "id": 2,
+      "productId": 1,
+      "warehouseId": 1,
+      "type": "EXIT",
+      "quantity": 8,
+      "previousStock": 50,
+      "resultingStock": 42,
+      "performedBy": "ksandoval",
+      "occurredAt": "2026-10-30T11:20:00Z",
+      "justification": null
+    },
+    {
+      "id": 3,
+      "productId": 2,
+      "warehouseId": 2,
+      "type": "ENTRY",
+      "quantity": 30,
+      "previousStock": 0,
+      "resultingStock": 30,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-02T09:00:00Z",
+      "justification": null
+    },
+    {
+      "id": 4,
+      "productId": 2,
+      "warehouseId": 2,
+      "type": "EXIT",
+      "quantity": 5,
+      "previousStock": 30,
+      "resultingStock": 25,
+      "performedBy": "ksandoval",
+      "occurredAt": "2026-10-28T16:35:00Z",
+      "justification": null
+    },
+    {
+      "id": 5,
+      "productId": 3,
+      "warehouseId": 1,
+      "type": "ENTRY",
+      "quantity": 10,
+      "previousStock": 0,
+      "resultingStock": 10,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-03T08:30:00Z",
+      "justification": null
+    },
+    {
+      "id": 6,
+      "productId": 3,
+      "warehouseId": 1,
+      "type": "EXIT",
+      "quantity": 10,
+      "previousStock": 10,
+      "resultingStock": 0,
+      "performedBy": "ksandoval",
+      "occurredAt": "2026-10-29T10:05:00Z",
+      "justification": null
+    },
+    {
+      "id": 7,
+      "productId": 4,
+      "warehouseId": 3,
+      "type": "ENTRY",
+      "quantity": 20,
+      "previousStock": 0,
+      "resultingStock": 20,
+      "performedBy": "lanahua",
+      "occurredAt": "2026-10-02T10:45:00Z",
+      "justification": null
+    },
+    {
+      "id": 8,
+      "productId": 4,
+      "warehouseId": 3,
+      "type": "RECONCILIATION",
+      "quantity": 14,
+      "previousStock": 20,
+      "resultingStock": 14,
+      "performedBy": "lanahua",
+      "occurredAt": "2026-10-05T14:10:00Z",
+      "justification": "Conteo físico de cierre de mes"
+    },
+    {
+      "id": 9,
+      "productId": 5,
+      "warehouseId": 4,
+      "type": "ENTRY",
+      "quantity": 5,
+      "previousStock": 0,
+      "resultingStock": 5,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-03T12:00:00Z",
+      "justification": null
+    },
+    {
+      "id": 10,
+      "productId": 6,
+      "warehouseId": 2,
+      "type": "ENTRY",
+      "quantity": 75,
+      "previousStock": 0,
+      "resultingStock": 75,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-02T13:15:00Z",
+      "justification": null
+    },
+    {
+      "id": 11,
+      "productId": 6,
+      "warehouseId": 2,
+      "type": "RECONCILIATION",
+      "quantity": 83,
+      "previousStock": 75,
+      "resultingStock": 83,
+      "performedBy": "fperez",
+      "occurredAt": "2026-10-06T09:40:00Z",
+      "justification": "Conteo físico de recepción de lote"
+    },
+    {
+      "id": 12,
+      "productId": 5,
+      "warehouseId": 4,
+      "type": "EXIT",
+      "quantity": 2,
+      "previousStock": 5,
+      "resultingStock": 3,
+      "performedBy": "ksandoval",
+      "occurredAt": "2026-10-31T15:20:00Z",
+      "justification": null
+    },
+    {
+      "id": 13,
+      "productId": 6,
+      "warehouseId": 2,
+      "type": "EXIT",
+      "quantity": 10,
+      "previousStock": 83,
+      "resultingStock": 73,
+      "performedBy": "ksandoval",
+      "occurredAt": "2026-11-01T10:10:00Z",
+      "justification": null
+    }
+  ],
   "traceability-records": [
     {
       "id": 1,
@@ -353,9 +579,9 @@
       "warehouseId": 1,
       "zoneId": 1,
       "recordType": "INVENTORY_MOVEMENT",
-      "actor": "WAREHOUSE_KEEPER",
-      "description": "Inventory movement registered and associated with warehouse monitoring activity.",
-      "occurredAt": "2026-10-04T17:55:20Z"
+      "actor": "fperez",
+      "description": "Stock entry: +50 NET-UTP6-305",
+      "occurredAt": "2026-10-02T08:15:00Z"
     },
     {
       "id": 5,
@@ -374,6 +600,114 @@
       "actor": "SECURITY_MANAGER",
       "description": "Security manager reviewed the unauthorized access event.",
       "occurredAt": "2026-10-04T18:30:45Z"
+    },
+    {
+      "id": 7,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "ksandoval",
+      "description": "Stock exit: -8 NET-UTP6-305",
+      "occurredAt": "2026-10-30T11:20:00Z"
+    },
+    {
+      "id": 8,
+      "warehouseId": 2,
+      "zoneId": 2,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "fperez",
+      "description": "Stock entry: +30 NET-ROUTER-AX1800",
+      "occurredAt": "2026-10-02T09:00:00Z"
+    },
+    {
+      "id": 9,
+      "warehouseId": 2,
+      "zoneId": 2,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "ksandoval",
+      "description": "Stock exit: -5 NET-ROUTER-AX1800",
+      "occurredAt": "2026-10-28T16:35:00Z"
+    },
+    {
+      "id": 10,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "fperez",
+      "description": "Stock entry: +10 NET-SWITCH-24P",
+      "occurredAt": "2026-10-03T08:30:00Z"
+    },
+    {
+      "id": 11,
+      "warehouseId": 1,
+      "zoneId": 1,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "ksandoval",
+      "description": "Stock exit: -10 NET-SWITCH-24P",
+      "occurredAt": "2026-10-29T10:05:00Z"
+    },
+    {
+      "id": 12,
+      "warehouseId": 3,
+      "zoneId": 3,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "lanahua",
+      "description": "Stock entry: +20 SEC-CAMERA-DOME4",
+      "occurredAt": "2026-10-02T10:45:00Z"
+    },
+    {
+      "id": 13,
+      "warehouseId": 3,
+      "zoneId": 3,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "lanahua",
+      "description": "Conciliación de sistema: 20 → 14 (SEC-CAMERA-DOME4)",
+      "occurredAt": "2026-10-05T14:10:00Z"
+    },
+    {
+      "id": 14,
+      "warehouseId": 4,
+      "zoneId": 4,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "fperez",
+      "description": "Stock entry: +5 IT-SSD-1TB",
+      "occurredAt": "2026-10-03T12:00:00Z"
+    },
+    {
+      "id": 15,
+      "warehouseId": 2,
+      "zoneId": 2,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "fperez",
+      "description": "Stock entry: +75 IT-KEYBOARD-WL",
+      "occurredAt": "2026-10-02T13:15:00Z"
+    },
+    {
+      "id": 16,
+      "warehouseId": 2,
+      "zoneId": 2,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "fperez",
+      "description": "Conciliación de sistema: 75 → 83 (IT-KEYBOARD-WL)",
+      "occurredAt": "2026-10-06T09:40:00Z"
+    },
+    {
+      "id": 17,
+      "warehouseId": 4,
+      "zoneId": 4,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "ksandoval",
+      "description": "Stock exit: -2 IT-SSD-1TB",
+      "occurredAt": "2026-10-31T15:20:00Z"
+    },
+    {
+      "id": 18,
+      "warehouseId": 2,
+      "zoneId": 2,
+      "recordType": "INVENTORY_MOVEMENT",
+      "actor": "ksandoval",
+      "description": "Stock exit: -10 IT-KEYBOARD-WL",
+      "occurredAt": "2026-11-01T10:10:00Z"
     }
   ]
 }
