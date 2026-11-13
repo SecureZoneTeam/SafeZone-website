@@ -13,4 +13,6 @@ export interface UserResponse extends BaseResponse {
 export interface AuthenticatedUserResponse extends BaseResponse {
   username: string;
   token: string;
+  roles?: string[];
+  warehouseId?: number | null;
 }

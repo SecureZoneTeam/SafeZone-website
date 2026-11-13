@@ -1,0 +1,58 @@
+<header class="reconciliation-header">
+  <div class="reconciliation-header__icon"><mat-icon>fact_check</mat-icon></div>
+  <div><span>{{ 'inventory.reconciliation.badge' | translate }}</span><h2>{{ 'inventory.reconciliation.title' | translate }}</h2></div>
+  <button mat-icon-button type="button" (click)="close()" [attr.aria-label]="'shared.actions.close' | translate"><mat-icon>close</mat-icon></button>
+</header>
+
+@if (inventoryStore.loading() || warehouseStore.loading()) { <mat-progress-bar mode="indeterminate" /> }
+@if (!canReconcile()) { <p class="reconciliation-permission" role="alert">{{ 'inventory.errors.unauthorized' | translate }}</p> }
+
+<form class="reconciliation-form" [formGroup]="form" (ngSubmit)="submit()">
+  @if (data.productId === undefined) {
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.reconciliation.product' | translate }}</mat-label>
+      <mat-select formControlName="productId" (selectionChange)="selectProduct($event.value)">
+        @for (product of inventoryStore.products(); track product.id) { <mat-option [value]="Number(product.id)">{{ product.name }} · {{ product.sku.value }}</mat-option> }
+      </mat-select>
+      @if (form.controls.productId.hasError('min') && form.controls.productId.touched) { <mat-error>{{ 'inventory.validation.productRequired' | translate }}</mat-error> }
+    </mat-form-field>
+  } @else if (selectedProduct(); as product) {
+    <div class="reconciliation-product"><span>{{ 'inventory.reconciliation.product' | translate }}</span><strong>{{ product.name }}</strong><small>{{ product.sku.value }}</small></div>
+  }
+
+  @if (data.warehouseId === undefined) {
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.reconciliation.warehouse' | translate }}</mat-label>
+      <mat-select formControlName="warehouseId">
+        @for (warehouse of warehouseStore.warehouses(); track warehouse.id) { <mat-option [value]="Number(warehouse.id)">{{ warehouse.name }}</mat-option> }
+      </mat-select>
+      @if (form.controls.warehouseId.hasError('min') && form.controls.warehouseId.touched) { <mat-error>{{ 'inventory.validation.warehouseRequired' | translate }}</mat-error> }
+    </mat-form-field>
+  } @else {
+    <div class="reconciliation-product"><span>{{ 'inventory.reconciliation.warehouse' | translate }}</span><strong>{{ data.warehouseId }}</strong></div>
+  }
+
+  <div class="reconciliation-current"><span>{{ 'inventory.reconciliation.digitalStock' | translate }}</span><strong>{{ selectedProduct()?.currentStock ?? '—' }}</strong></div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'inventory.reconciliation.countedStock' | translate }}</mat-label>
+    <input matInput type="number" min="0" step="1" formControlName="countedStock" (input)="setCountedStock(+$any($event.target).value)" />
+    @if (form.controls.countedStock.invalid && form.controls.countedStock.touched) { <mat-error>{{ 'inventory.validation.countedStockInvalid' | translate }}</mat-error> }
+  </mat-form-field>
+  <div class="reconciliation-difference" [class.reconciliation-difference--positive]="stockDifference() > 0" [class.reconciliation-difference--negative]="stockDifference() < 0">
+    <span>{{ 'inventory.reconciliation.difference' | translate }}</span><strong>{{ signedDifference() }}</strong>
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'inventory.reconciliation.justification' | translate }}</mat-label>
+    <textarea matInput rows="3" maxlength="300" formControlName="justification"></textarea>
+    <mat-hint align="end">{{ form.controls.justification.value.length }}/300</mat-hint>
+    @if (form.controls.justification.hasError('required') && form.controls.justification.touched) { <mat-error>{{ 'inventory.validation.justificationRequired' | translate }}</mat-error> }
+    @if (form.controls.justification.hasError('minlength')) { <mat-error>{{ 'inventory.validation.justificationMinLength' | translate }}</mat-error> }
+  </mat-form-field>
+  @if (errorMessage(); as errorKey) { <p class="reconciliation-error" role="alert">{{ errorKey | translate }}</p> }
+  <footer class="reconciliation-actions">
+    <button mat-button type="button" (click)="close()">{{ 'shared.actions.cancel' | translate }}</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || !selectedProduct() || !canReconcile()">
+      <mat-icon>fact_check</mat-icon>{{ 'inventory.reconciliation.confirm' | translate }}
+    </button>
+  </footer>
+</form>

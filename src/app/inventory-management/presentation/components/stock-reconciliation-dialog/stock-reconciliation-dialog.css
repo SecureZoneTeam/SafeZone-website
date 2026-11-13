@@ -1,0 +1,20 @@
+:host { display: block; max-height: min(90vh, 820px); overflow: auto; padding: 23px; color: #e8eef8; background: #111e32; }
+.reconciliation-header { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; }
+.reconciliation-header__icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; color: #7db2fb; background: rgba(59, 130, 246, .14); }
+.reconciliation-header > div:nth-child(2) { min-width: 0; flex: 1; }
+.reconciliation-header span { color: #86b4f4; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.reconciliation-header h2 { margin: 4px 0 0; color: #f3f7fc; font-size: 20px; }
+.reconciliation-form { display: grid; gap: 3px; }
+.reconciliation-product, .reconciliation-current { display: grid; gap: 5px; margin-bottom: 10px; padding: 12px 14px; border-radius: 9px; background: rgba(59, 130, 246, .08); }
+.reconciliation-product span, .reconciliation-current span { color: #91a2bb; font-size: 11px; }
+.reconciliation-product strong { color: #e5edf8; font-size: 14px; }
+.reconciliation-product small { color: #8da2bf; font-size: 11px; }
+.reconciliation-current { grid-template-columns: 1fr auto; align-items: center; }
+.reconciliation-current strong { color: #f5f8fc; font-size: 22px; }
+.reconciliation-difference { display: flex; justify-content: space-between; margin: -3px 0 10px; padding: 13px 14px; border-radius: 9px; color: #a9b9ce; background: rgba(148, 163, 184, .08); font-size: 13px; }
+.reconciliation-difference strong { color: #e8eef8; font-size: 17px; }
+.reconciliation-difference--positive strong { color: #86efac; }
+.reconciliation-difference--negative strong { color: #fda4af; }
+.reconciliation-permission, .reconciliation-error { padding: 10px 12px; border-radius: 8px; color: #fecaca; background: rgba(127, 29, 29, .18); font-size: 12px; }
+.reconciliation-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; }
+@media (max-width: 560px) { :host { padding: 18px; } .reconciliation-actions { flex-direction: column-reverse; } .reconciliation-actions > * { width: 100%; } }

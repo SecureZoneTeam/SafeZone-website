@@ -1,13 +1,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Observable, catchError, firstValueFrom, map, of } from 'rxjs';
 
 import { SignInCommand } from '../domain/model/sign-in.command';
 import { SignUpCommand } from '../domain/model/sign-up.command';
 import { AuthenticatedUser } from '../domain/model/authenticated-user';
 import { AuthenticatedUserResponse } from '../infrastructure/user.response';
 import { environment } from '@environments/environment';
+import { UsersApiEndpoint } from '../infrastructure/users-api.endpoint';
 
 const tokenStorageKey = 'node-secure.token';
 const usernameStorageKey = 'node-secure.username';
@@ -17,6 +18,7 @@ const localSessionToken = 'local-development-session';
 export class IamStore {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly usersApi = inject(UsersApiEndpoint);
 
   private readonly currentUserSignal = signal<AuthenticatedUser | null>(this.restoreSession());
   private readonly errorSignal = signal<string | null>(null);
@@ -27,6 +29,12 @@ export class IamStore {
   readonly loading = this.loadingSignal.asReadonly();
   readonly isSignedIn = computed(() => this.currentUserSignal() !== null);
   readonly openAccess = !environment.requireCredentials;
+
+  constructor() {
+    if (this.currentUserSignal()) {
+      this.resolveCurrentUserContext().subscribe();
+    }
+  }
 
   async signIn(command: SignInCommand): Promise<void> {
     this.errorSignal.set(null);
@@ -45,7 +53,14 @@ export class IamStore {
           command
         )
       );
-      this.persistSession({ id: response.id, username: response.username, token: response.token });
+      this.persistSession({
+        id: response.id,
+        username: response.username,
+        token: response.token,
+        roles: response.roles,
+        warehouseId: response.warehouseId
+      });
+      this.resolveCurrentUserContext().subscribe();
       await this.router.navigate(['/warehouses']);
     } catch {
       this.errorSignal.set('iam.signIn.invalidCredentials');
@@ -83,12 +98,54 @@ export class IamStore {
     void this.router.navigate(['/sign-in']);
   }
 
+  /** Resolves the signed-in user's roles and warehouse from the read-only user resource. */
+  resolveCurrentUserContext(): Observable<AuthenticatedUser | null> {
+    const currentUser = this.currentUserSignal();
+    if (!currentUser) {
+      return of(null);
+    }
+
+    if (currentUser.roles && currentUser.warehouseId !== undefined) {
+      return of(currentUser);
+    }
+
+    return this.usersApi.getAll().pipe(
+      map((users) => {
+        const matchingUser = users.find(
+          (user) => user.username.toLowerCase() === currentUser.username.toLowerCase()
+        );
+        if (!matchingUser) {
+          return currentUser;
+        }
+
+        const enrichedUser: AuthenticatedUser = {
+          ...currentUser,
+          roles: matchingUser.roles,
+          warehouseId: matchingUser.warehouseId ?? null
+        };
+        this.currentUserSignal.set(enrichedUser);
+        return enrichedUser;
+      }),
+      catchError(() => of(currentUser))
+    );
+  }
+
+  hasRole(role: string): boolean {
+    return this.currentUserSignal()?.roles?.includes(role) ?? false;
+  }
+
+  currentWarehouseId(): number | null {
+    const warehouseId = this.currentUserSignal()?.warehouseId;
+    return warehouseId === undefined || warehouseId === null ? null : Number(warehouseId);
+  }
+
   private startLocalSession(username: string): void {
     this.persistSession({
       id: 0,
       username: username.trim() || 'demo.user',
       token: localSessionToken
     });
+    this.resolveCurrentUserContext().subscribe();
   }
   private persistSession(user: AuthenticatedUser): void {
     localStorage.setItem(tokenStorageKey, user.token);

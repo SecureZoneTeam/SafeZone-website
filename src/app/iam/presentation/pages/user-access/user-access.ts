@@ -183,8 +183,8 @@ export class UserAccess implements OnInit {
         this.successMessage.set('team.messages.userCreated');
         this.loadUsers();
       },
-      error: () => {
-        this.errorMessage.set('team.messages.createError');
+      error: (error: Error) => {
+        this.errorMessage.set(error.message || 'shared.errors.resourceWritePending');
       }
     });
   }
@@ -214,8 +214,8 @@ export class UserAccess implements OnInit {
         this.successMessage.set('team.messages.userDeleted');
         this.closeDelete();
       },
-      error: () => {
-        this.errorMessage.set('team.messages.deleteError');
+      error: (error: Error) => {
+        this.errorMessage.set(error.message || 'shared.errors.resourceWritePending');
         this.closeDelete();
       }
     });

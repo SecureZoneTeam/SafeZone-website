@@ -34,6 +34,16 @@
         </span>
       </a>
 
+      <!-- INVENTORY -->
+      <a
+        routerLink="/inventory"
+        routerLinkActive="app-sidebar__item--active"
+        class="app-sidebar__item"
+      >
+        <span class="material-symbols-outlined">inventory_2</span>
+        <span>{{ 'nav.inventory' | translate }}</span>
+      </a>
+
       <!-- DEVICES -->
       <a
         routerLink="/devices"
@@ -138,5 +148,32 @@
   <main class="app-layout__content">
     <router-outlet></router-outlet>
   </main>
+
+  <nav class="app-bottom-navigation" [attr.aria-label]="'a11y.mainNavigation' | translate">
+    <a routerLink="/warehouses" routerLinkActive="app-bottom-navigation__item--active" class="app-bottom-navigation__item">
+      <mat-icon>warehouse</mat-icon><span>{{ 'nav.warehouses' | translate }}</span>
+    </a>
+    <a routerLink="/inventory" routerLinkActive="app-bottom-navigation__item--active" [routerLinkActiveOptions]="{ exact: true }" class="app-bottom-navigation__item">
+      <mat-icon>inventory_2</mat-icon><span>{{ 'nav.inventory' | translate }}</span>
+    </a>
+    <a routerLink="/inventory/dispatch" routerLinkActive="app-bottom-navigation__item--active" class="app-bottom-navigation__item">
+      <mat-icon>outbox</mat-icon><span>{{ 'nav.dispatch' | translate }}</span>
+    </a>
+    <a routerLink="/traceability" routerLinkActive="app-bottom-navigation__item--active" class="app-bottom-navigation__item">
+      <mat-icon>history</mat-icon><span>{{ 'nav.traceability' | translate }}</span>
+    </a>
+    <button type="button" class="app-bottom-navigation__item" [matMenuTriggerFor]="moreMenu">
+      <mat-icon>more_horiz</mat-icon><span>{{ 'nav.more' | translate }}</span>
+    </button>
+  </nav>
+
+  <mat-menu #moreMenu="matMenu" class="app-bottom-more-menu">
+    <a mat-menu-item routerLink="/devices"><mat-icon>sensors</mat-icon><span>{{ 'nav.devices' | translate }}</span></a>
+    <a mat-menu-item routerLink="/team"><mat-icon>group</mat-icon><span>{{ 'nav.team' | translate }}</span></a>
+    <a mat-menu-item routerLink="/subscription"><mat-icon>credit_card</mat-icon><span>{{ 'nav.subscription' | translate }}</span></a>
+    <button mat-menu-item type="button" (click)="useLanguage('en')"><mat-icon>language</mat-icon><span>{{ 'language.en' | translate }}</span></button>
+    <button mat-menu-item type="button" (click)="useLanguage('es')"><mat-icon>language</mat-icon><span>{{ 'language.es' | translate }}</span></button>
+    <button mat-menu-item type="button" (click)="signOut()"><mat-icon>logout</mat-icon><span>{{ 'nav.signOut' | translate }}</span></button>
+  </mat-menu>
 
 </div>
