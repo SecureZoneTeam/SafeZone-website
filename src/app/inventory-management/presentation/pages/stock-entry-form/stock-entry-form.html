@@ -1,0 +1,53 @@
+<section class="inventory-page stock-entry-page">
+  <a class="inventory-back-link" routerLink="/inventory"><mat-icon>arrow_back</mat-icon>{{ 'inventory.entry.back' | translate }}</a>
+  <header class="inventory-page__header">
+    <div><span class="inventory-eyebrow">{{ 'inventory.entry.badge' | translate }}</span><h1>{{ 'inventory.entry.title' | translate }}</h1><p>{{ 'inventory.entry.subtitle' | translate }}</p></div>
+  </header>
+
+  @if (inventoryStore.loading() || warehouseStore.loading()) { <mat-progress-bar mode="indeterminate" /> }
+  @if (errorMessage()) { <div class="inventory-form__error" role="alert">{{ errorMessage() | translate }}</div> }
+  @if (inventoryStore.error(); as errorKey) { <div class="inventory-form__error" role="alert">{{ errorKey | translate }}</div> }
+
+  <form class="inventory-form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.entry.warehouse' | translate }}</mat-label>
+      <mat-select formControlName="warehouseId">
+        @for (warehouse of warehouseStore.warehouses(); track warehouse.id) {
+          <mat-option [value]="Number(warehouse.id)">{{ warehouse.name }} · {{ warehouse.address.district }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.warehouseId.hasError('min')) { <mat-error>{{ 'inventory.validation.warehouseRequired' | translate }}</mat-error> }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.entry.product' | translate }}</mat-label>
+      <input matInput [value]="productSearch()" (input)="updateProductSearch($any($event.target).value)" [matAutocomplete]="productAuto" />
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-autocomplete #productAuto="matAutocomplete" (optionSelected)="selectProduct($event)">
+        @for (product of filteredProducts(); track product.id) {
+          <mat-option [value]="product">{{ displayProduct(product) }} · {{ product.currentStock }} {{ 'inventory.dashboard.units' | translate }}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (form.controls.productId.hasError('min') && form.controls.productId.touched) { <mat-error>{{ 'inventory.validation.productRequired' | translate }}</mat-error> }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'inventory.entry.quantity' | translate }}</mat-label>
+      <input matInput type="number" min="1" step="1" formControlName="quantity" (input)="updateQuantity(+$any($event.target).value)" />
+      @if (form.controls.quantity.invalid && form.controls.quantity.touched) { <mat-error>{{ 'inventory.validation.quantityInvalid' | translate }}</mat-error> }
+    </mat-form-field>
+
+    @if (selectedProduct(); as product) {
+      <aside class="stock-preview">
+        <div><span>{{ 'inventory.entry.currentStock' | translate }}</span><strong>{{ product.currentStock }}</strong></div>
+        <mat-icon>arrow_forward</mat-icon>
+        <div><span>{{ 'inventory.entry.resultingStock' | translate }}</span><strong>{{ resultingStock() }}</strong></div>
+      </aside>
+    }
+
+    <footer class="inventory-form__actions">
+      <a mat-button routerLink="/inventory">{{ 'shared.actions.cancel' | translate }}</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || !selectedProduct()">
+        <mat-icon>move_to_inbox</mat-icon>{{ 'inventory.entry.confirm' | translate }}
+      </button>
+    </footer>
+  </form>
+</section>

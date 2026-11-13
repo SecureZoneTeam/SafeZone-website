@@ -1,0 +1,88 @@
+<section class="inventory-page product-list-page">
+  <header class="inventory-page__header">
+    <div>
+      <span class="inventory-eyebrow">{{ 'inventory.products.badge' | translate }}</span>
+      <h1>{{ 'inventory.products.title' | translate }}</h1>
+      <p>{{ 'inventory.products.subtitle' | translate }}</p>
+    </div>
+    @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+      <a mat-flat-button color="primary" routerLink="/inventory/products/new">
+        <mat-icon>add</mat-icon>{{ 'inventory.products.newProduct' | translate }}
+      </a>
+    }
+  </header>
+
+  <div class="product-filters">
+    <mat-form-field appearance="outline" class="product-filters__search">
+      <mat-label>{{ 'inventory.products.search' | translate }}</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [value]="searchTerm()" (input)="updateSearch($any($event.target).value)" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="product-filters__category">
+      <mat-label>{{ 'inventory.products.category' | translate }}</mat-label>
+      <mat-select [value]="categoryFilter()" (selectionChange)="updateCategory($event.value)">
+        <mat-option value="ALL">{{ 'inventory.products.allCategories' | translate }}</mat-option>
+        @for (category of categories; track category) {
+          <mat-option [value]="category">{{ categoryKey(category) | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (inventoryStore.loading()) { <mat-progress-bar mode="indeterminate" /> }
+  @if (inventoryStore.error(); as errorKey) {
+    <div class="inventory-state inventory-state--error" role="alert">{{ errorKey | translate }}</div>
+  }
+
+  @if (!inventoryStore.loading() && inventoryStore.products().length === 0 && !inventoryStore.error()) {
+    <div class="inventory-state">
+      <mat-icon>inventory_2</mat-icon><h2>{{ 'inventory.products.emptyTitle' | translate }}</h2>
+      <p>{{ 'inventory.products.emptyDescription' | translate }}</p>
+      @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+        <a mat-stroked-button routerLink="/inventory/products/new">{{ 'inventory.products.newProduct' | translate }}</a>
+      }
+    </div>
+  } @else if (filteredProducts().length === 0 && !inventoryStore.loading()) {
+    <div class="inventory-state"><mat-icon>search_off</mat-icon><p>{{ 'inventory.products.noMatches' | translate }}</p></div>
+  } @else {
+    <div class="inventory-panel inventory-table-wrap product-table-wrap">
+      <table mat-table [dataSource]="filteredProducts()" class="inventory-table product-table">
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.product' | translate }}</th>
+          <td mat-cell *matCellDef="let product"><div class="product-cell"><span class="product-cell__icon"><mat-icon>inventory_2</mat-icon></span><strong>{{ product.name }}</strong></div></td>
+        </ng-container>
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.sku' | translate }}</th>
+          <td mat-cell *matCellDef="let product"><code>{{ product.sku.value }}</code></td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.category' | translate }}</th>
+          <td mat-cell *matCellDef="let product">{{ categoryKey(product.category) | translate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.stock' | translate }}</th>
+          <td mat-cell *matCellDef="let product"><span class="product-stock" [class.product-stock--empty]="product.isOutOfStock">{{ product.currentStock }}</span></td>
+        </ng-container>
+        <ng-container matColumnDef="unit">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.unit' | translate }}</th>
+          <td mat-cell *matCellDef="let product">{{ product.unit }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.actions' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <div class="product-actions">
+              @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+                <a mat-icon-button [routerLink]="['/inventory/products', product.id, 'edit']" [attr.aria-label]="'inventory.products.edit' | translate"><mat-icon>edit</mat-icon></a>
+              }
+              @if (canReconcile()) {
+                <button mat-icon-button type="button" (click)="openReconciliation(product)" [attr.aria-label]="'inventory.products.reconcile' | translate"><mat-icon>fact_check</mat-icon></button>
+              }
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  }
+</section>

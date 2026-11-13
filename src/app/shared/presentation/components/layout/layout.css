@@ -280,6 +280,9 @@
   background: #0b1426;
 }
 
+.app-bottom-navigation { display: none; }
+.app-bottom-more-menu { min-width: 210px; }
+
 
 /* =========================================================
    RESPONSIVE - TABLET
@@ -301,36 +304,57 @@
    RESPONSIVE - MOBILE
    ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 
   .app-sidebar {
-    width: 72px;
-
-    padding: 20px 10px;
-  }
-
-  .app-sidebar__logo img {
-    width: 50px;
-  }
-
-  .app-sidebar__user span,
-  .app-sidebar__item span:not(.material-symbols-outlined),
-  .app-sidebar__logout span:not(.material-symbols-outlined) {
     display: none;
   }
 
-  .app-sidebar__item,
-  .app-sidebar__logout {
-    justify-content: center;
-
-    padding: 0;
-  }
-
-  .app-sidebar__user {
-    margin-bottom: 20px;
-  }
-
   .app-layout__content {
-    margin-left: 72px;
+    margin-left: 0;
+    padding-bottom: 84px;
+  }
+
+  .app-bottom-navigation {
+    position: fixed;
+    z-index: 1100;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: 70px;
+    padding: 7px 5px max(7px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    background: rgba(17, 30, 50, .97);
+    backdrop-filter: blur(16px);
+  }
+
+  .app-bottom-navigation__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    border: 0;
+    border-radius: 9px;
+    color: #91a2bb;
+    background: transparent;
+    font: inherit;
+    font-size: 9px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .app-bottom-navigation__item mat-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+  }
+
+  .app-bottom-navigation__item--active {
+    color: #a9cbff;
+    background: rgba(59, 130, 246, .12);
   }
 }

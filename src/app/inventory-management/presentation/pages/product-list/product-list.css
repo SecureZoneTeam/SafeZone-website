@@ -1,0 +1,49 @@
+.inventory-page { max-width: 1440px; margin: 0 auto; padding: 36px clamp(18px, 4vw, 52px) 48px; color: #101C30FF; }
+.inventory-page__header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.inventory-page__header h1 { margin: 7px 0 8px; color: #3b5fa6; font-size: clamp(28px, 4vw, 38px); letter-spacing: -.035em; }
+.inventory-page__header p { margin: 0; color: #91a2bb; }
+.inventory-eyebrow { color: #60a5fa; font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.product-filters { display: flex; gap: 12px; margin: 12px 0 18px;}
+.product-filters__search { flex: 1;  }
+.product-filters__category { width: min(280px, 34%); }
+.product-table-wrap { overflow-x: auto; padding: 4px 14px 10px; border: 1px solid rgba(124, 157, 202, .16); border-radius: 15px; background: linear-gradient(145deg, #15243a, #101c30); }
+.product-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background-color: #172338 !important;
+}
+.product-table th {
+  padding: 14px 12px;
+  color: #93b4dc !important;
+  background-color: #1e2d45 !important;
+  font-size: 11px;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+}
+.product-table td {
+  padding: 13px 12px;
+  color: #e2e8f0 !important;
+  background-color: #172338 !important;
+  font-size: 12px;
+  border-top: 1px solid #334155;
+}
+.product-table tr:hover td {
+  background-color: #223550 !important;
+}
+.product-cell strong {
+  color: #e2e8f0 !important;
+}
+.product-table code {
+  color: #93b4dc !important;
+  font-size: 11px;
+}
+.product-stock { display: inline-flex; min-width: 36px; justify-content: center; padding: 5px 9px; border-radius: 20px; color: #0bec59; background: rgba(34, 197, 94, .12); font-weight: 750; }
+.product-stock--empty { color: #f4071f; background: rgb(188 22 22 / 0.14); }
+.product-actions { display: flex; align-items: center; gap: 2px; }
+.inventory-state { display: grid; justify-items: center; gap: 8px; padding: 36px; border: 1px dashed rgba(126, 164, 221, .25); border-radius: 14px; color: #8fa2bd; text-align: center; }
+.inventory-state mat-icon { color: #78aaf0; }
+.inventory-state h2, .inventory-state p { margin: 0; }
+.inventory-state--error { display: block; border-color: rgba(248, 113, 113, .35); color: #fecaca; }
+@media (max-width: 680px) { .inventory-page { padding-top: 24px; } .inventory-page__header { align-items: flex-start; flex-direction: column; } .product-filters { display: grid; } .product-filters__category { width: 100%; } }
+
