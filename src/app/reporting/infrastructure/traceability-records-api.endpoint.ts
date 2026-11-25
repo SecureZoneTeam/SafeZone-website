@@ -7,7 +7,8 @@ import { TraceabilityRecordResponse } from './traceability-record.response';
 import { TraceabilityRecordAssembler } from './traceability-record.assembler';
 import { environment } from '../../../environments/environment';
 
-const traceabilityRecordsResourceEndpointPath = '/traceability-records';
+/** Traceability log is backed by the stock-movement history (backend: GET /api/v1/stock-movements). */
+const traceabilityRecordsResourceEndpointPath = '/stock-movements';
 
 /** API endpoint for the TraceabilityRecord aggregate. */
 @Injectable({ providedIn: 'root' })

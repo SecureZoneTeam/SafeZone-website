@@ -61,8 +61,19 @@ export class SubscriptionCheckout implements OnInit {
     void this.router.navigate(['/subscription']);
   }
 
+  /** Registers the selected plan in the backend (POST /api/v1/subscriptions). No payment gateway exists. */
   protected confirmPayment(): void {
+    const plan = this.selectedPlan;
+    if (!plan) {
+      return;
+    }
 
-    alert(this.language.instant('subscriptions.checkout.confirmed'));
+    this.subscriptionStore.subscribe(plan).subscribe({
+      next: () => {
+        alert(this.language.instant('subscriptions.checkout.confirmed'));
+        void this.router.navigate(['/subscription']);
+      },
+      error: (error: Error) => alert(error.message)
+    });
   }
 }
