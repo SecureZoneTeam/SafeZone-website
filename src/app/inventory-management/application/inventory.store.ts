@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 
 import { IamStore } from '../../iam/application/iam.store';
 import { Product } from '../domain/model/product.entity';
@@ -106,9 +106,9 @@ export class InventoryStore {
       return throwError(() => new Error('inventory.errors.duplicateSku'));
     }
 
-    // Deferred until the backend contract is defined; no product is created locally.
-    // return this.productsApi.create(product);
-    return this.pendingWriteError<Product>();
+    return this.productsApi.create(product).pipe(
+      tap((created) => this.productsSignal.update((current) => [...current, created]))
+    );
   }
 
   updateProduct(id: number | string, product: Product): Observable<Product> {
@@ -119,10 +119,11 @@ export class InventoryStore {
       return throwError(() => new Error('inventory.errors.duplicateSku'));
     }
 
-    // Deferred until the backend contract is defined; no product is updated locally.
-    // return this.productsApi.update(id, product);
-    void id;
-    return this.pendingWriteError<Product>();
+    return this.productsApi.update(id, product).pipe(
+      tap((updated) => this.productsSignal.update((current) =>
+        current.map((item) => (String(item.id) === String(id) ? updated : item))
+      ))
+    );
   }
 
   registerEntry(productId: number, warehouseId: number, quantity: number): Observable<StockMovement> {
@@ -227,18 +228,17 @@ export class InventoryStore {
   }
 
   private deferMovement(movement: StockMovement): Observable<StockMovement> {
-    // Deferred until the backend contract is defined; movement history and stock stay unchanged.
-    // return this.movementsApi.create(movement);
-    void movement;
-    return this.pendingWriteError<StockMovement>();
+    return this.movementsApi.create(movement).pipe(
+      tap((registered) => {
+        this.movementsSignal.update((current) => [...current, registered]);
+        // Refresh products so currentStock reflects the stock computed by the backend.
+        this.loadProducts();
+      })
+    );
   }
 
   private findProduct(productId: number): Product | undefined {
     return this.productsSignal().find((product) => String(product.id) === String(productId));
-  }
-
-  private pendingWriteError<T>(): Observable<T> {
-    return throwError(() => new Error('shared.errors.resourceWritePending'));
   }
 
   private finishLoading(): void {

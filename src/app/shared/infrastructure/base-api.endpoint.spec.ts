@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 import { BaseEntity } from '../domain/model/base-entity';
 import { BaseApiEndpoint } from './base-api.endpoint';
 import { BaseAssembler } from './base-assembler';
@@ -32,20 +33,21 @@ class TestEndpoint extends BaseApiEndpoint<TestEntity, TestResponse, TestAssembl
   }
 }
 
-describe('BaseApiEndpoint deferred writes', () => {
-  it('returns a pending-operation error without sending resource mutations', () => {
+describe('BaseApiEndpoint writes', () => {
+  it('sends POST, PUT and DELETE requests to the resource endpoint', () => {
     const http = jasmine.createSpyObj<HttpClient>('HttpClient', ['post', 'put', 'delete']);
+    http.post.and.returnValue(of({ id: 1, name: 'example' }));
+    http.put.and.returnValue(of({ id: 1, name: 'example' }));
+    http.delete.and.returnValue(of(undefined));
     const endpoint = new TestEndpoint(http);
     const entity = new TestEntity(1, 'example');
-    const messages: string[] = [];
 
-    endpoint.create(entity).subscribe({ error: (error: Error) => messages.push(error.message) });
-    endpoint.update(1, entity).subscribe({ error: (error: Error) => messages.push(error.message) });
-    endpoint.delete(1).subscribe({ error: (error: Error) => messages.push(error.message) });
+    endpoint.create(entity).subscribe();
+    endpoint.update(1, entity).subscribe();
+    endpoint.delete(1).subscribe();
 
-    expect(messages).toEqual(Array(3).fill('shared.errors.resourceWritePending'));
-    expect(http.post).not.toHaveBeenCalled();
-    expect(http.put).not.toHaveBeenCalled();
-    expect(http.delete).not.toHaveBeenCalled();
+    expect(http.post).toHaveBeenCalledWith('/test', { id: 1, name: 'example' });
+    expect(http.put).toHaveBeenCalledWith('/test/1', { id: 1, name: 'example' });
+    expect(http.delete).toHaveBeenCalledWith('/test/1');
   });
 });

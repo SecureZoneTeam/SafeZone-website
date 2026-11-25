@@ -184,7 +184,7 @@ export class UserAccess implements OnInit {
         this.loadUsers();
       },
       error: (error: Error) => {
-        this.errorMessage.set(error.message || 'shared.errors.resourceWritePending');
+        this.errorMessage.set(error.message || 'shared.states.error');
       }
     });
   }
@@ -215,7 +215,7 @@ export class UserAccess implements OnInit {
         this.closeDelete();
       },
       error: (error: Error) => {
-        this.errorMessage.set(error.message || 'shared.errors.resourceWritePending');
+        this.errorMessage.set(error.message || 'shared.states.error');
         this.closeDelete();
       }
     });

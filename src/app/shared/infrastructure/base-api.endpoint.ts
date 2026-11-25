@@ -32,38 +32,25 @@ export abstract class BaseApiEndpoint<
   }
 
   create(entity: TEntity): Observable<TEntity> {
-    // Deferred until the resource API contract is finalized with the backend.
-    // return this.http.post<TResource>(this.endpointUrl, this.assembler.toResourceFromEntity(entity)).pipe(
-    //   map((resource) => this.assembler.toEntityFromResource(resource)),
-    //   catchError((error: HttpErrorResponse) => this.handleError(error))
-    // );
-    void entity;
-    return this.pendingWriteError();
+    return this.http.post<TResource>(this.endpointUrl, this.assembler.toResourceFromEntity(entity)).pipe(
+      map((resource) => this.assembler.toEntityFromResource(resource)),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
   }
 
   update(id: number | string, entity: TEntity): Observable<TEntity> {
-    // Deferred until the resource API contract is finalized with the backend.
-    // return this.http.put<TResource>(`${this.endpointUrl}/${id}`, this.assembler.toResourceFromEntity(entity)).pipe(
-    //   map((resource) => this.assembler.toEntityFromResource(resource)),
-    //   catchError((error: HttpErrorResponse) => this.handleError(error))
-    // );
-    void id;
-    void entity;
-    return this.pendingWriteError();
+    return this.http.put<TResource>(`${this.endpointUrl}/${id}`, this.assembler.toResourceFromEntity(entity)).pipe(
+      map((resource) => this.assembler.toEntityFromResource(resource)),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
   }
 
   delete(id: number | string): Observable<void> {
-    // Deferred until the resource API contract is finalized with the backend.
-    // return this.http.delete<void>(`${this.endpointUrl}/${id}`).pipe(
-    //   catchError((error: HttpErrorResponse) => this.handleError(error))
-    // );
-    void id;
-    return this.pendingWriteError();
+    return this.http.delete<void>(`${this.endpointUrl}/${id}`).pipe(
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
   }
 
-  protected pendingWriteError<T>(): Observable<T> {
-    return throwError(() => new Error('shared.errors.resourceWritePending'));
-  }
 
   protected handleError(error: HttpErrorResponse): Observable<never> {
     const message =
