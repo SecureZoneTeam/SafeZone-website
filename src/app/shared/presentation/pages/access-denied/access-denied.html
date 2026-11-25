@@ -1,0 +1,11 @@
+<section class="access-denied" role="alert">
+  <span class="material-symbols-outlined access-denied__icon" aria-hidden="true">lock</span>
+  <h1>{{ 'access.denied.title' | translate }}</h1>
+  <p>{{ 'access.denied.message' | translate }}</p>
+  @if (iamStore.landingPath() !== '/access-denied') {
+    <a class="access-denied__action ns-has-icon" [routerLink]="iamStore.landingPath()">
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">home</span>
+      {{ 'access.denied.back' | translate }}
+    </a>
+  }
+</section>

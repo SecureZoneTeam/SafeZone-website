@@ -6,29 +6,48 @@ import {
   OnInit,
   signal
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import {UsersApiEndpoint, TeamUser as ApiTeamUser} from "../../../infrastructure/users-api.endpoint";
-import {WarehousesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouses-api.endpoint";
-import {WarehouseZonesApiEndpoint} from "../../../../warehouse-management/infrastructure/warehouse-zones-api.endpoint";
-import {Warehouse} from "../../../../warehouse-management/domain/model/warehouse.entity";
-import {WarehouseZone} from "../../../../warehouse-management/domain/model/warehouse-zone.entity";
 
-interface TeamUser {
-  id: number;
-  fullName: string;
-  username: string;
-  email: string;
-  role: string;
-  status: string;
-  companyId: number;
-  warehouseId: number;
+import {
+  PermissionDefinition,
+  TeamUser,
+  UsersApiEndpoint
+} from '../../../infrastructure/users-api.endpoint';
+import { WarehousesApiEndpoint } from '../../../../warehouse-management/infrastructure/warehouses-api.endpoint';
+import { Warehouse } from '../../../../warehouse-management/domain/model/warehouse.entity';
+import { IamStore } from '../../../application/iam.store';
+import { CanDirective } from '../../directives/can.directive';
+import { Roles, WORKER_ROLES } from '../../../domain/model/permission';
+
+/** Row of the permission matrix of a worker. */
+interface PermissionRow {
+  code: string;
+  checked: boolean;
+  isDefault: boolean;
 }
 
+/** Permission groups shown in the matrix, following the existing modules. */
+const PERMISSION_GROUPS: ReadonlyArray<{ key: string; prefixes: string[] }> = [
+  { key: 'general', prefixes: ['dashboard.', 'warehouses.'] },
+  { key: 'inventory', prefixes: ['inventory.'] },
+  { key: 'traceability', prefixes: ['traceability.', 'reports.'] },
+  { key: 'devices', prefixes: ['iot.', 'alerts.'] }
+];
+
+const USERNAME_PATTERN = /^[a-z0-9._-]{3,30}$/;
+const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+/**
+ * Team & Access. The owner creates worker accounts directly (active immediately), assigns their role and
+ * warehouse, customizes their permissions and suspends or reactivates them. Every action is validated by the
+ * API, which also restricts the list to the owner's organization.
+ */
 @Component({
   selector: 'app-user-access',
   standalone: true,
-  imports: [FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe, CanDirective],
   templateUrl: './user-access.html',
   styleUrl: './user-access.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,80 +55,61 @@ interface TeamUser {
 export class UserAccess implements OnInit {
   private readonly usersApi = inject(UsersApiEndpoint);
   private readonly warehousesApi = inject(WarehousesApiEndpoint);
+  protected readonly iamStore = inject(IamStore);
 
-  protected readonly warehouses = signal<Warehouse[]>([]);
-  protected selectedWarehouseId = '';
+  protected readonly roles = WORKER_ROLES;
+  protected readonly groups = PERMISSION_GROUPS;
 
   protected readonly users = signal<TeamUser[]>([]);
+  protected readonly warehouses = signal<Warehouse[]>([]);
+  protected readonly catalog = signal<PermissionDefinition[]>([]);
   protected readonly loading = signal(false);
-  /** Translation keys (public/i18n -> team.messages.*), rendered with the translate pipe. */
+  protected readonly saving = signal(false);
+  /** Translation keys or API messages. */
   protected readonly errorMessage = signal('');
   protected readonly successMessage = signal('');
 
-  /** Roles that can be assigned in the invitation form. */
-  protected readonly roles = ['ROLE_ADMINISTRATOR', 'ROLE_SECURITY_MANAGER', 'ROLE_WAREHOUSE_KEEPER', 'ROLE_AUDITOR'];
-
-  protected readonly administrators = computed(
-    () => this.users().filter(user => user.status === 'ADMINISTRADOR')
-  );
-
-  protected readonly logisticsUsers = computed(
-    () => this.users().filter(user => user.status !== 'ADMINISTRADOR')
-  );
+  protected readonly owners = computed(() => this.users().filter((user) => user.role === Roles.Owner));
+  protected readonly workers = computed(() => this.users().filter((user) => user.role !== Roles.Owner));
 
   protected readonly showInviteModal = signal(false);
+  protected readonly showEditModal = signal(false);
   protected readonly showDeleteModal = signal(false);
   protected readonly showPermissionsModal = signal(false);
   protected readonly selectedUser = signal<TeamUser | null>(null);
 
+  // Create form (worker account)
   protected fullName = '';
   protected email = '';
-  protected selectedRole = 'ROLE_WAREHOUSE_KEEPER';
+  protected username = '';
+  protected password = '';
+  protected selectedRole: string = Roles.Operator;
+  protected selectedWarehouseId = '';
 
-  private readonly zonesApi = inject(WarehouseZonesApiEndpoint);
-  protected readonly warehouseZones = signal<WarehouseZone[]>([]);
-  protected readonly permissions = signal<
-    {id: number, name: string, selected: boolean} []
-  >([]);
+  // Edit form
+  protected editFullName = '';
+  protected editRole: string = Roles.Operator;
+  protected readonly editWarehouseIds = signal<Set<number>>(new Set());
+
+  protected readonly permissionRows = signal<PermissionRow[]>([]);
 
   ngOnInit(): void {
     this.loadUsers();
     this.warehousesApi.getAll().subscribe({
-      next: warehouses => this.warehouses.set(warehouses),
-      error: () => {
-        this.errorMessage.set('team.messages.loadWarehousesError');
-      }
+      next: (warehouses) => this.warehouses.set(warehouses),
+      error: () => this.errorMessage.set('team.messages.loadWarehousesError')
     });
-    this.zonesApi.getAll().subscribe({
-      next: zones => this.warehouseZones.set(zones),
-      error: () => {
-        this.errorMessage.set('team.messages.loadZonesError');
-      }
+    this.usersApi.getPermissionCatalog().subscribe({
+      next: (catalog) => this.catalog.set(catalog.filter((permission) => !permission.ownerOnly)),
+      error: () => this.catalog.set([])
     });
   }
 
   protected loadUsers(): void {
     this.loading.set(true);
-    this.errorMessage.set('');
-
     this.usersApi.getAll().subscribe({
-      next: (apiUsers: ApiTeamUser[]) => {
-        const mappedUsers = apiUsers.map(user => {
-          const role = user.roles[0] ?? 'ROLE_WAREHOUSE_KEEPER';
-
-          return {
-            id: user.id,
-            fullName: user.fullName,
-            username: user.username,
-            email: user.email,
-            role,
-            status: this.getRoleStatus(role),
-            companyId: user.companyId,
-            warehouseId: Number(user.warehouseId ?? 0)
-          };
-        });
-
-        this.users.set(mappedUsers);
+      next: (users) => {
+        this.users.set(users);
         this.loading.set(false);
       },
       error: () => {
@@ -119,25 +119,52 @@ export class UserAccess implements OnInit {
     });
   }
 
-  /** Translation key of a role code (e.g. ROLE_AUDITOR -> team.roles.ROLE_AUDITOR). */
+  // ------------------------------------------------------------------ helpers for the template
+
   protected roleKey(role: string): string {
-    return this.roles.includes(role) ? `team.roles.${role}` : role;
+    return `team.roles.${role}`;
   }
 
-  private getRoleStatus(role: string): string {
-    return role === 'ROLE_ADMINISTRATOR'
-      ? 'ADMINISTRADOR'
-      : role;
+  protected permissionKey(code: string): string {
+    return `team.permissionCodes.${code.replace(/\./g, '_')}`;
   }
+
+  protected rowsOf(groupKey: string): PermissionRow[] {
+    const group = PERMISSION_GROUPS.find((item) => item.key === groupKey);
+    return this.permissionRows().filter((row) => group?.prefixes.some((prefix) => row.code.startsWith(prefix)));
+  }
+
+  protected warehouseNames(user: TeamUser): string {
+    const names = (user.warehouseIds ?? [])
+      .map((id) => this.warehouses().find((warehouse) => Number(warehouse.id) === Number(id))?.name)
+      .filter((name): name is string => !!name);
+    return names.join(', ');
+  }
+
+  protected isSelf(user: TeamUser): boolean {
+    return Number(this.iamStore.currentUser()?.id) === Number(user.id);
+  }
+
+  protected getInitials(fullName: string): string {
+    return fullName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join('')
+      .toUpperCase();
+  }
+
+  // ------------------------------------------------------------------ create worker
 
   protected openInvite(): void {
-    this.fullName='';
-    this.email='';
-    this.selectedRole = 'ROLE_WAREHOUSE_KEEPER';
-    this.selectedWarehouseId ='';
-
-    this.errorMessage.set('');
-    this.successMessage.set('');
+    this.fullName = '';
+    this.email = '';
+    this.username = '';
+    this.password = '';
+    this.selectedRole = Roles.Operator;
+    this.selectedWarehouseId = '';
+    this.clearMessages();
     this.showInviteModal.set(true);
   }
 
@@ -145,47 +172,170 @@ export class UserAccess implements OnInit {
     this.showInviteModal.set(false);
   }
 
-  protected inviteUser(): void {
-    this.errorMessage.set('');
-    this.successMessage.set('');
+  /** Suggests a username from the email while the field is still empty. */
+  protected suggestUsername(): void {
+    if (!this.username && this.email.includes('@')) {
+      this.username = this.email.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 30);
+    }
+  }
 
+  protected inviteUser(): void {
+    this.clearMessages();
     const fullName = this.fullName.trim();
     const email = this.email.trim().toLowerCase();
-    const warehouseId = Number(this.selectedWarehouseId);
+    const username = this.username.trim().toLowerCase();
 
-    if (!fullName || !email || !this.selectedWarehouseId) {
+    if (!fullName || !email || !username || !this.password || !this.selectedWarehouseId) {
       this.errorMessage.set('team.messages.requiredFields');
       return;
     }
-
-    const existingUser = this.users().some(
-      user => user.email.toLowerCase() === email
-    );
-
-    if (existingUser) {
-      this.errorMessage.set('team.messages.emailTaken');
+    if (!EMAIL_PATTERN.test(email)) {
+      this.errorMessage.set('team.messages.invalidEmail');
+      return;
+    }
+    if (!USERNAME_PATTERN.test(username)) {
+      this.errorMessage.set('team.messages.invalidUsername');
+      return;
+    }
+    if (this.password.length < 8 || this.password.length > 72) {
+      this.errorMessage.set('team.messages.invalidPassword');
       return;
     }
 
-    const username = email.split('@')[0];
-    const companyId = this.users()[0]?.companyId ?? 1;
-
+    this.saving.set(true);
     this.usersApi.create({
-      username,
-      email,
       fullName,
-      roles: [this.selectedRole],
-      companyId,
-      warehouseId
+      email,
+      username,
+      password: this.password,
+      role: this.selectedRole,
+      warehouseIds: [Number(this.selectedWarehouseId)]
     }).subscribe({
       next: () => {
+        this.saving.set(false);
+        this.password = '';
         this.closeInvite();
         this.successMessage.set('team.messages.userCreated');
         this.loadUsers();
       },
-      error: (error: Error) => {
-        this.errorMessage.set(error.message || 'shared.states.error');
+      error: (error: unknown) => this.fail(error, 'team.messages.createError')
+    });
+  }
+
+  // ------------------------------------------------------------------ edit role / warehouses
+
+  protected openEdit(user: TeamUser): void {
+    this.clearMessages();
+    this.selectedUser.set(user);
+    this.editFullName = user.fullName;
+    this.editRole = user.role;
+    this.editWarehouseIds.set(new Set((user.warehouseIds ?? []).map(Number)));
+    this.showEditModal.set(true);
+  }
+
+  protected closeEdit(): void {
+    this.showEditModal.set(false);
+    this.selectedUser.set(null);
+  }
+
+  protected toggleEditWarehouse(warehouseId: number | string): void {
+    const id = Number(warehouseId);
+    this.editWarehouseIds.update((current) => {
+      const next = new Set(current);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
       }
+      return next;
+    });
+  }
+
+  protected saveEdit(): void {
+    const user = this.selectedUser();
+    if (!user) {
+      return;
+    }
+    if (this.editWarehouseIds().size === 0 || !this.editFullName.trim()) {
+      this.errorMessage.set('team.messages.requiredFields');
+      return;
+    }
+    this.saving.set(true);
+    this.usersApi.update(user.id, {
+      fullName: this.editFullName.trim(),
+      role: this.editRole,
+      warehouseIds: [...this.editWarehouseIds()]
+    }).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.closeEdit();
+        this.successMessage.set('team.messages.userUpdated');
+        this.loadUsers();
+      },
+      error: (error: unknown) => this.fail(error, 'team.messages.updateError')
+    });
+  }
+
+  // ------------------------------------------------------------------ permissions
+
+  protected openPermissions(user: TeamUser): void {
+    this.clearMessages();
+    this.selectedUser.set(user);
+    const granted = new Set(user.permissions ?? []);
+    this.permissionRows.set(this.catalog().map((permission) => ({
+      code: permission.code,
+      checked: granted.has(permission.code),
+      isDefault: permission.defaultRoles.includes(user.role)
+    })));
+    this.showPermissionsModal.set(true);
+  }
+
+  protected closePermissions(): void {
+    this.showPermissionsModal.set(false);
+    this.selectedUser.set(null);
+  }
+
+  protected togglePermission(code: string): void {
+    this.permissionRows.update((rows) =>
+      rows.map((row) => (row.code === code ? { ...row, checked: !row.checked } : row))
+    );
+  }
+
+  /** Only the differences with the role defaults are stored as exceptions. */
+  protected savePermissions(): void {
+    const user = this.selectedUser();
+    if (!user) {
+      return;
+    }
+    const overrides: Record<string, boolean> = {};
+    for (const row of this.permissionRows()) {
+      if (row.checked !== row.isDefault) {
+        overrides[row.code] = row.checked;
+      }
+    }
+    this.saving.set(true);
+    this.usersApi.updatePermissions(user.id, overrides).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.closePermissions();
+        this.successMessage.set('team.messages.permissionsSaved');
+        this.loadUsers();
+      },
+      error: (error: unknown) => this.fail(error, 'team.messages.permissionsError')
+    });
+  }
+
+  // ------------------------------------------------------------------ suspend / reactivate / delete
+
+  protected toggleStatus(user: TeamUser): void {
+    this.clearMessages();
+    const request = user.status === 'SUSPENDED' ? this.usersApi.reactivate(user.id) : this.usersApi.suspend(user.id);
+    request.subscribe({
+      next: (updated) => {
+        this.users.update((current) => current.map((item) => (item.id === updated.id ? updated : item)));
+        this.successMessage.set(updated.status === 'SUSPENDED' ? 'team.messages.userSuspended' : 'team.messages.userReactivated');
+      },
+      error: (error: unknown) => this.fail(error, 'team.messages.updateError')
     });
   }
 
@@ -201,70 +351,31 @@ export class UserAccess implements OnInit {
 
   protected deleteUser(): void {
     const user = this.selectedUser();
-
     if (!user) {
       return;
     }
-
     this.usersApi.delete(user.id).subscribe({
       next: () => {
-        this.users.update(current =>
-          current.filter(item => item.id !== user.id)
-        );
+        this.users.update((current) => current.filter((item) => item.id !== user.id));
         this.successMessage.set('team.messages.userDeleted');
         this.closeDelete();
       },
-      error: (error: Error) => {
-        this.errorMessage.set(error.message || 'shared.states.error');
+      error: (error: unknown) => {
+        this.fail(error, 'team.messages.deleteError');
         this.closeDelete();
       }
     });
   }
 
-  protected openPermissions(user: TeamUser): void {
-    this.selectedUser.set(user);
-
-    const zones = this.warehouseZones()
-      .filter(zone => Number(zone.warehouseId) === Number(user.warehouseId));
-
-    this.permissions.set(
-      zones.map(zone => ({
-        id: Number(zone.id),
-        name: zone.name,
-        selected: false
-      }))
-    );
-
-    this.showPermissionsModal.set(true);
+  private clearMessages(): void {
+    this.errorMessage.set('');
+    this.successMessage.set('');
   }
 
-  protected closePermissions(): void {
-    this.showPermissionsModal.set(false);
-    this.selectedUser.set(null);
-  }
-
-  protected togglePermission(index: number): void {
-    this.permissions.update(items =>
-      items.map((item, i) =>
-        i === index
-          ? { ...item, selected: !item.selected }
-          : item
-      )
-    );
-  }
-
-  protected savePermissions(): void {
-    this.errorMessage.set('team.messages.permissionsNotSaved');
-  }
-
-  protected getInitials(fullName: string): string {
-    return fullName
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map(part => part[0])
-      .join('')
-      .toUpperCase();
+  /** Shows the API message (ProblemDetail.detail, already localized) or a generic key. */
+  private fail(error: unknown, fallbackKey: string): void {
+    this.saving.set(false);
+    const detail = error instanceof HttpErrorResponse ? error.error?.detail : null;
+    this.errorMessage.set(typeof detail === 'string' && detail ? detail : fallbackKey);
   }
 }
-

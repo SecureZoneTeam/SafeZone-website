@@ -67,8 +67,7 @@ export class ProductList implements OnInit {
   }
 
   protected canReconcile(): boolean {
-    return this.iamStore.hasRole('ROLE_ADMINISTRATOR') ||
-      this.iamStore.hasRole('ROLE_SECURITY_MANAGER');
+    return this.iamStore.hasPermission('inventory.reconcile');
   }
 
   protected openReconciliation(product: Product): void {

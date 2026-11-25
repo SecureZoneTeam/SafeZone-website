@@ -26,6 +26,7 @@ import { finalize } from 'rxjs';
 import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse } from '../../../domain/model/warehouse.entity';
 import { StreetAddress } from '../../../domain/model/street-address';
+import { IamStore } from '../../../../iam/application/iam.store';
 import { WarehouseZonesApiEndpoint } from '../../../infrastructure/warehouse-zones-api.endpoint';
 import {
   WarehouseZone,
@@ -49,6 +50,7 @@ export class WarehouseForm implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly warehouseStore = inject(WarehouseStore);
+  private readonly iamStore = inject(IamStore);
 
   protected warehouseId: number | string | null = null;
   protected isEditMode = false;
@@ -197,7 +199,8 @@ export class WarehouseForm implements OnInit {
 
     const warehouse = new Warehouse({
       id: this.currentWarehouse?.id,
-      companyId: this.currentWarehouse?.companyId ?? 1,
+      // Informative only: the API always uses the organization of the session.
+      companyId: this.currentWarehouse?.companyId ?? this.iamStore.currentOrganizationId() ?? 0,
       name: value.name.trim(),
       address: new StreetAddress(
         value.street.trim(),

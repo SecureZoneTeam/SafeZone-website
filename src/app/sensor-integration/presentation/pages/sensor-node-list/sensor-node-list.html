@@ -19,6 +19,7 @@
 
 
     <a
+      *nsCan="'iot.devices.manage'"
       routerLink="/devices/new"
       class="link-device-button"
     >
@@ -144,6 +145,7 @@
 
                 <div class="device-card__actions">
                   <a
+                    *nsCan="'iot.devices.manage'"
                     [routerLink]="['/devices/edit', node.id]"
                     class="edit-device-button ns-has-icon"
                   >
@@ -156,6 +158,7 @@
                     class="toggle-status-button ns-has-icon"
                     [class.toggle-status-button--online]="!node.isOnline"
                     [disabled]="isWarehouseSuspended(node.zoneId)"
+                    *nsCan="'iot.devices.manage'"
                     (click)="toggleSensorStatus(node)"
                   >
                     @if (isWarehouseSuspended(node.zoneId)) {

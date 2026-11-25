@@ -5,7 +5,7 @@
       <h1>{{ 'inventory.products.title' | translate }}</h1>
       <p>{{ 'inventory.products.subtitle' | translate }}</p>
     </div>
-    @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+    @if (iamStore.hasPermission('inventory.products.create')) {
       <a mat-flat-button color="primary" routerLink="/inventory/products/new">
         <mat-icon>add</mat-icon>{{ 'inventory.products.newProduct' | translate }}
       </a>
@@ -38,7 +38,7 @@
     <div class="inventory-state">
       <mat-icon>inventory_2</mat-icon><h2>{{ 'inventory.products.emptyTitle' | translate }}</h2>
       <p>{{ 'inventory.products.emptyDescription' | translate }}</p>
-      @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+      @if (iamStore.hasPermission('inventory.products.create')) {
         <a mat-stroked-button routerLink="/inventory/products/new">{{ 'inventory.products.newProduct' | translate }}</a>
       }
     </div>
@@ -71,7 +71,7 @@
           <th mat-header-cell *matHeaderCellDef>{{ 'inventory.products.actions' | translate }}</th>
           <td mat-cell *matCellDef="let product">
             <div class="product-actions">
-              @if (iamStore.hasRole('ROLE_ADMINISTRATOR')) {
+              @if (iamStore.hasPermission('inventory.products.update')) {
                 <a mat-icon-button [routerLink]="['/inventory/products', product.id, 'edit']" [attr.aria-label]="'inventory.products.edit' | translate"><mat-icon>edit</mat-icon></a>
               }
               @if (canReconcile()) {

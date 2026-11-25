@@ -38,7 +38,7 @@ export class TraceabilityDetail implements OnInit {
   protected readonly actionMessage = signal('');
   protected readonly loadingDetail = signal(true);
   protected readonly canReconcile = computed(() =>
-    this.iamStore.hasRole('ROLE_ADMINISTRATOR') || this.iamStore.hasRole('ROLE_SECURITY_MANAGER')
+    this.iamStore.hasPermission('inventory.reconcile')
   );
 
   protected readonly record = computed(() => {

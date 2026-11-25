@@ -72,10 +72,11 @@
       "submit": "Iniciar sesión",
       "invalidCredentials": "Credenciales inválidas",
       "noAccount": "¿Aún no tienes una cuenta?",
-      "subtitle": "Accede a tu cuenta para continuar."
+      "subtitle": "Accede a tu cuenta para continuar.",
+      "suspended": "Tu cuenta está suspendida. Contacta al propietario de tu organización."
     },
     "signUp": {
-      "title": "Crea tu cuenta de NodeSecure",
+      "title": "Crea tu organización en NodeSecure",
       "username": "Usuario",
       "email": "Correo",
       "password": "Contraseña",
@@ -83,7 +84,12 @@
       "haveAccount": "¿Ya estás registrado?",
       "planNotice": "Te estás registrando en el plan",
       "fullName": "Nombres y apellidos",
-      "subtitle": "Protege tus almacenes y comienza a utilizar NodeSecure."
+      "subtitle": "Protege tus almacenes y comienza a utilizar NodeSecure.",
+      "organizationName": "Nombre de la organización",
+      "organizationHint": "Se creará una organización nueva y tú serás su propietario.",
+      "usernameRule": "De 3 a 30 caracteres: minúsculas, dígitos, \".\", \"_\" o \"-\".",
+      "passwordRule": "La contraseña debe tener al menos 8 caracteres.",
+      "taken": "El usuario o el correo ya están registrados."
     },
     "brand": {
       "headline": "Auditoría logística inteligente",
@@ -397,24 +403,26 @@
     "list": {
       "badge": "GESTIÓN DE EQUIPO",
       "title": "Equipo y Accesos",
-      "subtitle": "Administra los usuarios, roles y permisos de acceso a tu infraestructura.",
+      "subtitle": "Crea a tus trabajadores, asigna sus almacenes y decide qué pueden hacer.",
       "invite": "Invitar nuevo usuario",
       "administrators": "Administradores",
       "logistics": "Personal Logístico",
-      "adminAccess": "Acceso de administrador",
+      "adminAccess": "Acceso administrativo completo",
       "zonesAccess": "Zonas y Accesos",
       "warehouseKeeper": "Almacenero",
       "logisticsStaff": "Personal Logístico",
       "count": "usuarios",
       "noAdministrators": "No hay administradores registrados.",
-      "otherRoles": "Personal y otros roles",
+      "otherRoles": "Trabajadores",
       "permissionAccess": "Acceso por permisos",
-      "noOtherUsers": "No hay otros usuarios registrados."
+      "noOtherUsers": "Todavía no hay trabajadores. Crea el primero con \"Invitar nuevo usuario\".",
+      "owners": "Propietario",
+      "noWarehouse": "Sin almacén asignado"
     },
     "invite": {
-      "title": "Invitar Nuevo Usuario",
-      "email": "Correo Electrónico",
-      "role": "Rol del Usuario",
+      "title": "Crear cuenta de trabajador",
+      "email": "Correo electrónico",
+      "role": "Rol",
       "administrator": "Administrador",
       "administratorDescription": "Acceso completo a configuración y usuarios.",
       "warehouseKeeper": "Almacenero",
@@ -422,19 +430,22 @@
       "security": "Responsable de Seguridad",
       "securityDescription": "Supervisa alertas y eventos de seguridad.",
       "zones": "Zonas de Acceso",
-      "send": "Enviar Invitación",
+      "send": "Crear cuenta",
       "cancel": "Cancelar",
       "closeDialog": "Cerrar ventana de invitación",
-      "description": "Configura el rol del usuario que tendrá acceso a la plataforma.",
+      "description": "La cuenta se crea en tu organización y queda activa de inmediato.",
       "fullName": "Nombre completo",
       "fullNamePlaceholder": "Nombre y apellidos",
       "emailPlaceholder": "usuario@empresa.com",
       "warehouse": "Almacén asignado",
       "selectWarehouse": "Selecciona un almacén",
-      "note": "La creación de cuentas y el envío de invitaciones requieren integración con el servicio de usuarios."
+      "note": "El trabajador inicia sesión con este usuario y contraseña. La contraseña se guarda cifrada.",
+      "username": "Nombre de usuario",
+      "usernamePlaceholder": "p. ej. pepito.perez",
+      "password": "Contraseña"
     },
     "permissions": {
-      "title": "Editar Permisos",
+      "title": "Permisos",
       "assignedZones": "Zonas Asignadas",
       "selectZones": "Selecciona las zonas a las que este usuario puede acceder.",
       "save": "Guardar Cambios",
@@ -445,7 +456,10 @@
       "closeDialog": "Cerrar ventana de permisos",
       "zoneAccess": "Acceso a esta zona",
       "noZones": "No hay zonas disponibles para asignar.",
-      "note": "Los permisos mostrados son provisionales hasta conectarlos con la API de autorizaciones."
+      "note": "Las funciones administrativas (almacenes, dispositivos IoT, equipo, suscripción y configuración) están reservadas al propietario y no se pueden conceder.",
+      "description": "Los permisos marcados se aplican solo dentro de los almacenes asignados a este trabajador.",
+      "roleDefault": "Incluido en el rol",
+      "extra": "No incluido en el rol"
     },
     "delete": {
       "title": "¿Eliminar usuario?",
@@ -456,28 +470,76 @@
       "messageBefore": "¿Estás seguro de que deseas eliminar a"
     },
     "actions": {
-      "managePermissions": "Gestionar permisos del usuario",
-      "deleteUser": "Eliminar usuario"
+      "managePermissions": "Gestionar permisos",
+      "deleteUser": "Eliminar usuario",
+      "edit": "Editar rol y almacenes",
+      "suspend": "Suspender cuenta",
+      "reactivate": "Reactivar cuenta"
     },
     "roles": {
       "ROLE_ADMINISTRATOR": "Administrador",
       "ROLE_SECURITY_MANAGER": "Responsable de seguridad",
       "ROLE_WAREHOUSE_KEEPER": "Encargado de almacén",
       "ROLE_AUDITOR": "Auditor",
-      "none": "Sin rol"
+      "none": "Sin rol",
+      "ROLE_OWNER": "Propietario",
+      "ROLE_SUPERVISOR": "Supervisor",
+      "ROLE_OPERATOR": "Operador"
     },
     "messages": {
       "loadingUsers": "Cargando usuarios...",
-      "loadUsersError": "No se pudieron cargar los usuarios. Comprueba que JSON Server esté ejecutándose.",
+      "loadUsersError": "No se pudo cargar el equipo.",
       "loadWarehousesError": "No se pudieron cargar los almacenes.",
       "loadZonesError": "No se pudieron cargar las zonas de los almacenes.",
-      "requiredFields": "Completa el nombre, el correo y el almacén asignado.",
+      "requiredFields": "Completa todos los campos y selecciona un almacén.",
       "emailTaken": "Ya existe un usuario registrado con ese correo.",
-      "userCreated": "Usuario creado correctamente.",
-      "createError": "No se pudo crear el usuario. Comprueba que JSON Server esté ejecutándose.",
+      "userCreated": "Cuenta creada. El trabajador ya puede iniciar sesión.",
+      "createError": "No se pudo crear la cuenta.",
       "userDeleted": "Usuario eliminado correctamente.",
       "deleteError": "No se pudo eliminar el usuario.",
-      "permissionsNotSaved": "Los permisos aún no se guardan porque falta definir su estructura en la API."
+      "permissionsNotSaved": "Los permisos aún no se guardan porque falta definir su estructura en la API.",
+      "invalidEmail": "Ingresa un correo válido.",
+      "invalidUsername": "El usuario debe tener de 3 a 30 caracteres: minúsculas, dígitos, \".\", \"_\" o \"-\".",
+      "invalidPassword": "La contraseña debe tener entre 8 y 72 caracteres.",
+      "userUpdated": "Trabajador actualizado.",
+      "updateError": "No se pudo actualizar al trabajador.",
+      "permissionsSaved": "Permisos guardados.",
+      "permissionsError": "No se pudieron guardar los permisos.",
+      "userSuspended": "Cuenta suspendida: sus sesiones dejaron de funcionar.",
+      "userReactivated": "Cuenta reactivada."
+    },
+    "edit": {
+      "title": "Editar trabajador",
+      "warehouses": "Almacenes asignados"
+    },
+    "status": {
+      "ACTIVE": "Activo",
+      "SUSPENDED": "Suspendido"
+    },
+    "permissionGroups": {
+      "general": "General",
+      "inventory": "Inventario",
+      "traceability": "Trazabilidad y reportes",
+      "devices": "Sensores y alertas"
+    },
+    "permissionCodes": {
+      "dashboard_view": "Ver panel",
+      "warehouses_view": "Ver almacenes asignados",
+      "inventory_view": "Ver inventario",
+      "inventory_products_view": "Ver productos",
+      "inventory_products_create": "Registrar productos",
+      "inventory_products_update": "Editar productos",
+      "inventory_entry_view": "Ver entradas",
+      "inventory_entry_create": "Registrar entradas",
+      "inventory_exit_view": "Ver salidas",
+      "inventory_exit_create": "Registrar salidas",
+      "inventory_reconcile": "Conciliar stock",
+      "traceability_view": "Consultar trazabilidad",
+      "reports_view": "Ver reportes",
+      "reports_create": "Crear reportes",
+      "iot_devices_view": "Ver dispositivos IoT",
+      "alerts_view": "Ver alertas",
+      "alerts_manage": "Gestionar alertas"
     }
   },
   "inventory": {
@@ -649,7 +711,8 @@
     "eventDetail": "Detalle del evento",
     "subscription": "Suscripción",
     "checkout": "Resumen de pago",
-    "notFound": "Página no encontrada"
+    "notFound": "Página no encontrada",
+    "accessDenied": "Acceso denegado"
   },
   "language": {
     "en": "Inglés",
@@ -663,5 +726,13 @@
     "title": "Página no encontrada",
     "subtitle": "La vista solicitada no existe en NodeSecure.",
     "back": "Volver a Mis Almacenes"
+  },
+  "access": {
+    "denied": {
+      "title": "Acceso denegado",
+      "message": "Tu rol o tus permisos no te permiten abrir esta sección. Contacta al propietario de tu organización si necesitas acceso.",
+      "back": "Ir a mi pantalla de inicio",
+      "toast": "No tienes permiso para realizar esta operación."
+    }
   }
 }

@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { InventoryStore } from '../../../application/inventory.store';
 import { Product, ProductCategory } from '../../../domain/model/product.entity';
 import { Sku } from '../../../domain/model/sku';
+import { IamStore } from '../../../../iam/application/iam.store';
 
 /** Product create/edit form; stock is maintained by movement workflows only. */
 @Component({
@@ -36,6 +37,7 @@ export class ProductForm implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly inventoryStore = inject(InventoryStore);
+  private readonly iamStore = inject(IamStore);
 
   protected readonly isEditMode = signal(false);
   protected readonly loading = signal(false);
@@ -95,7 +97,8 @@ export class ProductForm implements OnInit {
     try {
       product = new Product({
         id: existingProduct?.id,
-        companyId: existingProduct?.companyId ?? 1,
+        // Informative only: the API always uses the organization of the session.
+        companyId: existingProduct?.companyId ?? this.iamStore.currentOrganizationId() ?? 0,
         name: value.name.trim(),
         sku: new Sku(value.sku),
         category: value.category,

@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { IamStore } from '../../../../iam/application/iam.store';
+import { CanDirective } from '../../../../iam/presentation/directives/can.directive';
 import {NgOptimizedImage} from "@angular/common";
 import { LanguageService } from '../../../infrastructure/language.service';
 
@@ -29,7 +30,8 @@ import { LanguageService } from '../../../infrastructure/language.service';
     NgOptimizedImage,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    CanDirective
   ],
 
   templateUrl: './layout.html',

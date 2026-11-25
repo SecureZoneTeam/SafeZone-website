@@ -12,11 +12,14 @@ import { LanguageService } from '../../../../shared/infrastructure/language.serv
 import { WarehouseStore } from '../../../application/warehouse.store';
 import { Warehouse, WarehouseStatus } from '../../../domain/model/warehouse.entity';
 import {UsersApiEndpoint, TeamUser} from "../../../../iam/infrastructure/users-api.endpoint";
+import { IamStore } from '../../../../iam/application/iam.store';
+import { CanDirective } from '../../../../iam/presentation/directives/can.directive';
+import { Permissions } from '../../../../iam/domain/model/permission';
 
 
 @Component({
   selector: 'app-warehouse-detail',
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink, TranslatePipe, CanDirective],
   templateUrl: './warehouse-detail.html',
   styleUrl: './warehouse-detail.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,6 +29,7 @@ export class WarehouseDetail implements OnInit {
   private readonly warehouseStore = inject(WarehouseStore);
   private readonly usersApi = inject(UsersApiEndpoint);
   private readonly language = inject(LanguageService);
+  protected readonly iamStore = inject(IamStore);
 
   protected readonly assignedUsers = signal<TeamUser[]>([]);
   protected readonly usersLoading = signal(true);
@@ -53,6 +57,12 @@ export class WarehouseDetail implements OnInit {
         this.warehouse.set(warehouse);
         this.loading.set(false);
 
+        // The team list is administrative information (users.view, owner only).
+        if (!this.iamStore.hasPermission(Permissions.UsersView)) {
+          this.usersLoading.set(false);
+          return;
+        }
+
         this.usersLoading.set(true);
         this.usersError.set('');
 
@@ -60,7 +70,7 @@ export class WarehouseDetail implements OnInit {
           next: (users) => {
             this.assignedUsers.set(
               users.filter(
-                user => String(user.warehouseId) === String(warehouse.id)
+                user => (user.warehouseIds ?? []).map(String).includes(String(warehouse.id))
               )
             );
             this.usersLoading.set(false);

@@ -49,7 +49,7 @@ export class StockReconciliationDialog implements OnInit {
   private readonly translate = inject(TranslateService);
 
   protected readonly canReconcile = computed(() =>
-    this.iamStore.hasRole('ROLE_ADMINISTRATOR') || this.iamStore.hasRole('ROLE_SECURITY_MANAGER')
+    this.iamStore.hasPermission('inventory.reconcile')
   );
   protected readonly errorMessage = computed(() => this.inventoryStore.error());
   protected readonly Number = Number;

@@ -37,6 +37,7 @@
       item.status === WarehouseStatus.Suspended
     "
           [disabled]="savingStatus()"
+          *nsCan="'warehouses.update'"
           (click)="toggleWarehouseStatus()"
         >
           @if (savingStatus()) {
@@ -54,6 +55,7 @@
 
         <a
           class="warehouse-detail__edit ns-has-icon"
+          *nsCan="'warehouses.update'"
           [routerLink]="['/warehouses', item.id, 'edit']"
         >
           <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">edit</span>
@@ -119,7 +121,7 @@
         </div>
       </article>
 
-      <article class="warehouse-detail__card">
+      <article *nsCan="'users.view'" class="warehouse-detail__card">
         <header class="warehouse-detail__card-header">
           <h2>{{ 'warehouses.detail.assignedUsers' | translate }}</h2>
           <span>{{ assignedUsers().length }}</span>

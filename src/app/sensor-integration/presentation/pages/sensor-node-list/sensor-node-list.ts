@@ -12,11 +12,12 @@ import { WarehouseZonesApiEndpoint } from '../../../../warehouse-management/infr
 import { WarehousesApiEndpoint } from '../../../../warehouse-management/infrastructure/warehouses-api.endpoint';
 import { WarehouseZone } from '../../../../warehouse-management/domain/model/warehouse-zone.entity';
 import { Warehouse } from '../../../../warehouse-management/domain/model/warehouse.entity';
+import { CanDirective } from '../../../../iam/presentation/directives/can.directive';
 
 /** IoT device list with connection status (user story US02). */
 @Component({
   selector: 'app-sensor-node-list',
-  imports: [MatTableModule, MatProgressBarModule, RouterLink, TranslatePipe],
+  imports: [MatTableModule, MatProgressBarModule, RouterLink, TranslatePipe, CanDirective],
   templateUrl: './sensor-node-list.html',
   styleUrl: './sensor-node-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -9,10 +9,18 @@ export interface UserResponse extends BaseResponse {
   companyId: number | string | null;
 }
 
-/** Resource returned by the sign-in endpoint. */
+/** Resource returned by sign-in, sign-up and GET /authentication/me (token is null for /me). */
 export interface AuthenticatedUserResponse extends BaseResponse {
   username: string;
-  token: string;
+  token: string | null;
+  fullName?: string;
+  email?: string;
+  role?: string;
   roles?: string[];
+  permissions?: string[];
+  allWarehouses?: boolean;
+  warehouseIds?: number[];
   warehouseId?: number | null;
+  organizationId?: number | null;
+  organizationName?: string | null;
 }

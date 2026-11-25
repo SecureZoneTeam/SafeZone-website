@@ -1,12 +1,13 @@
 /**
- * Command issued when a visitor registers a new NodeSecure account.
- * `planCode` carries the subscription plan selected on the Landing Page pricing section,
- * so the call-to-action of each target segment lands on a pre-filled experience.
+ * Command issued when a visitor registers as the owner of a NEW organization.
+ * The backend always creates the organization and assigns ROLE_OWNER; the client cannot choose either.
+ * `planCode` carries the subscription plan selected on the Landing Page pricing section.
  */
 export interface SignUpCommand {
-  username: string;
-  email: string;
-  password: string;
   fullName: string;
+  email: string;
+  username: string;
+  password: string;
+  organizationName: string;
   planCode?: string | null;
 }

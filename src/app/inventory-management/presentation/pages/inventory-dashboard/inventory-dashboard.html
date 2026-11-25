@@ -42,20 +42,22 @@
   </div>
 
   <section class="inventory-shortcuts" aria-label="{{ 'inventory.dashboard.shortcuts' | translate }}">
-    @if (canWrite('ROLE_ADMINISTRATOR')) {
+    @if (can('inventory.products.create')) {
       <a class="inventory-shortcut" routerLink="/inventory/products/new">
         <mat-icon>add_box</mat-icon><span>{{ 'inventory.dashboard.newProduct' | translate }}</span>
       </a>
     }
-    @if (canWrite('ROLE_ADMINISTRATOR') || canWrite('ROLE_WAREHOUSE_KEEPER')) {
+    @if (can('inventory.entry.create')) {
       <a class="inventory-shortcut" routerLink="/inventory/entries/new">
         <mat-icon>move_to_inbox</mat-icon><span>{{ 'inventory.dashboard.registerEntry' | translate }}</span>
       </a>
+    }
+    @if (can('inventory.exit.create')) {
       <a class="inventory-shortcut" routerLink="/inventory/dispatch">
         <mat-icon>outbox</mat-icon><span>{{ 'inventory.dashboard.quickDispatch' | translate }}</span>
       </a>
     }
-    @if (canWrite('ROLE_ADMINISTRATOR') || canWrite('ROLE_SECURITY_MANAGER')) {
+    @if (can('inventory.reconcile')) {
       <button class="inventory-shortcut" type="button" (click)="openReconciliation()">
         <mat-icon>fact_check</mat-icon><span>{{ 'inventory.dashboard.reconcile' | translate }}</span>
       </button>

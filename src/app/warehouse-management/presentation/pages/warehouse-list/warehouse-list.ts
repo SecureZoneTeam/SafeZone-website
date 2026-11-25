@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { WarehouseStore } from '../../../application/warehouse.store';
 import {WarehouseZone} from "../../../domain/model/warehouse-zone.entity";
 import {WarehouseZonesApiEndpoint} from "../../../infrastructure/warehouse-zones-api.endpoint";
+import { CanDirective } from '../../../../iam/presentation/directives/can.directive';
 
 /** Warehouse list view (user story US01). */
 @Component({
@@ -19,7 +20,8 @@ import {WarehouseZonesApiEndpoint} from "../../../infrastructure/warehouse-zones
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
-    TranslatePipe
+    TranslatePipe,
+    CanDirective
   ],
   templateUrl: './warehouse-list.html',
   styleUrl: './warehouse-list.css',

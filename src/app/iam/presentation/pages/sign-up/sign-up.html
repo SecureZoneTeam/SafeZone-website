@@ -77,6 +77,25 @@
         </mat-form-field>
 
 
+        <!-- ORGANIZACIÓN (se crea una nueva; el usuario será su propietario) -->
+        <mat-form-field
+          appearance="outline"
+          class="auth-page__field"
+        >
+          <mat-label>
+            {{ 'iam.signUp.organizationName' | translate }}
+          </mat-label>
+
+          <input
+            matInput
+            formControlName="organizationName"
+            autocomplete="organization"
+            required
+          />
+          <mat-hint>{{ 'iam.signUp.organizationHint' | translate }}</mat-hint>
+        </mat-form-field>
+
+
         <!-- USUARIO -->
         <mat-form-field
           appearance="outline"
@@ -92,6 +111,9 @@
             autocomplete="username"
             required
           />
+          @if (form.controls.username.hasError('pattern')) {
+            <mat-error>{{ 'iam.signUp.usernameRule' | translate }}</mat-error>
+          }
         </mat-form-field>
 
 
@@ -130,6 +152,9 @@
             autocomplete="new-password"
             required
           />
+          @if (form.controls.password.hasError('minlength')) {
+            <mat-error>{{ 'iam.signUp.passwordRule' | translate }}</mat-error>
+          }
         </mat-form-field>
 
 

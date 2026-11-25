@@ -37,8 +37,9 @@ export class InventoryDashboard implements OnInit {
     this.iamStore.resolveCurrentUserContext().subscribe();
   }
 
-  protected canWrite(role: string): boolean {
-    return this.iamStore.hasRole(role);
+  /** Shows an action only with its permission; the API validates it again. */
+  protected can(permission: string): boolean {
+    return this.iamStore.hasPermission(permission);
   }
 
   protected productName(productId: number | string): string {

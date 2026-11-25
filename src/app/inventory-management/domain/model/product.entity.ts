@@ -38,7 +38,7 @@ export class Product implements BaseEntity, AuditTrail {
     createdBy?: string;
   } = {}) {
     this.id = product.id ?? 0;
-    this.companyId = product.companyId ?? 1;
+    this.companyId = product.companyId ?? 0;
     this.name = product.name ?? '';
     this.sku = product.sku ?? new Sku('SKU-NEW');
     this.category = product.category ?? ProductCategory.Other;

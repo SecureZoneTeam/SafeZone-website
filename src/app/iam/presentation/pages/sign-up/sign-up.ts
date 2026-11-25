@@ -32,11 +32,17 @@ export class SignUp implements OnInit {
   protected readonly iamStore = inject(IamStore);
   protected readonly selectedPlanCode = signal<string | null>(null);
 
+  /**
+   * Public sign-up always creates a NEW organization whose owner is the person registering.
+   * Workers do not use this form: the owner creates their accounts from "Team & Access".
+   * Rules mirror the API validation (username 3-30 lowercase chars, password 8-72).
+   */
   protected readonly form = this.formBuilder.nonNullable.group({
-    fullName: ['', [Validators.required]],
-    username: ['', [Validators.required]],
+    fullName: ['', [Validators.required, Validators.maxLength(120)]],
+    organizationName: ['', [Validators.required, Validators.maxLength(120)]],
+    username: ['', [Validators.required, Validators.pattern(/^[a-z0-9._-]{3,30}$/)]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(1)]]
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72)]]
   });
 
   ngOnInit(): void {
@@ -48,8 +54,13 @@ export class SignUp implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
+    const value = this.form.getRawValue();
     void this.iamStore.signUp({
-      ...this.form.getRawValue(),
+      fullName: value.fullName.trim(),
+      organizationName: value.organizationName.trim(),
+      username: value.username.trim().toLowerCase(),
+      email: value.email.trim(),
+      password: value.password,
       planCode: this.selectedPlanCode()
     });
   }

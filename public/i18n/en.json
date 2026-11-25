@@ -72,10 +72,11 @@
       "submit": "Sign In",
       "invalidCredentials": "Invalid credentials",
       "noAccount": "Do not have an account yet?",
-      "subtitle": "Access your account to continue."
+      "subtitle": "Access your account to continue.",
+      "suspended": "Your account is suspended. Contact the owner of your organization."
     },
     "signUp": {
-      "title": "Create your NodeSecure account",
+      "title": "Create your organization in NodeSecure",
       "username": "Username",
       "email": "Email",
       "password": "Password",
@@ -83,7 +84,12 @@
       "haveAccount": "Already registered?",
       "planNotice": "You are signing up for the plan",
       "fullName": "Full name",
-      "subtitle": "Protect your warehouses and start using NodeSecure."
+      "subtitle": "Protect your warehouses and start using NodeSecure.",
+      "organizationName": "Organization name",
+      "organizationHint": "A new organization is created and you will be its owner.",
+      "usernameRule": "3 to 30 characters: lowercase letters, digits, \".\", \"_\" or \"-\".",
+      "passwordRule": "The password must have at least 8 characters.",
+      "taken": "The username or email is already registered."
     },
     "brand": {
       "headline": "Smart logistics auditing",
@@ -397,24 +403,26 @@
     "list": {
       "badge": "TEAM MANAGEMENT",
       "title": "Team & Access",
-      "subtitle": "Manage users, roles and access permissions to your infrastructure.",
+      "subtitle": "Create your workers, assign their warehouses and decide what they can do.",
       "invite": "Invite new user",
       "administrators": "Administrators",
       "logistics": "Logistics Personnel",
-      "adminAccess": "Admin access",
+      "adminAccess": "Full administrative access",
       "zonesAccess": "Zones & Access",
       "warehouseKeeper": "Warehouse Keeper",
       "logisticsStaff": "Logistics Staff",
       "count": "users",
       "noAdministrators": "There are no administrators registered.",
-      "otherRoles": "Staff and other roles",
+      "otherRoles": "Workers",
       "permissionAccess": "Permission-based access",
-      "noOtherUsers": "There are no other users registered."
+      "noOtherUsers": "There are no workers yet. Create the first one with \"Invite new user\".",
+      "owners": "Owner",
+      "noWarehouse": "No warehouse assigned"
     },
     "invite": {
-      "title": "Invite New User",
-      "email": "Email Address",
-      "role": "User Role",
+      "title": "Create worker account",
+      "email": "Email",
+      "role": "Role",
       "administrator": "Administrator",
       "administratorDescription": "Full access to configuration and users.",
       "warehouseKeeper": "Warehouse Keeper",
@@ -422,19 +430,22 @@
       "security": "Security Manager",
       "securityDescription": "Monitor alerts and security events.",
       "zones": "Access Zones",
-      "send": "Send Invitation",
+      "send": "Create account",
       "cancel": "Cancel",
       "closeDialog": "Close invitation dialog",
-      "description": "Set up the role of the user who will have access to the platform.",
+      "description": "The account is created in your organization and is active immediately.",
       "fullName": "Full name",
       "fullNamePlaceholder": "First and last name",
       "emailPlaceholder": "user@company.com",
       "warehouse": "Assigned warehouse",
       "selectWarehouse": "Select a warehouse",
-      "note": "Creating accounts and sending invitations requires integration with the users service."
+      "note": "The worker signs in with this username and password. The password is stored encrypted and can only be changed by creating a new account.",
+      "username": "Username",
+      "usernamePlaceholder": "e.g. pepito.perez",
+      "password": "Password"
     },
     "permissions": {
-      "title": "Edit Permissions",
+      "title": "Permissions",
       "assignedZones": "Assigned Zones",
       "selectZones": "Select the zones this user can access.",
       "save": "Save Changes",
@@ -445,7 +456,10 @@
       "closeDialog": "Close permissions dialog",
       "zoneAccess": "Access to this zone",
       "noZones": "There are no zones available to assign.",
-      "note": "The permissions shown are provisional until they are connected to the authorization API."
+      "note": "Administrative functions (warehouses, IoT devices, team, subscription and settings) are reserved to the owner and cannot be granted.",
+      "description": "Checked permissions apply only inside the warehouses assigned to this worker.",
+      "roleDefault": "Included in the role",
+      "extra": "Not included in the role"
     },
     "delete": {
       "title": "Delete user?",
@@ -456,28 +470,76 @@
       "messageBefore": "Are you sure you want to delete"
     },
     "actions": {
-      "managePermissions": "Manage user permissions",
-      "deleteUser": "Delete user"
+      "managePermissions": "Manage permissions",
+      "deleteUser": "Delete user",
+      "edit": "Edit role and warehouses",
+      "suspend": "Suspend account",
+      "reactivate": "Reactivate account"
     },
     "roles": {
       "ROLE_ADMINISTRATOR": "Administrator",
       "ROLE_SECURITY_MANAGER": "Security Manager",
       "ROLE_WAREHOUSE_KEEPER": "Warehouse Keeper",
       "ROLE_AUDITOR": "Auditor",
-      "none": "No role"
+      "none": "No role",
+      "ROLE_OWNER": "Owner",
+      "ROLE_SUPERVISOR": "Supervisor",
+      "ROLE_OPERATOR": "Operator"
     },
     "messages": {
       "loadingUsers": "Loading users...",
-      "loadUsersError": "Users could not be loaded. Check that JSON Server is running.",
+      "loadUsersError": "The team could not be loaded.",
       "loadWarehousesError": "Warehouses could not be loaded.",
       "loadZonesError": "Warehouse zones could not be loaded.",
-      "requiredFields": "Fill in the name, the email and the assigned warehouse.",
+      "requiredFields": "Fill in every field and select a warehouse.",
       "emailTaken": "A user with that email already exists.",
-      "userCreated": "User created successfully.",
-      "createError": "The user could not be created. Check that JSON Server is running.",
+      "userCreated": "Account created. The worker can sign in now.",
+      "createError": "The account could not be created.",
       "userDeleted": "User deleted successfully.",
       "deleteError": "The user could not be deleted.",
-      "permissionsNotSaved": "Permissions are not saved yet because their structure is not defined in the API."
+      "permissionsNotSaved": "Permissions are not saved yet because their structure is not defined in the API.",
+      "invalidEmail": "Enter a valid email.",
+      "invalidUsername": "The username must have 3 to 30 characters: lowercase letters, digits, \".\", \"_\" or \"-\".",
+      "invalidPassword": "The password must have between 8 and 72 characters.",
+      "userUpdated": "Worker updated.",
+      "updateError": "The worker could not be updated.",
+      "permissionsSaved": "Permissions saved.",
+      "permissionsError": "The permissions could not be saved.",
+      "userSuspended": "Account suspended: its sessions stopped working.",
+      "userReactivated": "Account reactivated."
+    },
+    "edit": {
+      "title": "Edit worker",
+      "warehouses": "Assigned warehouses"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "SUSPENDED": "Suspended"
+    },
+    "permissionGroups": {
+      "general": "General",
+      "inventory": "Inventory",
+      "traceability": "Traceability and reports",
+      "devices": "Sensors and alerts"
+    },
+    "permissionCodes": {
+      "dashboard_view": "View dashboard",
+      "warehouses_view": "View assigned warehouses",
+      "inventory_view": "View inventory",
+      "inventory_products_view": "View products",
+      "inventory_products_create": "Register products",
+      "inventory_products_update": "Edit products",
+      "inventory_entry_view": "View stock entries",
+      "inventory_entry_create": "Register stock entries",
+      "inventory_exit_view": "View stock exits",
+      "inventory_exit_create": "Register stock exits",
+      "inventory_reconcile": "Reconcile stock",
+      "traceability_view": "View traceability",
+      "reports_view": "View reports",
+      "reports_create": "Create reports",
+      "iot_devices_view": "View IoT devices",
+      "alerts_view": "View alerts",
+      "alerts_manage": "Manage alerts"
     }
   },
   "inventory": {
@@ -649,7 +711,8 @@
     "eventDetail": "Event Detail",
     "subscription": "Subscription",
     "checkout": "Payment Summary",
-    "notFound": "Page not found"
+    "notFound": "Page not found",
+    "accessDenied": "Access denied"
   },
   "language": {
     "en": "English",
@@ -663,5 +726,13 @@
     "title": "Page not found",
     "subtitle": "The requested view does not exist in NodeSecure.",
     "back": "Back to My Warehouses"
+  },
+  "access": {
+    "denied": {
+      "title": "Access denied",
+      "message": "Your role or permissions do not allow you to open this section. Contact the owner of your organization if you need access.",
+      "back": "Go to my home screen",
+      "toast": "You do not have permission to perform this operation."
+    }
   }
 }

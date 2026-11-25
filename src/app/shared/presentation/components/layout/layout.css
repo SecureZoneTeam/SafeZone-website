@@ -358,3 +358,26 @@
     background: rgba(59, 130, 246, .12);
   }
 }
+
+/* Signed-in identity: username, role and organization (session context from the API). */
+.app-sidebar__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.app-sidebar__role {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.app-sidebar__organization {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}

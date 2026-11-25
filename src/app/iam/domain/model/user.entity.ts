@@ -1,11 +1,13 @@
 import { BaseEntity } from '../../../shared/domain/model/base-entity';
 
-/** Role granted to a NodeSecure user (RBAC, user story US17). */
+/**
+ * Role of a NodeSecure user inside its organization (RBAC, user story US17).
+ * Access is decided by granular permissions; the role only defines the default ones.
+ */
 export enum UserRole {
-  Administrator = 'ROLE_ADMINISTRATOR',
-  SecurityManager = 'ROLE_SECURITY_MANAGER',
-  WarehouseKeeper = 'ROLE_WAREHOUSE_KEEPER',
-  Auditor = 'ROLE_AUDITOR'
+  Owner = 'ROLE_OWNER',
+  Supervisor = 'ROLE_SUPERVISOR',
+  Operator = 'ROLE_OPERATOR'
 }
 
 /** User aggregate of the Identity and Access Management bounded context. */
