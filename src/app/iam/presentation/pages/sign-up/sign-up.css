@@ -1,292 +1,267 @@
+
 /* =========================================================
    SIGN UP - NODESECURE
-   ========================================================= */
+========================================================= */
 
 :host {
   display: flex;
-
   width: 100%;
   min-height: 100vh;
-
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
-
-  box-sizing: border-box;
-
+  padding: 76px 24px 36px;
   background: #0b1426;
 }
 
-
 /* =========================================================
-   CAMBIO DE IDIOMA
-   ========================================================= */
+   LANGUAGE SWITCHER
+========================================================= */
 
 .auth-language {
   position: fixed;
-
   top: 20px;
   right: 32px;
-
   z-index: 1000;
 }
 
 .auth-language ::ng-deep .mat-button-toggle-group {
   height: 42px;
-
-  border: 1px solid rgba(255, 255, 255, 0.25);
-
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 22px;
-
   overflow: hidden;
-
-  background: rgba(255, 255, 255, 0.08);
-
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
 }
 
 .auth-language ::ng-deep .mat-button-toggle {
   color: rgba(255, 255, 255, 0.7);
-
   font-size: 12px;
 }
 
 .auth-language ::ng-deep .mat-button-toggle-checked {
-  color: #ffffff;
-
+  color: #fff;
   background: #3b82f6;
 }
 
-
 /* =========================================================
-   CONTENEDOR PRINCIPAL
-   ========================================================= */
+   MAIN CONTAINER
+========================================================= */
 
 .auth-page {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
+  width: min(1100px, 92vw);
 
-  width: min(1100px, 88vw);
+  /* El contenido determina la altura */
+  height: auto;
+  min-height: 650px;
 
-  height: min(650px, 88vh);
-
-  overflow: hidden;
+  /* No cortar el formulario */
+  overflow: visible;
 
   background: #101a2e;
-
   border: 1px solid rgba(255, 255, 255, 0.07);
-
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
 }
 
-
 /* =========================================================
-   PANEL IZQUIERDO - BRAND
-   ========================================================= */
+   LEFT PANEL - BRAND
+========================================================= */
 
 .auth-page__brand {
   display: flex;
-
   align-items: center;
   justify-content: center;
+  padding: 60px;
 
-  padding: 70px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #101a2e 0%,
-      #0d1729 100%
-    );
+  background: linear-gradient(
+    135deg,
+    #101a2e 0%,
+    #0d1729 100%
+  );
 }
-
 
 .auth-page__brand-content {
   width: min(420px, 100%);
-
   text-align: center;
 }
 
-
 .auth-page__brand h1 {
-  margin: 0 0 14px;
-
+  margin: 0 0 16px;
   color: #3b82f6;
-
   font-size: clamp(32px, 3vw, 48px);
-
   font-weight: 750;
-
   letter-spacing: -1px;
 }
 
-
 .auth-page__brand p {
-  margin: 0 0 10px;
-
+  margin: 0 0 12px;
   color: #f8fafc;
-
   font-size: 17px;
-
   font-weight: 600;
 }
 
-
 .auth-page__brand span {
   display: block;
-
   max-width: 390px;
-
   margin: 0 auto;
-
-  color: rgba(255, 255, 255, 0.42);
-
-  font-size: 13px;
-
-  line-height: 1.6;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-
 /* =========================================================
-   PANEL DERECHO - FORMULARIO
-   ========================================================= */
+   RIGHT PANEL - FORM
+========================================================= */
 
 .auth-page__form {
   display: flex;
-
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-
-  padding: 40px 70px;
+  padding: 48px clamp(32px, 4.5vw, 70px);
 
   background: #202d43;
+  box-sizing: border-box;
 }
-
 
 .auth-page__form-content {
   width: min(390px, 100%);
+  margin: auto 0;
 }
 
-
 /* =========================================================
-   TITULO
-   ========================================================= */
+   TITLE
+========================================================= */
 
 .auth-page__eyebrow {
   display: block;
-
-  margin-bottom: 10px;
-
+  margin-bottom: 12px;
   color: #3b82f6;
-
   font-size: 13px;
-
   font-weight: 700;
-
   letter-spacing: 0.08em;
 }
 
-
 .auth-page__form h2 {
   margin: 0;
-
   color: #f8fafc;
-
   font-size: clamp(27px, 2.2vw, 36px);
-
-  font-weight: 700;
-
-  line-height: 1.08;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.7px;
 }
-
 
 .auth-page__subtitle {
-  margin: 8px 0 20px;
-
-  color: rgba(255, 255, 255, 0.48);
-
+  margin: 12px 0 26px;
+  color: #aabbd1;
   font-size: 14px;
-
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
+/* =========================================================
+   PLAN NOTICE
+========================================================= */
+
+.auth-page__plan {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 9px;
+  background: rgba(59, 130, 246, 0.08);
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.auth-page__plan strong {
+  display: block;
+  margin-top: 4px;
+  color: #60a5fa;
+}
 
 /* =========================================================
-   CAMPOS
-   ========================================================= */
+   FORM FIELDS
+========================================================= */
+
+.auth-page__form-content form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 
 .auth-page__field {
   display: block;
-
   width: 100%;
-
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
-
-
-/* Material Angular */
 
 .auth-page__field .mat-mdc-text-field-wrapper {
   background: #17243a !important;
 }
 
-
 .auth-page__field input {
-  color: #ffffff !important;
-
+  color: #fff !important;
   font-size: 14px !important;
 }
-
 
 .auth-page__field mat-label {
-  color: rgba(255, 255, 255, 0.5) !important;
-
+  color: #aabbd1 !important;
   font-size: 14px !important;
 }
 
-
-/* =========================================================
-   ERRORES
-   ========================================================= */
-
-.auth-page__error {
-  margin: 8px 0;
-
-  color: #f87171;
-
-  font-size: 13px;
+/* Helper text */
+.auth-page__field ::ng-deep .mat-mdc-form-field-hint {
+  color: #aabbd1 !important;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
+.auth-page__field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  min-height: 24px;
+}
+
+/* Validation messages */
+.auth-page__field ::ng-deep .mat-mdc-form-field-error {
+  font-size: 12px;
+}
 
 /* =========================================================
-   BOTÓN SIGN UP
-   ========================================================= */
+   ERRORS
+========================================================= */
+
+.auth-page__error {
+  margin: 8px 0 12px;
+  padding: 11px 13px;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.08);
+  color: #fca5a5;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
 
 .auth-page__submit {
   display: flex;
-
   align-items: center;
   justify-content: center;
+  gap: 9px;
 
   width: 100%;
-
-  height: 48px;
-
-  margin-top: 10px;
+  min-height: 50px;
+  margin-top: 12px;
 
   border: none;
-
-  border-radius: 6px;
-
+  border-radius: 8px;
   background: #3b82f6;
-
-  color: #ffffff;
+  color: #fff;
 
   font-size: 14px;
-
   font-weight: 650;
-
   cursor: pointer;
 
   transition:
@@ -297,52 +272,34 @@
 
 .auth-page__submit:hover:not(:disabled) {
   background: #2563eb;
-
   transform: translateY(-1px);
-
-  box-shadow:
-    0 10px 25px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
 }
-
 
 .auth-page__submit:active:not(:disabled) {
   transform: translateY(0);
 }
 
-
 .auth-page__submit:disabled {
   opacity: 0.55;
-
   cursor: not-allowed;
 }
 
-
-.auth-page__submit span {
-  margin-left: 8px;
-
-  font-size: 18px;
-}
-
-
 /* =========================================================
-   LINK PARA SIGN IN
-   ========================================================= */
+   SIGN IN LINK
+========================================================= */
 
 .auth-page__hint {
-  margin: 14px 0 0;
-
-  color: rgba(255, 255, 255, 0.42);
-
+  margin: 22px 0 0;
+  color: #aabbd1;
   font-size: 13px;
-
+  line-height: 1.6;
   text-align: center;
 }
 
 .auth-page__hint a {
-  color: #3b82f6;
-
-  font-weight: 600;
-
+  color: #60a5fa;
+  font-weight: 650;
   text-decoration: none;
 }
 
@@ -350,69 +307,60 @@
   text-decoration: underline;
 }
 
-
 /* =========================================================
-   RESPONSIVE - TABLET
-   ========================================================= */
+   TABLET
+========================================================= */
 
 @media (max-width: 1000px) {
-
   .auth-page {
-    width: 92vw;
-
-    height: min(650px, 88vh);
+    width: 96%;
   }
 
   .auth-page__brand {
-    padding: 50px;
+    padding: 35px;
   }
 
   .auth-page__form {
-    padding: 45px;
+    padding: 40px 30px;
   }
 }
 
-
 /* =========================================================
-   RESPONSIVE - MOBILE
-   ========================================================= */
+   MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
-
   :host {
-    padding: 30px 0;
+    padding: 82px 16px 28px;
+    align-items: flex-start;
   }
 
   .auth-language {
-    top: 15px;
-
+    top: 16px;
     right: 18px;
   }
 
   .auth-page {
     grid-template-columns: 1fr;
-
-    width: 92vw;
-
-    height: auto;
-
+    width: 100%;
     min-height: 0;
   }
 
   .auth-page__brand {
-    min-height: 260px;
-
-    padding: 45px 30px;
-  }
-
-  .auth-page__form {
-    min-height: 520px;
-
-    padding: 45px 30px;
+    min-height: 190px;
+    padding: 35px 24px;
   }
 
   .auth-page__brand h1 {
-    font-size: 36px;
+    font-size: 34px;
+  }
+
+  .auth-page__form {
+    padding: 36px 25px;
+  }
+
+  .auth-page__form-content {
+    width: 100%;
   }
 
   .auth-page__form h2 {
