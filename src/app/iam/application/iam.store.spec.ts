@@ -68,6 +68,47 @@ describe('IamStore', () => {
     expect(localStorage.getItem('node-secure.token')).toBe('jwt-token');
   });
 
+  it('keeps the stored token when /authentication/me fails for a connection or server problem', () => {
+    localStorage.setItem('node-secure.token', 'jwt-token');
+    localStorage.setItem('node-secure.username', 'pepito');
+
+    const store = createStore();
+    http.expectOne(`${environment.serverBaseUrl}/authentication/me`)
+      .error(new ProgressEvent('error'), { status: 0, statusText: 'Unknown Error' });
+
+    expect(localStorage.getItem('node-secure.token')).toBe('jwt-token');
+    expect(store.isSignedIn()).toBeTrue();
+    expect(store.error()).toBe('shared.http.unreachable');
+  });
+
+  it('closes the session when /authentication/me answers 401', () => {
+    localStorage.setItem('node-secure.token', 'jwt-token');
+    localStorage.setItem('node-secure.username', 'pepito');
+
+    const store = createStore();
+    http.expectOne(`${environment.serverBaseUrl}/authentication/me`)
+      .flush({ detail: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
+
+    expect(localStorage.getItem('node-secure.token')).toBeNull();
+    expect(store.isSignedIn()).toBeFalse();
+  });
+
+  it('distinguishes wrong credentials from an unreachable API on sign-in', async () => {
+    const store = createStore();
+
+    const wrong = store.signIn({ username: 'pepito', password: 'bad' });
+    http.expectOne(`${environment.serverBaseUrl}/authentication/sign-in`)
+      .flush({ detail: 'Invalid credentials' }, { status: 401, statusText: 'Unauthorized' });
+    await wrong;
+    expect(store.error()).toBe('iam.signIn.invalidCredentials');
+
+    const offline = store.signIn({ username: 'pepito', password: 'Secret-123' });
+    http.expectOne(`${environment.serverBaseUrl}/authentication/sign-in`)
+      .error(new ProgressEvent('error'), { status: 0, statusText: 'Unknown Error' });
+    await offline;
+    expect(store.error()).toBe('shared.http.unreachable');
+  });
+
   it('never trusts the browser: after a reload the context is loaded again from /authentication/me', () => {
     localStorage.setItem('node-secure.token', 'jwt-token');
     localStorage.setItem('node-secure.username', 'pepito');

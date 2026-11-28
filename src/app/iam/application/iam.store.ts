@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, finalize, firstValueFrom, map, of, shareReplay, tap } from 'rxjs';
 
 import { SignInCommand } from '../domain/model/sign-in.command';
@@ -71,7 +72,7 @@ export class IamStore {
       this.startSession(response);
       await this.router.navigateByUrl(this.landingPath());
     } catch (error: unknown) {
-      this.errorSignal.set(this.statusOf(error) === 403 ? 'iam.signIn.suspended' : 'iam.signIn.invalidCredentials');
+      this.errorSignal.set(this.signInErrorKey(this.statusOf(error)));
     } finally {
       this.loadingSignal.set(false);
     }
@@ -99,9 +100,13 @@ export class IamStore {
         })
       );
       this.startSession(response);
-      await this.router.navigateByUrl(this.landingPath());
+      // A new organization has no subscription yet: the owner must choose a plan first.
+      await this.router.navigateByUrl(
+        this.hasPermission(Permissions.SubscriptionsManage) ? '/subscription' : this.landingPath()
+      );
     } catch (error: unknown) {
-      this.errorSignal.set(this.statusOf(error) === 409 ? 'iam.signUp.taken' : 'shared.states.error');
+      const status = this.statusOf(error);
+      this.errorSignal.set(status === 409 ? 'iam.signUp.taken' : this.connectionErrorKey(status) ?? 'shared.states.error');
     } finally {
       this.loadingSignal.set(false);
     }
@@ -142,8 +147,15 @@ export class IamStore {
             this.currentUserSignal.set(user);
             this.sessionLoadedSignal.set(true);
           }),
-          catchError(() => {
-            this.clearSession();
+          catchError((error: unknown) => {
+            const status = this.statusOf(error);
+            if (status === 401 || status === 404) {
+              // Expired/revoked token, or a user that no longer exists: the session is over.
+              this.clearSession();
+            } else {
+              // Connection problem or server error: keep the token so the session can be restored later.
+              this.errorSignal.set(this.connectionErrorKey(status) ?? 'iam.session.unavailable');
+            }
             return of(null);
           }),
           finalize(() => (this.pendingSession$ = null)),
@@ -151,6 +163,35 @@ export class IamStore {
         );
     }
     return this.pendingSession$;
+  }
+
+  /** Updates the profile of the signed-in user (PATCH /profile) and refreshes the session data. */
+  async updateProfile(changes: { fullName?: string; email?: string; username?: string }): Promise<void> {
+    const response = await firstValueFrom(
+      this.http.patch<AuthenticatedUserResponse>(`${environment.serverBaseUrl}/profile`, changes)
+    );
+    const user = this.currentUserSignal();
+    if (user) {
+      this.currentUserSignal.set({
+        ...user,
+        username: response.username,
+        fullName: response.fullName,
+        email: response.email
+      });
+      localStorage.setItem(usernameStorageKey, response.username);
+    }
+  }
+
+  /**
+   * Changes the password (PUT /profile/password). The backend revokes every previous token and
+   * returns a new one, which replaces the stored token so the session continues.
+   */
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const response = await firstValueFrom(
+      this.http.put<AuthenticatedUserResponse>(`${environment.serverBaseUrl}/profile/password`,
+        { currentPassword, newPassword })
+    );
+    this.startSession(response);
   }
 
   /** Kept for the pages that already call it: resolves the session context. */
@@ -249,7 +290,35 @@ export class IamStore {
     return token && username ? { id: 0, username, token } : null;
   }
 
+  /** 401 wrong credentials, 403 suspended; connection and server problems are reported as such. */
+  private signInErrorKey(status: number | null): string {
+    if (status === 401 || status === 400) {
+      return 'iam.signIn.invalidCredentials';
+    }
+    if (status === 403) {
+      return 'iam.signIn.suspended';
+    }
+    return this.connectionErrorKey(status) ?? 'iam.signIn.invalidCredentials';
+  }
+
+  /** 0 = API unreachable, 404 = wrong API (endpoint missing), 5xx = server error. */
+  private connectionErrorKey(status: number | null): string | null {
+    if (status === 0) {
+      return 'shared.http.unreachable';
+    }
+    if (status === 404) {
+      return 'shared.http.notFound';
+    }
+    if (status !== null && status >= 500) {
+      return 'shared.http.serverError';
+    }
+    return null;
+  }
+
   private statusOf(error: unknown): number | null {
+    if (error instanceof HttpErrorResponse) {
+      return error.status;
+    }
     return typeof error === 'object' && error !== null && 'status' in error
       ? Number((error as { status: unknown }).status)
       : null;
