@@ -1,141 +1,97 @@
 <section class="subscription-page">
 
-  <!-- HEADER -->
   <header class="subscription-header">
-
     <div class="subscription-header__badge">
       {{ 'subscriptions.plans.badge' | translate }}
     </div>
+    <h1>{{ 'subscriptions.plans.title' | translate }}</h1>
+    <p>{{ 'subscriptions.plans.subtitle' | translate }}</p>
 
-    <h1>
-      {{ 'subscriptions.plans.title' | translate }}
-    </h1>
-
-    <p>
-      {{ 'subscriptions.plans.subtitle' | translate }}
-    </p>
-
+    @if (subscriptionStore.usageLoaded() && !subscriptionStore.hasActiveSubscription()) {
+      <p class="subscription-notice" role="status">
+        {{ 'subscriptions.plans.required' | translate }}
+      </p>
+    }
+    @if (subscriptionStore.usage(); as usage) {
+      <p class="subscription-notice subscription-notice--active" role="status">
+        {{ 'subscriptions.plans.activeNotice' | translate: { plan: usage.planName } }}
+        <a routerLink="/settings" [queryParams]="{ section: 'subscription' }">
+          {{ 'subscriptions.plans.manageInSettings' | translate }}
+        </a>
+      </p>
+    }
   </header>
 
-
-  <!-- PLANS -->
   @if (subscriptionStore.loading()) {
-
-    <mat-progress-bar
-      mode="indeterminate"
-      [attr.aria-label]="'subscriptions.plans.loading' | translate">
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'subscriptions.plans.loading' | translate">
     </mat-progress-bar>
+  }
 
+  @if (subscriptionStore.error(); as error) {
+    <div class="subscription-error" role="alert">
+      <p>{{ 'subscriptions.plans.loadError' | translate }}</p>
+      <small>{{ error }}</small>
+      <button type="button" class="plan-card__button" (click)="subscriptionStore.loadPlans()">
+        {{ 'subscriptions.plans.retry' | translate }}
+      </button>
+    </div>
+  }
+
+  @if (!subscriptionStore.loading() && !subscriptionStore.error() && subscriptionStore.plans().length === 0) {
+    <p class="subscription-empty">{{ 'subscriptions.plans.empty' | translate }}</p>
   }
 
   <div class="plan-list">
-
     @for (plan of subscriptionStore.plans(); track plan.id) {
-
       <article
         class="plan-card"
         [class.plan-card--featured]="plan.code === 'PREMIUM'"
         [class.plan-card--corporate]="plan.code === 'CORPORATE'"
+        [class.plan-card--selected]="selectedPlanCode() === plan.code"
       >
-
-        <!-- BADGE PREMIUM -->
         @if (plan.code === 'PREMIUM') {
-
-          <span class="plan-card__badge">
-            {{ 'subscriptions.plans.popular' | translate }}
-          </span>
-
+          <span class="plan-card__badge">{{ 'subscriptions.plans.popular' | translate }}</span>
         }
-
-
-        <!-- BADGE CORPORATE -->
         @if (plan.code === 'CORPORATE') {
-
           <span class="plan-card__badge plan-card__badge--corporate">
             {{ 'subscriptions.plans.enterpriseBadge' | translate }}
           </span>
-
         }
 
+        <h2 class="plan-card__name">{{ planNameKey(plan) | translate }}</h2>
 
-        <!-- PLAN NAME -->
-        <h2 class="plan-card__name">
-          {{ planNameKey(plan) | translate }}
-        </h2>
-
-
-        <!-- PRICE -->
         <div class="plan-card__price">
-
-          <span class="plan-card__currency">
-            USD
-          </span>
-
-          <span class="plan-card__amount">
-            {{ plan.monthlyPrice }}
-          </span>
-
-          <span class="plan-card__period">
-            / {{ 'subscriptions.plans.perMonth' | translate }}
-          </span>
-
+          <span class="plan-card__currency">{{ plan.monthlyPrice.currency }}</span>
+          <span class="plan-card__amount">{{ plan.monthlyPrice.amount }}</span>
+          <span class="plan-card__period">/ {{ 'subscriptions.plans.perMonth' | translate }}</span>
         </div>
 
-
-        <!-- DIVIDER -->
         <div class="plan-card__divider"></div>
 
-
-        <!-- FEATURES -->
         <ul class="plan-card__features">
-
-          <li>
-            <span>✓</span>
-            {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}
-          </li>
-
-          <li>
-            <span>✓</span>
-            {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}
-          </li>
-
-          <li>
-            <span>✓</span>
-            {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}
-          </li>
-
+          <li><span>✓</span> {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}</li>
+          <li><span>✓</span> {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}</li>
+          <li><span>✓</span> {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}</li>
         </ul>
 
-
-        <!-- ONE BUTTON ONLY -->
-        @if (plan.code === 'CORPORATE') {
-
-          <button
-            type="button"
-            class="plan-card__button plan-card__button--corporate"
-            (click)="selectPlan(plan.code)"
-          >
-            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">upgrade</span>
-            {{ 'subscriptions.plans.update' | translate }} {{ 'subscriptions.plans.corporate' | translate }}
+        @if (isCurrent(plan)) {
+          <button type="button" class="plan-card__button" disabled>
+            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">check_circle</span>
+            {{ 'subscriptions.plans.current' | translate }}
           </button>
-
         } @else {
-
           <button
             type="button"
             class="plan-card__button"
+            [class.plan-card__button--corporate]="plan.code === 'CORPORATE'"
             (click)="selectPlan(plan.code)"
           >
             <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">shopping_cart_checkout</span>
-            {{ 'subscriptions.plans.subscribe' | translate }}
+            {{ (subscriptionStore.hasActiveSubscription() ? 'subscriptions.plans.update' : 'subscriptions.plans.subscribe') | translate }}
+            {{ planNameKey(plan) | translate }}
           </button>
-
         }
-
       </article>
-
     }
-
   </div>
-
 </section>

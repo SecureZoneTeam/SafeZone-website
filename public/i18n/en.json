@@ -62,6 +62,11 @@
       "landing": "Landing Page",
       "team": "Our Team",
       "location": "Lima, Peru"
+    },
+    "http": {
+      "unreachable": "The NodeSecure API cannot be reached. Check that the backend is running.",
+      "notFound": "The configured server does not provide this service. Check the API URL (serverBaseUrl).",
+      "serverError": "The server had an error. Try again in a few minutes."
     }
   },
   "iam": {
@@ -94,6 +99,9 @@
     "brand": {
       "headline": "Smart logistics auditing",
       "description": "Control your inventory, detect events and ensure real-time traceability."
+    },
+    "session": {
+      "unavailable": "Your session could not be restored because the server is not responding. Try again."
     }
   },
   "warehouses": {
@@ -363,7 +371,7 @@
       "warehouseLimit": "Warehouses",
       "sensorNodeLimit": "IoT sensors",
       "userLimit": "Users",
-      "subscribe": "Subscribe",
+      "subscribe": "Subscribe to",
       "badge": "Plans and pricing",
       "subtitle": "Scalable subscriptions that grow with your operation.",
       "selected": "Plan selected from the Landing Page",
@@ -374,7 +382,14 @@
       "corporate": "Corporate",
       "enterpriseBadge": "IDEAL FOR LARGE COMPANIES",
       "update": "Update to",
-      "loading": "Loading subscription plans"
+      "loading": "Loading subscription plans",
+      "required": "Your organization has no plan yet. Choose one to create warehouses, sensors and users.",
+      "activeNotice": "Your current plan is {{plan}}.",
+      "manageInSettings": "Manage in Settings",
+      "loadError": "The plans could not be loaded.",
+      "retry": "Retry",
+      "empty": "No plans are available right now.",
+      "current": "Current plan"
     },
     "current": {
       "title": "My Subscription",
@@ -384,19 +399,38 @@
     },
     "checkout": {
       "selectPlan": "Select Plan",
-      "badge": "SUBSCRIPTION & BILLING",
-      "title": "Payment Summary",
-      "subtitle": "Review the details of your new plan before confirming.",
+      "badge": "SUBSCRIPTION",
+      "title": "Confirm plan",
+      "subtitle": "Review the plan details before activating it.",
       "planDetails": "Details of your new plan",
       "plan": "Plan",
-      "paymentMethod": "Payment method",
-      "changePayment": "Change payment method",
-      "totalToday": "Total due today",
-      "confirm": "Confirm and Pay",
-      "confirmed": "Payment confirmed successfully.",
+      "confirm": "Activate plan",
       "noPlan": "No plan selected",
       "noPlanHint": "Select a plan to continue.",
-      "backToPlans": "Back to plans"
+      "backToPlans": "Back to plans",
+      "billing": "Billing",
+      "noPaymentGateway": "NodeSecure does not integrate a payment gateway yet: no card is requested or charged. When you confirm, the plan is activated immediately.",
+      "invoiceNote": "An invoice with status ISSUED is created for the monthly period and is paid outside the platform.",
+      "monthlyAmount": "Monthly amount of the plan",
+      "confirmChange": "Switch to this plan",
+      "activated": "Plan activated. No charge was made."
+    },
+    "limits": {
+      "reached": "You have reached the {{resource}} limit of your {{plan}} plan. Current usage: {{used}} of {{limit}} {{resource}}. To create more {{resource}}, upgrade your subscription.",
+      "required": "Your organization has no active subscription. Choose a plan to create {{resource}}.",
+      "changePlan": "Change plan",
+      "choosePlan": "Choose plan",
+      "resources": {
+        "warehouses": "warehouses",
+        "sensorNodes": "IoT sensors",
+        "users": "users"
+      }
+    },
+    "change": {
+      "blocked": "You cannot switch to this plan with your current usage:",
+      "blockerItem": "{{resource}}: you use {{used}} and the plan allows {{limit}}",
+      "neverDeletes": "NodeSecure never deletes warehouses, sensors or users when changing plans. Reduce your usage first.",
+      "notAvailable": "Not available (see why)"
     }
   },
   "team": {
@@ -712,7 +746,8 @@
     "subscription": "Subscription",
     "checkout": "Payment Summary",
     "notFound": "Page not found",
-    "accessDenied": "Access denied"
+    "accessDenied": "Access denied",
+    "settings": "Settings"
   },
   "language": {
     "en": "English",
@@ -733,6 +768,53 @@
       "message": "Your role or permissions do not allow you to open this section. Contact the owner of your organization if you need access.",
       "back": "Go to my home screen",
       "toast": "You do not have permission to perform this operation."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "profile": "Profile",
+      "subscription": "Subscription"
+    },
+    "profile": {
+      "title": "Administrator profile",
+      "subtitle": "Update your access data.",
+      "fullName": "Full name",
+      "email": "Email",
+      "username": "Username",
+      "emailInvalid": "Enter a valid email.",
+      "usernameInvalid": "3 to 30 characters: letters, numbers, dot, hyphen or underscore.",
+      "save": "Save changes",
+      "saved": "Profile updated.",
+      "taken": "The email or username is already registered, or the data is not valid."
+    },
+    "password": {
+      "title": "Change password",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "size": "The password must have 8 to 72 characters.",
+      "mismatch": "Passwords do not match.",
+      "save": "Update password",
+      "saved": "Password updated. Other sessions were signed out.",
+      "currentInvalid": "The current password is incorrect or the new one is not valid."
+    },
+    "subscription": {
+      "title": "Subscription",
+      "plan": "Current plan",
+      "price": "Monthly price",
+      "status": "Status",
+      "startedAt": "Start date",
+      "renewsAt": "Renewal date",
+      "usage": "Plan usage",
+      "usedOf": "{{used}} of {{limit}}",
+      "usedUnlimited": "{{used}} (no limit)",
+      "changePlan": "Change plan",
+      "limitsLegend": "warehouses · sensors · users",
+      "statuses": {
+        "ACTIVE": "Active",
+        "CANCELLED": "Cancelled"
+      }
     }
   }
 }

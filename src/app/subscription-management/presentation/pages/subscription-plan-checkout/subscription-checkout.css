@@ -598,3 +598,27 @@
   }
 
 }
+
+.checkout-note {
+  margin: 0 0 12px;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.checkout-alert {
+  margin: 16px 0;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #fdecec;
+  color: #8a1c1c;
+}
+
+.checkout-alert ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.confirm-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

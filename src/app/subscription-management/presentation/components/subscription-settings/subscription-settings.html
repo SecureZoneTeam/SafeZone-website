@@ -1,0 +1,105 @@
+<section class="ns-card subscription-settings">
+  <h2>{{ 'settings.subscription.title' | translate }}</h2>
+
+  @if (!subscriptionStore.usageLoaded()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else {
+    @if (subscriptionStore.usage(); as usage) {
+      <dl class="subscription-settings__summary">
+        <div>
+          <dt>{{ 'settings.subscription.plan' | translate }}</dt>
+          <dd>{{ usage.planName }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'settings.subscription.price' | translate }}</dt>
+          <dd>{{ usage.currency ?? 'USD' }} {{ usage.price }} / {{ 'subscriptions.plans.perMonth' | translate }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'settings.subscription.status' | translate }}</dt>
+          <dd><span class="ns-chip ns-chip--online">{{ 'settings.subscription.statuses.' + usage.status | translate }}</span></dd>
+        </div>
+        <div>
+          <dt>{{ 'settings.subscription.startedAt' | translate }}</dt>
+          <dd>{{ usage.startedAt ? (usage.startedAt | date: 'mediumDate') : '—' }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'settings.subscription.renewsAt' | translate }}</dt>
+          <dd>{{ usage.renewsAt ? (usage.renewsAt | date: 'mediumDate') : '—' }}</dd>
+        </div>
+      </dl>
+      <p class="subscription-settings__hint">{{ 'subscriptions.checkout.noPaymentGateway' | translate }}</p>
+
+      <h3>{{ 'settings.subscription.usage' | translate }}</h3>
+      <ul class="subscription-settings__usage">
+        @for (item of usage.resources; track item.resource) {
+          <li>
+            <div class="subscription-settings__usage-label">
+              <span>{{ resourceKey(item.resource) | translate }}</span>
+              <span>
+                @if (item.limit !== null) {
+                  {{ 'settings.subscription.usedOf' | translate: { used: item.used, limit: item.limit } }}
+                } @else {
+                  {{ 'settings.subscription.usedUnlimited' | translate: { used: item.used } }}
+                }
+              </span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="percent(item)"
+              [class.subscription-settings__bar--full]="percent(item) >= 100"
+              [attr.aria-label]="resourceKey(item.resource) | translate"
+            ></mat-progress-bar>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="subscription-settings__empty" role="status">
+        <p>{{ 'subscriptions.plans.required' | translate }}</p>
+        <a routerLink="/subscription" class="ns-button ns-button--primary">{{ 'subscriptions.limits.choosePlan' | translate }}</a>
+      </div>
+    }
+
+    @if (subscriptionStore.error(); as error) {
+      <p class="ns-error" role="alert">{{ error }}</p>
+    }
+
+    @if (subscriptionStore.usage()) {
+      <h3>{{ 'settings.subscription.changePlan' | translate }}</h3>
+      <div class="subscription-settings__plans">
+        @for (plan of subscriptionStore.plans(); track plan.id) {
+          @let blockers = subscriptionStore.downgradeBlockers(plan);
+          <article class="subscription-settings__plan" [class.subscription-settings__plan--current]="isCurrent(plan)">
+            <strong>{{ planNameKey(plan) | translate }}</strong>
+            <span>{{ plan.monthlyPrice.currency }} {{ plan.monthlyPrice.amount }} / {{ 'subscriptions.plans.perMonth' | translate }}</span>
+            <small>
+              {{ plan.warehouseLimit }} · {{ plan.sensorNodeLimit }} · {{ plan.userLimit }}
+              ({{ 'settings.subscription.limitsLegend' | translate }})
+            </small>
+
+            @if (isCurrent(plan)) {
+              <span class="ns-chip ns-chip--info">{{ 'subscriptions.plans.current' | translate }}</span>
+            } @else if (blockers.length > 0) {
+              <button type="button" class="ns-button ns-button--secondary" (click)="toggleBlockers(plan)">
+                {{ 'subscriptions.change.notAvailable' | translate }}
+              </button>
+              @if (expandedPlan() === plan.code) {
+                <ul class="subscription-settings__blockers" role="alert">
+                  @for (blocker of blockers; track blocker.resource) {
+                    <li>
+                      {{ 'subscriptions.change.blockerItem' | translate: {
+                        resource: (resourceKey(blocker.resource) | translate), used: blocker.used, limit: blocker.limit } }}
+                    </li>
+                  }
+                </ul>
+              }
+            } @else {
+              <button type="button" class="ns-button ns-button--primary" (click)="choose(plan)">
+                {{ 'subscriptions.plans.update' | translate }} {{ planNameKey(plan) | translate }}
+              </button>
+            }
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

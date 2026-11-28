@@ -40,6 +40,8 @@ import {
   authenticationInterceptor
 } from './iam/infrastructure/authentication.interceptor';
 
+import { planLimitInterceptor } from './subscription-management/infrastructure/plan-limit.interceptor';
+
 import {
   environment
 } from '../environments/environment';
@@ -79,7 +81,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withXhr(),
       withInterceptors([
-        authenticationInterceptor
+        authenticationInterceptor,
+        planLimitInterceptor
       ])
     ),
 

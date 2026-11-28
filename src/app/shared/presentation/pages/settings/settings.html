@@ -1,0 +1,38 @@
+<section class="ns-page settings-page">
+  <header>
+    <h1>{{ 'settings.title' | translate }}</h1>
+  </header>
+
+  <nav class="settings-page__tabs" role="tablist">
+    <button
+      type="button"
+      role="tab"
+      class="settings-page__tab"
+      [class.settings-page__tab--active]="current() === 'profile'"
+      [attr.aria-selected]="current() === 'profile'"
+      (click)="open('profile')"
+    >
+      <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">person</span>
+      {{ 'settings.tabs.profile' | translate }}
+    </button>
+    @if (canSeeSubscription()) {
+      <button
+        type="button"
+        role="tab"
+        class="settings-page__tab"
+        [class.settings-page__tab--active]="current() === 'subscription'"
+        [attr.aria-selected]="current() === 'subscription'"
+        (click)="open('subscription')"
+      >
+        <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">credit_card</span>
+        {{ 'settings.tabs.subscription' | translate }}
+      </button>
+    }
+  </nav>
+
+  @if (current() === 'subscription') {
+    <app-subscription-settings />
+  } @else {
+    <app-profile-settings />
+  }
+</section>

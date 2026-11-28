@@ -62,6 +62,11 @@
       "landing": "Landing Page",
       "team": "Nuestro Equipo",
       "location": "Lima, Perú"
+    },
+    "http": {
+      "unreachable": "No se puede conectar con la API de NodeSecure. Verifica que el backend esté en ejecución.",
+      "notFound": "El servidor configurado no ofrece este servicio. Verifica la URL de la API (serverBaseUrl).",
+      "serverError": "El servidor tuvo un error. Inténtalo nuevamente en unos minutos."
     }
   },
   "iam": {
@@ -94,6 +99,9 @@
     "brand": {
       "headline": "Auditoría logística inteligente",
       "description": "Controla tu inventario, detecta eventos y asegura la trazabilidad en tiempo real."
+    },
+    "session": {
+      "unavailable": "No se pudo recuperar tu sesión porque el servidor no responde. Inténtalo nuevamente."
     }
   },
   "warehouses": {
@@ -374,7 +382,14 @@
       "corporate": "Corporativo",
       "enterpriseBadge": "IDEAL PARA GRANDES EMPRESAS",
       "update": "Actualizar a",
-      "loading": "Cargando planes de suscripción"
+      "loading": "Cargando planes de suscripción",
+      "required": "Tu organización aún no tiene un plan. Elige uno para crear almacenes, sensores y usuarios.",
+      "activeNotice": "Tu plan actual es {{plan}}.",
+      "manageInSettings": "Gestionar en Configuración",
+      "loadError": "No se pudieron cargar los planes.",
+      "retry": "Reintentar",
+      "empty": "No hay planes disponibles actualmente.",
+      "current": "Plan actual"
     },
     "current": {
       "title": "Mi Suscripción",
@@ -384,19 +399,38 @@
     },
     "checkout": {
       "selectPlan": "Seleccionar plan",
-      "badge": "SUSCRIPCIÓN Y FACTURACIÓN",
-      "title": "Resumen de Pago",
-      "subtitle": "Revisa los detalles de tu nuevo plan antes de confirmar.",
+      "badge": "SUSCRIPCIÓN",
+      "title": "Confirmar plan",
+      "subtitle": "Revisa los detalles del plan antes de activarlo.",
       "planDetails": "Detalles de tu nuevo plan",
       "plan": "Plan",
-      "paymentMethod": "Método de pago",
-      "changePayment": "Cambiar método de pago",
-      "totalToday": "Total a pagar hoy",
-      "confirm": "Confirmar y Pagar",
-      "confirmed": "Pago confirmado correctamente.",
+      "confirm": "Activar plan",
       "noPlan": "No se seleccionó ningún plan",
       "noPlanHint": "Selecciona un plan para continuar.",
-      "backToPlans": "Volver a planes"
+      "backToPlans": "Volver a planes",
+      "billing": "Facturación",
+      "noPaymentGateway": "NodeSecure todavía no integra una pasarela de pagos: no se solicita ni se cobra ninguna tarjeta. Al confirmar, el plan se activa de inmediato.",
+      "invoiceNote": "Se emite una factura con estado EMITIDA por el periodo mensual, que se paga fuera de la plataforma.",
+      "monthlyAmount": "Importe mensual del plan",
+      "confirmChange": "Cambiar a este plan",
+      "activated": "Plan activado. No se realizó ningún cobro."
+    },
+    "limits": {
+      "reached": "Has alcanzado el límite de {{resource}} de tu plan {{plan}}. Uso actual: {{used}} de {{limit}} {{resource}}. Para crear más {{resource}}, actualiza tu suscripción.",
+      "required": "Tu organización no tiene una suscripción activa. Elige un plan para crear {{resource}}.",
+      "changePlan": "Cambiar plan",
+      "choosePlan": "Elegir plan",
+      "resources": {
+        "warehouses": "almacenes",
+        "sensorNodes": "sensores IoT",
+        "users": "usuarios"
+      }
+    },
+    "change": {
+      "blocked": "No puedes cambiar a este plan con tu consumo actual:",
+      "blockerItem": "{{resource}}: usas {{used}} y el plan permite {{limit}}",
+      "neverDeletes": "NodeSecure nunca elimina almacenes, sensores ni usuarios al cambiar de plan. Reduce tu consumo primero.",
+      "notAvailable": "No disponible (ver motivo)"
     }
   },
   "team": {
@@ -712,7 +746,8 @@
     "subscription": "Suscripción",
     "checkout": "Resumen de pago",
     "notFound": "Página no encontrada",
-    "accessDenied": "Acceso denegado"
+    "accessDenied": "Acceso denegado",
+    "settings": "Configuración"
   },
   "language": {
     "en": "Inglés",
@@ -733,6 +768,53 @@
       "message": "Tu rol o tus permisos no te permiten abrir esta sección. Contacta al propietario de tu organización si necesitas acceso.",
       "back": "Ir a mi pantalla de inicio",
       "toast": "No tienes permiso para realizar esta operación."
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "tabs": {
+      "profile": "Perfil",
+      "subscription": "Suscripción"
+    },
+    "profile": {
+      "title": "Perfil del administrador",
+      "subtitle": "Actualiza tus datos de acceso.",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "username": "Nombre de usuario",
+      "emailInvalid": "Ingresa un correo válido.",
+      "usernameInvalid": "De 3 a 30 caracteres: letras, números, punto, guion o guion bajo.",
+      "save": "Guardar cambios",
+      "saved": "Perfil actualizado.",
+      "taken": "El correo o el nombre de usuario ya está registrado, o los datos no son válidos."
+    },
+    "password": {
+      "title": "Cambiar contraseña",
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "confirm": "Confirmar nueva contraseña",
+      "size": "La contraseña debe tener de 8 a 72 caracteres.",
+      "mismatch": "Las contraseñas no coinciden.",
+      "save": "Actualizar contraseña",
+      "saved": "Contraseña actualizada. Las demás sesiones se cerraron.",
+      "currentInvalid": "La contraseña actual es incorrecta o la nueva no es válida."
+    },
+    "subscription": {
+      "title": "Suscripción",
+      "plan": "Plan actual",
+      "price": "Precio mensual",
+      "status": "Estado",
+      "startedAt": "Fecha de inicio",
+      "renewsAt": "Fecha de renovación",
+      "usage": "Consumo del plan",
+      "usedOf": "{{used}} de {{limit}}",
+      "usedUnlimited": "{{used}} (sin límite)",
+      "changePlan": "Cambiar de plan",
+      "limitsLegend": "almacenes · sensores · usuarios",
+      "statuses": {
+        "ACTIVE": "Activa",
+        "CANCELLED": "Cancelada"
+      }
     }
   }
 }

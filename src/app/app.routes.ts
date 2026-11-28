@@ -208,6 +208,16 @@ export const routes: Routes = [
       },
 
       {
+        // Profile for every user with settings.view; the subscription section also needs subscriptions.view.
+        path: 'settings',
+        title: 'titles.settings',
+        data: { permissions: [Permissions.SettingsView] },
+        loadComponent: () =>
+          import('./shared/presentation/pages/settings/settings')
+            .then((m) => m.Settings)
+      },
+
+      {
         path: 'subscription/checkout',
         title: 'titles.checkout',
         data: { permissions: [Permissions.SubscriptionsManage] },

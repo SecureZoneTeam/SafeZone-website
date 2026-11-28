@@ -1,0 +1,73 @@
+<section class="ns-card profile-settings">
+  <h2>{{ 'settings.profile.title' | translate }}</h2>
+  <p class="profile-settings__hint">{{ 'settings.profile.subtitle' | translate }}</p>
+
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-settings__form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.profile.fullName' | translate }}</mat-label>
+      <input matInput formControlName="fullName" autocomplete="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.profile.email' | translate }}</mat-label>
+      <input matInput type="email" formControlName="email" autocomplete="email" />
+      @if (profileForm.controls.email.hasError('email')) {
+        <mat-error>{{ 'settings.profile.emailInvalid' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.profile.username' | translate }}</mat-label>
+      <input matInput formControlName="username" autocomplete="username" />
+      @if (profileForm.controls.username.hasError('pattern')) {
+        <mat-error>{{ 'settings.profile.usernameInvalid' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    @if (profileError(); as errorKey) {
+      <p class="ns-error" role="alert">{{ errorKey | translate }}</p>
+    }
+    @if (profileState() === 'saved') {
+      <p class="profile-settings__ok" role="status">{{ 'settings.profile.saved' | translate }}</p>
+    }
+
+    <button type="submit" class="ns-button ns-button--primary" [disabled]="profileState() === 'saving'">
+      {{ 'settings.profile.save' | translate }}
+    </button>
+  </form>
+
+  <h3>{{ 'settings.password.title' | translate }}</h3>
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="profile-settings__form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.password.current' | translate }}</mat-label>
+      <input matInput type="password" formControlName="currentPassword" autocomplete="current-password" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.password.new' | translate }}</mat-label>
+      <input matInput type="password" formControlName="newPassword" autocomplete="new-password" />
+      @if (passwordForm.controls.newPassword.hasError('minlength') || passwordForm.controls.newPassword.hasError('maxlength')) {
+        <mat-error>{{ 'settings.password.size' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'settings.password.confirm' | translate }}</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" />
+    </mat-form-field>
+
+    @if (passwordForm.hasError('mismatch') && passwordForm.controls.confirmPassword.touched) {
+      <p class="ns-error" role="alert">{{ 'settings.password.mismatch' | translate }}</p>
+    }
+    @if (passwordError(); as errorKey) {
+      <p class="ns-error" role="alert">{{ errorKey | translate }}</p>
+    }
+    @if (passwordState() === 'saved') {
+      <p class="profile-settings__ok" role="status">{{ 'settings.password.saved' | translate }}</p>
+    }
+
+    <button type="submit" class="ns-button ns-button--primary" [disabled]="passwordState() === 'saving'">
+      {{ 'settings.password.save' | translate }}
+    </button>
+  </form>
+</section>

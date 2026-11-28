@@ -45,170 +45,96 @@
          PAYMENT GRID
          =================================================== -->
 
-    @if (selectedPlan; as plan) {
+    @if (selectedPlan(); as plan) {
 
       <div class="checkout-grid">
 
-
-        <!-- ===============================================
-             PLAN DETAILS
-             =============================================== -->
-
         <section class="checkout-card">
-
           <div class="checkout-card__header">
-
-            <h2>
-              {{ 'subscriptions.checkout.planDetails' | translate }}
-            </h2>
-
+            <h2>{{ 'subscriptions.checkout.planDetails' | translate }}</h2>
           </div>
 
-
           <div class="plan-summary">
-
             <div class="plan-summary__top">
-
               <div>
-
-                <span class="plan-summary__label">
-                  {{ 'subscriptions.checkout.plan' | translate }}
-                </span>
-
-                <h3>
-                  {{ planNameKey(plan) | translate }}
-                </h3>
-
+                <span class="plan-summary__label">{{ 'subscriptions.checkout.plan' | translate }}</span>
+                <h3>{{ planNameKey(plan) | translate }}</h3>
               </div>
-
               <div class="plan-summary__price">
-
-                <span class="plan-summary__currency">
-                  USD
-                </span>
-
-                <strong>
-                  {{ plan.monthlyPrice }}
-                </strong>
-
-                <span>
-                  /{{ 'subscriptions.plans.perMonth' | translate }}
-                </span>
-
+                <span class="plan-summary__currency">{{ plan.monthlyPrice.currency }}</span>
+                <strong>{{ plan.monthlyPrice.amount }}</strong>
+                <span>/{{ 'subscriptions.plans.perMonth' | translate }}</span>
               </div>
-
             </div>
-
 
             <div class="plan-summary__divider"></div>
 
-
             <ul class="plan-summary__features">
-
-              <li>
-                <span>✓</span>
-                {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}
-              </li>
-
-              <li>
-                <span>✓</span>
-                {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}
-              </li>
-
-              <li>
-                <span>✓</span>
-                {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}
-              </li>
-
+              <li><span>✓</span> {{ 'subscriptions.plans.warehouseLimit' | translate }}: {{ plan.warehouseLimit }}</li>
+              <li><span>✓</span> {{ 'subscriptions.plans.sensorNodeLimit' | translate }}: {{ plan.sensorNodeLimit }}</li>
+              <li><span>✓</span> {{ 'subscriptions.plans.userLimit' | translate }}: {{ plan.userLimit }}</li>
             </ul>
-
           </div>
-
         </section>
 
-
-        <!-- ===============================================
-             PAYMENT METHOD
-             =============================================== -->
-
+        <!-- No payment gateway is integrated: say so instead of showing a payment method. -->
         <section class="checkout-card">
-
           <div class="checkout-card__header">
-
-            <h2>
-              {{ 'subscriptions.checkout.paymentMethod' | translate }}
-            </h2>
-
+            <h2>{{ 'subscriptions.checkout.billing' | translate }}</h2>
           </div>
-
-
-          <div class="payment-method">
-
-            <div class="payment-method__icon">
-              VISA
-            </div>
-
-            <div class="payment-method__details">
-
-              <strong>
-                Visa
-              </strong>
-
-              <span>
-                •••• •••• •••• 1111
-              </span>
-
-            </div>
-
-            <span class="payment-method__radio">
-              ●
-            </span>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="change-payment ns-has-icon"
-          >
-            <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">credit_card</span>
-            {{ 'subscriptions.checkout.changePayment' | translate }}
-          </button>
-
+          <p class="checkout-note">{{ 'subscriptions.checkout.noPaymentGateway' | translate }}</p>
+          <p class="checkout-note">{{ 'subscriptions.checkout.invoiceNote' | translate }}</p>
         </section>
-
 
       </div>
 
+      @if (blockers().length > 0) {
+        <div class="checkout-alert" role="alert">
+          <strong>{{ 'subscriptions.change.blocked' | translate }}</strong>
+          <ul>
+            @for (blocker of blockers(); track blocker.resource) {
+              <li>
+                {{ 'subscriptions.change.blockerItem' | translate: {
+                  resource: (resourceKey(blocker.resource) | translate), used: blocker.used, limit: blocker.limit } }}
+              </li>
+            }
+          </ul>
+          <small>{{ 'subscriptions.change.neverDeletes' | translate }}</small>
+        </div>
+      }
 
-      <!-- =================================================
-           TOTAL
-           ================================================= -->
+      @if (errorMessage(); as message) {
+        <div class="checkout-alert" role="alert">
+          <strong>{{ message }}</strong>
+          @if (violations().length > 0) {
+            <ul>
+              @for (violation of violations(); track violation.resource) {
+                <li>
+                  {{ 'subscriptions.change.blockerItem' | translate: {
+                    resource: (resourceKey(violation.resource) | translate), used: violation.used, limit: violation.limit } }}
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      }
 
       <section class="checkout-total">
-
         <div>
-
-          <span>
-            {{ 'subscriptions.checkout.totalToday' | translate }}
-          </span>
-
-          <strong>
-            USD {{ plan.monthlyPrice }}
-          </strong>
-
+          <span>{{ 'subscriptions.checkout.monthlyAmount' | translate }}</span>
+          <strong>{{ plan.monthlyPrice.currency }} {{ plan.monthlyPrice.amount }}</strong>
         </div>
-
 
         <button
           type="button"
           class="confirm-button"
-          (click)="confirmPayment()"
+          [disabled]="submitting() || blockers().length > 0"
+          (click)="confirm()"
         >
-          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">lock</span>
-          {{ 'subscriptions.checkout.confirm' | translate }}
+          <span class="material-symbols-outlined ns-btn-icon" aria-hidden="true">task_alt</span>
+          {{ (subscriptionStore.hasActiveSubscription() ? 'subscriptions.checkout.confirmChange'
+              : 'subscriptions.checkout.confirm') | translate }}
         </button>
-
       </section>
 
     } @else {

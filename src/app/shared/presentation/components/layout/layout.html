@@ -126,10 +126,11 @@
       <!-- LANGUAGE -->
       <app-language-switcher></app-language-switcher>
 
-      <!-- SETTINGS (administrative: owner only; no settings screen exists yet) -->
-      <button
+      <!-- SETTINGS (profile and subscription) -->
+      <a
         *nsCan="'settings.view'"
-        type="button"
+        routerLink="/settings"
+        routerLinkActive="app-sidebar__item--active"
         class="app-sidebar__item"
       >
         <span class="material-symbols-outlined">
@@ -139,7 +140,7 @@
         <span>
           {{ 'nav.settings' | translate }}
         </span>
-      </button>
+      </a>
 
       <!-- SIGN OUT -->
       <button

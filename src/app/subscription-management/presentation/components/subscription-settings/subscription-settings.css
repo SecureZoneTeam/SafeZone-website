@@ -1,0 +1,72 @@
+.subscription-settings__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 0 0 8px;
+}
+
+.subscription-settings__summary dt {
+  font-size: 0.8rem;
+  color: var(--ns-slate-500, #64748b);
+}
+
+.subscription-settings__summary dd {
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+
+.subscription-settings__hint {
+  color: var(--ns-slate-500, #64748b);
+  font-size: 0.85rem;
+}
+
+.subscription-settings__usage {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.subscription-settings__usage-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.subscription-settings__bar--full {
+  --mdc-linear-progress-active-indicator-color: #c62828;
+  --mat-progress-bar-active-indicator-color: #c62828;
+}
+
+.subscription-settings__plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.subscription-settings__plan {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  align-content: start;
+}
+
+.subscription-settings__plan--current {
+  border-color: #2f6fed;
+}
+
+.subscription-settings__blockers {
+  margin: 0;
+  padding-left: 18px;
+  color: #8a1c1c;
+  font-size: 0.9rem;
+}
+
+.subscription-settings__empty {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}

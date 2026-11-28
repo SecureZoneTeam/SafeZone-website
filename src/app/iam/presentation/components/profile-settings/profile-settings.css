@@ -1,0 +1,23 @@
+.profile-settings h3 {
+  margin-top: 32px;
+}
+
+.profile-settings__hint {
+  color: var(--ns-slate-500, #64748b);
+  margin-top: 0;
+}
+
+.profile-settings__form {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+}
+
+.profile-settings__form button {
+  justify-self: start;
+}
+
+.profile-settings__ok {
+  color: #1d5c3b;
+  font-weight: 600;
+}
